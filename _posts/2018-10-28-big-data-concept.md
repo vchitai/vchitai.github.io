@@ -2,8 +2,8 @@
 layout: post
 title: 'Big Data Concept'
 date: 2018-10-28
-author: Jekyll
-color: rgb(255,210,32)
+author: Vchitai
+color: rgb(255,10,32)
 cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98oX_KnqLw6x8G6dyn5sNPXWzQreKdDINK9Xqp6QZzZdmuYl5'
 tags: jekyll xxx
 ---
