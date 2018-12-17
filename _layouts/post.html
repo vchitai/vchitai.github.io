@@ -1,70 +1,67 @@
-<!-- 博文的布局-Layout -->
-<!DOCTYPE html>
-<html>
-<head>
-<!-- 引入head标签 -->
-{% include head.html %}
-{% include androidColor.html %}
-</head>
-<body>
+---
+layout: default
+---
 
-<!-- 顶部锚点 -->
-<a id="htmlup" name="htmlup"></a>
-<!-- 引入博文顶部选项 -->
-{% include post-header.html %}
-<!-- 引入移动下拉选项 -->
-{% include boot.html %}
-<!-- 引入博文顶部样式 -->
-{% include post-title.html %}
-<div class="markdown-body fadeInUp animated">
-
-  {% if page.subtitle %}
-    {% if page.color.size==0 or page.color==nil %}
-      <div class="postpage-subtitle" style="border-left: 8px solid #9A85FF; border-right: 8px solid #9A85FF;">
-        {{ page.subtitle }}
-      </div>
-    {% else %}
-      <div class="postpage-subtitle" style="border-left: 8px solid {{ page.color }}; border-right: 8px solid {{ page.color }}">
-        {{ page.subtitle }}
-      </div>
-    {% endif %}
+<a class="btn" href= "{{ site.url }}/" >
+  Home
+</a>
+{% if page.image.feature %}
+<div class="post-image-feature">
+  <img class="feature-image" src=
+  {% if page.image.feature contains 'https' or page.image.feature contains 'http' %}
+  "{{ page.image.feature }}"
+  {% else %}
+  "{{ site.url }}/img/{{ page.image.feature }}"
   {% endif %}
+  alt="{{ page.title | escape }} feature image">
 
-  <!-- 文章内容 -->
-  {{ page.content }}
-  <!-- 引入share模块 -->
-  {% include share.html %}
+  {% if page.image.credit %}
+  <span class="image-credit">Photo Credit: <a href="{{ page.image.creditlink }}">{{ page.image.credit }}</a></span>
+  {% endif %}
+</div><!-- /.image-wrap -->
+{% endif %}
+
+
+<div id="post">
+  <header class="post-header">
+    <h1 title="{{ page.title | escape }}">{{ page.title }}</h1>
+    <span class="post-meta">
+      <span class="post-date">
+        {{ page.date | date: "%-d %b %Y" | upcase }}
+      </span>
+      •
+      {% include read_time.html %}
+    </span>
+
+  </header>
+
+  <article class="post-content">
+    {{ content }}
+  </article>
 </div>
 
-<!-- 底部锚点 -->
-<a id="htmldown" name="htmldown"></a>
-<!-- 引入评论模块 -->
-{% include comment.html %}
-<!-- 引入goto模块 -->
-{% include goto.html %}
-<!-- 引入页面底部模块 -->
-{% include footer.html %}
+<div class="share-buttons">
+  <h6>Share on: </h6>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text={{ site.url }}{{ page.url }}" class="twitter btn" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ page.url }}" class="facebook btn" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url={{ site.url }}{{ page.url }}" class="google-plus btn" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+    <li>
+      <a href="https://news.ycombinator.com/submitlink?u={{ site.url }}{{ page.url }}" class="hacker-news btn" title="Share on Hacker News"><i class="fa fa-hacker-news"></i><span> Hacker News</span></a>
+    </li>
+    <li>
+      <a href="https://www.reddit.com/submit?url={{ site.url }}{{ page.url }}" class="reddit btn" title="Share on Reddit"><i class="fa fa-reddit"></i><span> Reddit</span></a>
+    </li>
+  </ul>
+</div><!-- end share-buttons -->
 
-<!-- 引用wow.js的动画效果 -->
-<script src="/assets/js/wow.js"></script>
-<script>
-    var wow = new WOW({
-        boxClass: 'wow',
-        animateClass: 'animated',
-        // offset: 600,
-        mobile: true,
-        live: true
-    });
-    wow.init();
-</script>
-<!-- 页面刷新回到顶部 -->
-<script>
-    window.onbeforeunload = function(){
-        //刷新后页面自动回到顶部
-        document.documentElement.scrollTop = 0;  //ie下
-        document.body.scrollTop = 0;  //非ie
-    }
-</script>
-<script src="/assets/js/main.js"></script>
-</body>
-</html>
+{% if site.owner.disqus-shortname and page.comments == true %}
+<div id="disqus_thread"></div>
+{% include disqus.html %}
+{% endif %}
