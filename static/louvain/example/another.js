@@ -11,13 +11,6 @@ d3.select("#start_btn").on("click", function () {
     for (var i = 0; i < node_number; i++) {
         node_data.push(i);
     }
-    var community = jLouvain()
-        .nodes(node_data)
-        .edges(edge_data);
-
-    //Drawing code
-    var width = 500;
-    var height = 500;
     edge_data = [];
     node_data.forEach(function (x) {
         a = getRandomSubarray(node_data, getRandomInt(3));
@@ -29,6 +22,13 @@ d3.select("#start_btn").on("click", function () {
             })
         });
     })
+    var community = jLouvain()
+        .nodes(node_data)
+        .edges(edge_data);
+
+    //Drawing code
+    var width = 500;
+    var height = 500;
     var Xstring = ""
     edge_data.forEach(function (e) {
         Xstring += "<tr><td>" + e.source + "</td><td>" + e.target + "</td><td>" + e.weight + "</td></tr>"
