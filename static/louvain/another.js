@@ -1,4 +1,3 @@
-
 d3.select("#start_btn").on("click", function () {
     $('#collapseThree').collapse('show');
     $('#collapseFour').collapse('show');
@@ -11,18 +10,21 @@ d3.select("#start_btn").on("click", function () {
     for (var i = 0; i < node_number; i++) {
         node_data.push(i);
     }
+
     edge_data = [];
     node_data.forEach(function (x) {
-        a = getRandomSubarray(node_data, getRandomInt(3));
+        a = getRandomSubarray(node_data, getRandomInt($('#neighbours').val()));
+        v = getRandomFloat($('#weight').val())
         a.forEach(function (b) {
             edge_data.push({
                 source: x,
                 target: b,
-                weight: getRandomFloat(2)
+                value: v,
+                weight: v
             })
         });
     })
-    var community = jLouvain()
+    community = jLouvain()
         .nodes(node_data)
         .edges(edge_data);
 
@@ -31,101 +33,90 @@ d3.select("#start_btn").on("click", function () {
     var height = 500;
     var Xstring = ""
     edge_data.forEach(function (e) {
-        Xstring += "<tr><td>" + e.source + "</td><td>" + e.target + "</td><td>" + e.weight + "</td></tr>"
+        Xstring += "<tr><td>" + e.source + "</td><td>" + e.target + "</td><td>" + e.value + "</td></tr>"
     })
     $("#tableX").html(Xstring);
     $('#nodes-btn').text(node_number + ' Nodes')
 
 
-
     var original_node_data = d3.entries(node_data);
-    var max_weight = d3.max(edge_data, function (d) {
-        return d.weight;
-    });
-    var weight_scale = d3.scale
-        .linear()
-        .domain([0, max_weight])
-        .range([1, 5]);
-
-    var force = d3.layout
-        .force()
-        .charge(-100)
-        .linkDistance(20)
-        .size([width, height]);
+    original_node_data.pop();
+    const simulation = d3.forceSimulation(original_node_data)
+        .force("link", d3.forceLink(edge_data).id(d => d.key))
+        .force("charge", d3.forceManyBody().strength($('#repel-force').val()))
+        .force("center", d3.forceCenter(width / 2, height / 2));
+    var color = '#a30500';
     $(".content-wrapper").empty();
     var svg = d3
         .select(".content-wrapper")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
-    // createTable([node_data]);
-    // createTableFromX(edge_data);
 
-    force
-        .nodes(original_node_data)
-        .links(edge_data)
-        .start();
-
-    var link = svg
-        .selectAll(".link")
+    const link = svg.append("g")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.6)
+        .selectAll("line")
         .data(edge_data)
-        .enter()
-        .append("line")
-        .attr("class", "link")
-        .style("stroke-width", function (d) {
-            return weight_scale(d.weight);
-        });
+        .enter().append("line")
+        .attr("stroke-width", d => Math.sqrt(d.value));
 
-    var node = svg
-        .selectAll(".node")
-        .data(force.nodes())
-        .enter()
-        .append("circle")
-        .attr("class", "node")
+    drag = simulation => {
+
+        function dragstarted(d) {
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(d) {
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
+        }
+
+        function dragended(d) {
+            if (!d3.event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        return d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
+    }
+    const node = svg.append("g")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1.5)
+        .selectAll("circle")
+        .data(original_node_data)
+        .enter().append("circle")
         .attr("r", 5)
-        .style("fill", "#a30500")
-        .call(force.drag);
+        .attr("fill", color)
+        .call(drag(simulation));
 
-    var lables = node.append("text")
-    .text(function(d) {
-      return d.key;
-    })
-    .attr('x', 6)
-    .attr('y', 3);
+    const text = svg.append("g")
+        .attr("class", "labels")
+        .selectAll("text")
+        .data(original_node_data)
+        .enter().append("text")
+        .attr("dx", -9)
+        .attr("dy", "-.35em")
+        .text(function (d) { return d.key });
 
-
-    node.append("title")
-    .text(function(d) { return d.key; });
-
-    force.on("tick", function () {
+    simulation.on("tick", () => {
         link
-            .attr("x1", function (d) {
-                return d.source.x;
-            })
-            .attr("y1", function (d) {
-                return d.source.y;
-            })
-            .attr("x2", function (d) {
-                return d.target.x;
-            })
-            .attr("y2", function (d) {
-                return d.target.y;
-            });
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
 
         node
-            .attr("cx", function (d) {
-                return d.x;
-            })
-            .attr("cy", function (d) {
-                return d.y;
-            });
-            lables
-                .attr("cx", function (d) {
-                    return d.x;
-                })
-                .attr("cy", function (d) {
-                    return d.y;
-                });
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y);
+
+        text.attr("x", d => d.x)
+            .attr("y", d => d.y);
     });
 
     d3.select("#comm_detect").on("click", function () {
@@ -163,22 +154,18 @@ d3.select("#start_btn").on("click", function () {
 
             max_community_number = Object.keys(communities).length
             $('#communities-btn').text(max_community_number + ' Communities Discovered')
-            var color = d3.scale
-                .category20()
-                .domain(d3.range([0, max_community_number]));
+            var color = d3.scaleSequential(d3.interpolateRainbow).domain([0,max_community_number]);
 
-            d3.selectAll(".node")
+            svg.selectAll("circle")
                 .data(original_node_data)
-                .style("fill", function (d) {
-                    return color(d.community);
-                });
+                .attr("fill", d => color(d.community));
         }, visualize_speed);
     });
 
     d3.select("#reset_btn").on("click", function () {
-        d3.selectAll(".node")
+        svg.selectAll("circle")
             .data(original_node_data)
-            .style("fill", "#a30500");
+            .attr("fill", "#a30500");
         community.resetAll();
     });
 });

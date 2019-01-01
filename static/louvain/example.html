@@ -14,20 +14,10 @@
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
     crossorigin="anonymous" />
-  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <script type="text/javascript" src="../jLouvain.js"></script>
+  <script src="http://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="./jLouvain.js"></script>
   <script type="text/javascript" src="./example.js"></script>
   <script type="text/javascript" src="./data.js"></script>
-  <style>
-    .node {
-        stroke: #fff;
-        stroke-width: 1.5px;
-      }
-      .link {
-        stroke: #999;
-        stroke-opacity: 0.6;
-      }
-    </style>
 </head>
 
 <body>
@@ -67,10 +57,49 @@
                     <span class="input-group-text" id="basic-addon3"> Visualize Speed
                     </span>
                   </div>
-                  <input type="number" class="form-control" id="visualize_speed" name="visualize_speed" aria-describedby="basic-addon3"
-                    value="0.1">
+                  <input type="number" class="form-control" id="visualize_speed" name="visualize_speed"
+                    aria-describedby="basic-addon3" value="0.1">
                   <div class="input-group-append">
                     <span class="input-group-text" id="basic-addon3"> steps/second
+                    </span>
+                  </div>
+                </div>
+
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3"> Repel force
+                    </span>
+                  </div>
+                  <input type="number" class="form-control" id="repel-force" name="repel-force" aria-describedby="basic-addon3"
+                    value="-10">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon3"> Newton
+                    </span>
+                  </div>
+                </div>
+
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3"> Maximum Neighbours
+                    </span>
+                  </div>
+                  <input type="number" class="form-control" id="neighbours" name="neighbours" aria-describedby="basic-addon3"
+                    value="3">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon3"> nodes
+                    </span>
+                  </div>
+                </div>
+
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3"> Maximum Weight
+                    </span>
+                  </div>
+                  <input type="number" class="form-control" id="weight" name="weight" aria-describedby="basic-addon3"
+                    value="2">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon3"> ton
                     </span>
                   </div>
                 </div>
@@ -81,18 +110,18 @@
           <div class="card">
             <div class="card-header" id="headingFour">
               <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour"
-                  aria-expanded="false" aria-controls="collapseFour">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false"
+                  aria-controls="collapseFour">
                   Working Panel
                 </button>
               </h5>
             </div>
             <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion1">
               <div class="card-body">
-                  <input class="btn btn-primary" type="button" value="Reset Graph" id="reset_btn" />
-                  <input class="btn btn-primary" type="button" value="Community Discover" id="comm_detect" />
+                <input class="btn btn-primary" type="button" value="Reset Graph" id="reset_btn" />
+                <input class="btn btn-primary" type="button" value="Community Discover" id="comm_detect" />
                 <div class="row">
-                  <div class="content-wrapper">
+                  <div class="content-wrapper d-flex align-content-center flex-wrap">
                   </div>
                 </div>
               </div>
@@ -182,6 +211,8 @@
       </div>
     </div>
   </div>
+  <iframe width="1" height="1" src="https://www.youtube.com/watch?v=qwte9YT15Ww&list=PLX7t55KWCmJXTUkozF5N1lpcko7cLfyJx&index=21" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 </body>
 <script type="text/javascript" src="./another.js"></script>
 

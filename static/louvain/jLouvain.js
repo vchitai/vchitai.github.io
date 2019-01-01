@@ -81,12 +81,12 @@
 
 		function add_edge_to_graph(graph, edge) {
 			update_assoc_mat(graph, edge);
-			
-			if (edge_index[edge.source+'_'+edge.target]) {
-				graph.edges[edge_index[edge.source+'_'+edge.target]].weight = edge.weight;
+
+			if (edge_index[edge.source + '_' + edge.target]) {
+				graph.edges[edge_index[edge.source + '_' + edge.target]].weight = edge.weight;
 			} else {
 				graph.edges.push(edge);
-				edge_index[edge.source+'_'+edge.target] = graph.edges.length - 1;
+				edge_index[edge.source + '_' + edge.target] = graph.edges.length - 1;
 			}
 		}
 
@@ -110,7 +110,7 @@
 		}
 
 		function clone(obj) {
-			if (obj === null || typeof(obj) !== 'object')
+			if (obj === null || typeof (obj) !== 'object')
 				return obj;
 
 			var temp = obj.constructor();
@@ -285,7 +285,7 @@
 		}
 
 		function induced_graph(partition, graph) {
-			var ret = {nodes: [], edges: [], _assoc_mat: {}};
+			var ret = { nodes: [], edges: [], _assoc_mat: {} };
 			var w_prec, weight;
 			//add nodes from partition values
 			var partition_values = obj_values(partition);
@@ -296,9 +296,9 @@
 				var com2 = partition[edge.target];
 				w_prec = (get_edge_weight(ret, com1, com2) || 0);
 				var new_weight = (w_prec + weight);
-				add_edge_to_graph(ret, {'source': com1, 'target': com2, 'weight': new_weight});
+				add_edge_to_graph(ret, { 'source': com1, 'target': com2, 'weight': new_weight });
 			});
-			
+
 			edge_index = {};
 
 			return ret;
@@ -366,11 +366,12 @@
 			return partition_at_level(dendogram, dendogram.length - 1);
 		};
 		var nextS = -1;
-		core.resetAll = function() {
+		core.resetAll = function () {
 			nextS = -1;
+			status_listS = [];
 		}
 		core.nextStep = function () {
-			if (nextS == -1) {	
+			if (nextS == -1) {
 				var dendogram = generate_dendogram(original_graph, partition_init);
 				dendogramS = clone(dendogram);
 			}
