@@ -1,4 +1,7 @@
+_Bài viết gốc: https://medium.com/pyladies-taiwan/python-%E7%9A%84-import-%E9%99%B7%E9%98%B1-3538e74f57e3_
+
 Học cách quản lý project Python là một điều cần thiết khi chúng ta làm việc với các class của Python và sẵn sàng xây dựng các dự án lớn hơn. Các module tự viết và module được Python cung cấp là những thành phần cơ bản trong kiến trúc, nhưng để sử dụng các hàm và class trong module, chúng ta phải import các module vào nhau, sử dụng lại code đã được viết trước đó. Nếu không chú ý, chúng ta sẽ dễ dàng rơi vào các bẫy import hỗn loạn.
+
 Bài viết sẽ trình bày về kiến thức cơ bản về module và package, đồng thời chỉ một vài khác biệt của absolutely import và relatively import, cuối cùng trình bày một số lỗi phổ biến trong quá trình import. Lưu ý: Bài viết đang trình bày trên Python3
 
 # Module và Package
@@ -101,7 +104,7 @@ import random as rd
 print(rd.randint(0, 5))
 ```
 
-## Cách 4（不推薦）：from [module] import \*
+## Cách 4 : from [module] import \*
 
 ```python
 # Import toàn bộ mọi thứ trong module random
@@ -150,3 +153,168 @@ Bây giờ giả sử package/subpackage1/moduleX.py muốn import một vài th
 [A] from package import moduleA
 [R] from .. import moduleA hoặc from ... package import moduleA
 ```
+
+# Những bẫy import thường gặp
+
+## Trap 1: Circular Import
+
+Tưởng tượng 1 module A lúc bắt đầu cần import một số thứ trong một module B khác, nhưng bạn cũng phải thực thi 1 số thứ trước khi import module B. Đồng thời, không may là module B cũng cần phải import 1 số thứ từ module A. Nhưng module A lúc nãy vẫn đang được thực thi, các chức năng của module chưa được hoàn thiện, nên chưa cho phép module B sử dụng. Thế deadlock này là một dạng thường gặp của circular import
+
+Hãy cùng theo dõi ví dụ sau. Hiện tại ta đang có hai module A và B trong cùng package muốn giao tiếp với nhau với nội dung như sau:
+
+`A.py`
+
+```python
+from .B import B_greet_back
+
+def A_say_hello():
+    print('A says hello!')
+    B_greet_back()
+def A_greet_back():
+    print('A says hello back!')
+
+if __name__ == '__main__':
+    A_say_hello()
+```
+
+`B.py`
+
+```python
+from .A import A_greet_back
+
+def B_say_hello():
+    print('B says hello!')
+    A_greet_back()
+def B_greet_back():
+    print('B says hello back!')
+
+if __name__ == '__main__':
+    B_say_hello()
+```
+
+Nội dung hai file này khá tương đồng, chỉ tráo đổi A/B. Ta sẽ để B chạy trước trong cùng package.
+
+```bash
+$ python3 -m sample_package.B
+```
+
+Kết quả nhận được như sau:
+
+```python
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/runpy.py", line 193, in _run_module_as_main
+ "__main__", mod_spec)
+ File "/usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/runpy.py", line 85, in _run_code
+ exec(code, run_globals)
+ File "/path/to/sample_package/B.py", line 2, in <module>
+ from .A import A_greet_back
+ File "/path/to/sample_package/A.py", line 1, in <module>
+ from .B import B_greet_back
+ File "/path/to/sample_package/B.py", line 2, in <module>
+ from .A import A_greet_back
+ImportError: cannot import name 'A_greet_back'
+```
+
+Theo quan sát, B cố gắng import A_greet_back, nhưng chuyển sang thực thi A và vì chương trình Python được thông dịch từng dòng từ đầu vì vậy ta bắt gặp lệnh import lại B trước khi define được A_greet_back và rơi vào ngõ cụt.
+
+Các cách phổ biến để xử lý circular import này là:
+
+### 1. Nhập toàn bộ module thay vì một thuộc tính
+
+Chỉnh sửa `B.py` như sau:
+
+```python
+# from .A import A_greet_back
+from . import A
+
+def B_say_hello():
+    print('B says hello!')
+    # A_greet_back()
+    A.A_greet_back()
+...
+```
+
+Và ta đã xong việc
+
+```
+B says hello!
+A says hello back!
+```
+
+Nguyên nhân là, câu lệnh from .A import A_greet_back yêu cầu phải tìm được định nghĩa của A_greet_back trong object module A, nhưng object này vẫn còn trống vào lúc này. Sau khi chỉnh sửa, from . import A chỉ kiểm tra object module A có tồn tại hay không, A_greet_back chỉ cần tồn tại lúc nó cần được thực thi.
+
+### 2. Trì hoãn việc import
+
+Chỉnh sửa `B.py` như sau:
+
+```python
+# Xóa hết phần trên
+def B_say_hello():
+    from .A import A_greet_back
+    print('B says hello!')
+    A_greet_back()
+...
+```
+
+Công việc cũng sẽ thực hiện thành công. Tương tự như lúc trước, Python cũng sẽ import module A khi chạy dòng này, nhưng tại thời điểm này, module B đã hoàn tất việc load, không có vấn đề gì về circular import. Nhưng phương pháp này hơi có vẻ hacky, có lẽ chỉ có thể tìm thấy trong các cuộc thi hackathon. Vì đây có thể gây nguy hiểm chí mạng, nếu tồn tại những dòng code khó bảo trì như thế này trong project chính thức.
+
+Một mặt khác, việc đưa tất cả import xuống cuối file cũng có tác dụng tương tự, nhưng cũng gây ảnh hưởng như trên.
+
+### 3. Cài đặt rõ ràng kiến trúc, tránh circular import
+
+Vâng, phương pháp chữa bệnh hữu hiệu vẫn là đặt câu hỏi vì sao code của bạn lại trong tình trạng nguy hiểm như thế này và sau đó thì refactor lại code.
+
+## Trap 2: Relative Import above Top-level Package
+
+Những người không quen thuộc với relative import thường sẽ gặp lỗi này.
+
+```python
+ValueError: attempted relative import beyond top-level package
+```
+
+Chúng ta hãy thử reproduce lại lỗi này nhé. Chỉnh sửa file B.py như sau:
+
+```python
+# from . import A
+from ..sample_package import A
+
+...
+```
+
+Bây giờ, chúng ta đang ở cùng thư mục với sample_package, chạy câu lệnh.
+
+```
+$ python3 -m sample_package.B
+```
+
+Ta sẽ gặp lỗi
+
+```python
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/runpy.py", line 193, in _run_module_as_main
+ "__main__", mod_spec)
+ File "/usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/runpy.py", line 85, in _run_code
+ exec(code, run_globals)
+ File "/path/to/sample_package/B.py", line 5, in <module>
+ from ..sample_package import A
+ValueError: attempted relative import beyond top-level package
+```
+
+Cái gọi là top-level package tức là lớp cao nhất của package ta đang thực thi. Không được phép relative import vượt quá lớp này, lỗi xảy ra do ..sample_package cố gắng nhảy lên 1 cấp trên sample_package.
+
+Bạn có thể thử di chuyển lên thư mục phía trên (cd .. ), giả sử đó là parent_folder và sau đó thử `python3 -m parent_folder.sample_package.B`, bạn sẽ thấy lỗi trên biến mất, đó là do package cấp cao nhất hiện giờ đã trở thành parent_folder.
+
+# Kết luận
+
+import là tính năng bắt buộc phải có của tất cả các ngôn ngữ lớn. Nó có vẻ đơn giản nhưng tiềm ẩn khá nhiều bẫy. Nếu bạn không biết các hoạt động của import của Python, ngoại trừ việc khó thiết kế linh hoạt trong kiến trúc tổng thể project, còn tăng khả năng rơi vào các lỗi khủng khiếp hơn.
+
+Code mẫu tham khảo: https://github.com/pyliaorachel/python-import-traps
+
+# Tài liệu tham khảo
+
+- [Python Documentation — Modules](https://docs.python.org/2/tutorial/modules.html)
+- [Python Documnetation — the Import System](https://docs.python.org/3/reference/import.html)
+- [tutorialspoint — Python Modules](https://www.tutorialspoint.com/python/python_modules.htm)
+- [PEP328 — Imports: Multi-Line and Absolute/Relative](https://www.python.org/dev/peps/pep-0328/#guido-s-decision)
+- [Importing Python Modules](http://effbot.org/zone/import-confusion.htm)
+- [Python 101: All about imports](https://www.blog.pythonlibrary.org/2016/03/01/python-101-all-about-imports/)
