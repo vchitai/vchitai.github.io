@@ -140,15 +140,13 @@ Bây giờ giả sử package/subpackage1/moduleX.py muốn import một vài th
 [A] from package.subpackage1 import moduleY
 [R] from . import moduleY
 [Error] import .moduleY
-# Từ trong  從同一個 package 底下的 sibling module `moduleY` 中，
-# import `spam` 這個 function
+# Import hàm spam từ module họ hàng `moduleY` dưới cùng package
 [A] from package.subpackage1.moduleY import spam
 [R] from .moduleY import spam
-# 從隔壁 package 底下的 module `moduleZ` 中，
-# import `eggs` 這個 function
+# Import hàm eggs từ module bà con moduleZ dưới cùng package
 [A] from package.subpackage2.moduleZ import eggs
 [R] from ..subpackage2.moduleZ import eggs
-# Import parent package 底下的 module `moduleA`
+# Import moduleA từ package cha
 [A] from package import moduleA
-[R] from .. import moduleA 或 from ... package import moduleA
+[R] from .. import moduleA hoặc from ... package import moduleA
 ```
