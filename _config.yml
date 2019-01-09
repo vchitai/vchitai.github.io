@@ -1,7 +1,7 @@
-title: Long Haul
-description: Long Form Jekyll theme built with SASS / COMPASS / SUSY
+title: My Blog
+description: Somewhere to store my drafts
 
-url: http://brianmaierjr.github.com/long-haul
+url: https://vchitai.github.io/
 baseurl: ""
 paginate_path: "blog/page:num/"
 permalink: blog/:title/
@@ -20,9 +20,9 @@ navigation:
    url: /contact
 
 social:
-   github: brianmaierjr
-   twitter: brianmaierjr
-   facebook: brianmaierjr
-   email: brimaidesigns@gmail.com
+   github: vchitai
+   twitter: chitai.vct
+   facebook: chitai.vct
+   email: chitai.vct@gmail.com
 
-google_analytics: "UA-58263416-1"
+google_analytics: "UA-132061979-1"
