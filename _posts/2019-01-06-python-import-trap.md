@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Spark RDD"
+description: "Custom written post descriptions are the way to go... if you're not lazy."
+categories: [paragraph, feature photo]
+comments: true
+image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98oX_KnqLw6x8G6dyn5sNPXWzQreKdDINK9Xqp6QZzZdmuYl5
+---
 _Bài viết gốc: https://medium.com/pyladies-taiwan/python-%E7%9A%84-import-%E9%99%B7%E9%98%B1-3538e74f57e3_
 
 Học cách quản lý project Python là một điều cần thiết khi chúng ta làm việc với các class của Python và sẵn sàng xây dựng các dự án lớn hơn. Các module tự viết và module được Python cung cấp là những thành phần cơ bản trong kiến trúc, nhưng để sử dụng các hàm và class trong module, chúng ta phải import các module vào nhau, sử dụng lại code đã được viết trước đó. Nếu không chú ý, chúng ta sẽ dễ dàng rơi vào các bẫy import hỗn loạn.

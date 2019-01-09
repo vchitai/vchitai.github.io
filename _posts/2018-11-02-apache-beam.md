@@ -4,8 +4,7 @@ title: "Big Data Platform - Apache Beam"
 excerpt: "Custom written post descriptions are the way to go... if you're not lazy."
 categories: [paragraph, feature photo]
 comments: true
-image:
-  feature: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98oX_KnqLw6x8G6dyn5sNPXWzQreKdDINK9Xqp6QZzZdmuYl5
+image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98oX_KnqLw6x8G6dyn5sNPXWzQreKdDINK9Xqp6QZzZdmuYl5
 ---
 
 # Tổng quát về Apache Beam
