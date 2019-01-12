@@ -4,7 +4,6 @@ title: "Spark RDD"
 description: "Custom written post descriptions are the way to go... if you're not lazy."
 categories: [paragraph, feature photo]
 comments: true
-image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98oX_KnqLw6x8G6dyn5sNPXWzQreKdDINK9Xqp6QZzZdmuYl5
 ---
 _Bài viết gốc: https://medium.com/pyladies-taiwan/python-%E7%9A%84-import-%E9%99%B7%E9%98%B1-3538e74f57e3_
 

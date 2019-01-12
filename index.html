@@ -3,30 +3,40 @@ layout: default
 title: Vchitai Blog
 ---
 
-<h1>My recent posts:</h1>
-<div class="card-columns">
+<h1>Bài viết gần đây</h1>
+
+<div class="row m-5">
   {% for post in paginator.posts %}
-  <div class="card my-3">
-    <img
-      class="card-img-top"
-      src="{% if post.image %}{{ post.image }}{% else %}{{
-        '/assets/img/touring.jpg' | prepend: site.baseurl
-      }}{% endif %}"
-    />
-    <div class="card-body">
-      <h5 class="card-title">
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{
-          post.title
-        }}</a>
-      </h5>
-      <p class="card-text">
-        {% if post.description %}{{ post.description }}{% else %}{{
-          post.excerpt | strip_html
-        }}{% endif %}
-      </p>
-    </div>
-    <div class="card-footer">
-      <small class="text-muted"> {{ post.date | date: "%B %d, %Y" }} </small>
+  <div class="col-6 my-3">
+    <div class="index-card card border-0">
+      <img
+        class="card-img"
+        src="{% if post.image %}{{ post.image }}{% else %}{{
+          '/assets/img/touring.jpg' | prepend: site.baseurl
+        }}{% endif %}"
+      />
+      <div class="card-img-overlay d-flex align-item-start flex-column">
+        <div class="info my-1">
+          <small class="text-muted">
+            {{ post.date | date: "%B %d, %Y" }}
+          </small>
+        </div>
+        <h3 class="card-title my-1">
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{
+            post.title
+          }}</a>
+        </h3>
+        <p class="card-text my-1">
+          {% if post.description %}{{ post.description }}{% else %}{{
+            post.excerpt | strip_html
+          }}{% endif %}
+        </p>
+        <div class="card-next mt-auto ml-auto p-2 bd-highlight">
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+            Read more
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
