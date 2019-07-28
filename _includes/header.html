@@ -1,20 +1,5 @@
-<div class="headerX sticky-top shadow-sm d-flex align-item-start flex-row">
-  <div class="container d-flex align-item-start flex-row my-auto">
-      <h1 class="logo mr-auto my-0"><a href="{{ site.baseurl }}/">{{ site.title }}</a>
-      </h1>
-    <nav class="navbar navbar-expand  nav-transparent p-0">
-      <ul class="nav navbar-nav ml-auto">
-        {% for link in site.navigation %}{% assign current = nil %}{% if
-        page.url contains link.url or forloop.first and page.url == '/' or
-        page.url == 'index.html' %}{% assign current = 'current' %}{% endif %}
-        <li class="nav-item" style="font-size:1.5em;">
-          <a class="nav-link" href="{{ link.url | prepend: site.baseurl }}">{{
-            link.title
-          }}</a>
-        </li>
-        {% endfor %}
-      </ul>
-    </nav>
-  </div>
-</div>
-<!-- end .header -->
+<header class="header">
+  <a class="header__title" href="{{ '/' | absolute_url }}">{{ site.title }}</a>
+
+  {% include navigation.html %}
+</header>

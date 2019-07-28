@@ -1,69 +1,85 @@
-var gulp        = require('gulp');
-var browserSync = require('browser-sync');
-var sass        = require('gulp-sass');
-var prefix      = require('gulp-autoprefixer');
-var cp          = require('child_process');
-var cssnano 		= require('gulp-cssnano');
+const gulp = require('gulp');
+const autoprefixer = require('gulp-autoprefixer');
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
+const cleanCSS = require('gulp-clean-css');
+const eslint = require('gulp-eslint');
+const rename = require('gulp-rename');
+const sass = require('gulp-sass');
+const source = require('vinyl-source-stream');
+const stylelint = require('gulp-stylelint');
+const uglify = require('gulp-uglify');
+const zip = require('gulp-zip');
 
-var jekyll   = process.platform === 'win32' ? 'jekyll.bat' : 'jekyll';
-var messages = {
-    jekyllBuild: '<span style="color: grey">Running:</span> $ jekyll build'
-};
+function lintStyles() {
+  return gulp.src([
+    './_assets/scss/**/*.scss',
+    '!./_assets/scss/vendor/_normalize.scss',
+    '!./_assets/scss/fonts/*.scss'
+  ])
+    .pipe(stylelint({
+      reporters: [
+        {formatter: 'string', console: true}
+      ]
+    }));
+}
 
-/**
- * Build the Jekyll Site
- */
-gulp.task('jekyll-build', function (done) {
-    browserSync.notify(messages.jekyllBuild);
-    return cp.spawn( jekyll , ['build'], {stdio: 'inherit'})
-        .on('close', done);
-});
+function styles() {
+  return gulp.src('./_assets/scss/app.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefixer({cascade: false}))
+    .pipe(cleanCSS())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('./assets/css'));
+}
 
-/**
- * Rebuild Jekyll & do page reload
- */
-gulp.task('jekyll-rebuild', ['jekyll-build'], function () {
-    browserSync.reload();
-});
+function lint() {
+  return gulp.src([
+    './_assets/js/components/_formcarry.js',
+    './_assets/js/components/_infiniteScroll.js',
+    './_assets/js/components/_mailChimp.js',
+    './_assets/js/components/_miscellaneous.js',
+    './_assets/js/components/_pageTransition.js',
+    './_assets/js/components/_popup.js',
+    './_assets/js/_inits.js'
+  ])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+}
 
-/**
- * Wait for jekyll-build, then launch the Server
- */
-gulp.task('browser-sync', ['sass', 'jekyll-build'], function() {
-    browserSync({
-        server: {
-            baseDir: '_site'
-        }
-    });
-});
+function scripts() {
+  return browserify('./_assets/js/app.js')
+    .transform('babelify', {presets: ['@babel/preset-env']})
+    .bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('./assets/js'));
+}
 
-/**
- * Compile files from _scss into both _site/css (for live injecting) and site (for future jekyll builds)
- */
-gulp.task('sass', function () {
-    return gulp.src('assets/scss/style.scss')
-        .pipe(sass({
-            includePaths: ['scss'],
-            onError: browserSync.notify
-        }))
-        .pipe(prefix(['last 3 versions'], { cascade: true }))
-				.pipe(cssnano())
-        .pipe(gulp.dest('_site/assets/css'))
-        .pipe(browserSync.reload({stream:true}))
-        .pipe(gulp.dest('assets/css'));
-});
+function dist() {
+  return gulp.src([
+    './**',
+    '!./.DS_Store',
+    '!./.git',
+    '!./node_modules/**'
+  ])
+    .pipe(zip('barber-jekyll.zip'))
+    .pipe(gulp.dest('../'))
+}
 
-/**
- * Watch scss files for changes & recompile
- * Watch html/md files, run jekyll & reload BrowserSync
- */
-gulp.task('watch', function () {
-    gulp.watch(['assets/scss/*.scss', 'assets/scss/*/*.scss'], ['sass']);
-    gulp.watch(['*.html', '_layouts/*.html', '_posts/*'], ['jekyll-rebuild']);
-});
+function watch() {
+  gulp.watch('./_assets/scss/**/*.scss', styles);
+  gulp.watch('./_assets/js/**/*.js', scripts);
+}
 
-/**
- * Default task, running just `gulp` will compile the sass,
- * compile the jekyll site, launch BrowserSync & watch files.
- */
-gulp.task('default', ['browser-sync', 'watch']);
+const build = gulp.series(styles, scripts, watch);
+gulp.task('default', build);
+
+exports.lintStyles = lintStyles;
+exports.styles = styles;
+exports.lint = lint;
+exports.scripts = scripts;
+exports.dist = dist;

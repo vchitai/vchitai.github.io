@@ -1,7 +1,8 @@
+.env
+.DS_Store
+.s3-website.json
+node_modules/
+
 _site
 .sass-cache
-.directory
-Thumbs.db
-_drafts
-.ruby-version
-Gemfile.lock
+.jekyll-metadata
