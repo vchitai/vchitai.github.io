@@ -1,8 +1,8 @@
 ## Settings
-title: pRoJEct-NeGYa
+title: vchitai.github.io
 owner: "DeerRIDER"
-url: "https://akiritsu.github.io"
-baseurl: "/pRoJEct-NeGYa"
+url: "https://vchitai.github.io"
+baseurl: "/vchitai.github.io"
 permalink: /:title/
 description: ""
 markdown: kramdown
@@ -10,8 +10,8 @@ webrick:
   headers:
     Access-Control-Allow-Origin: "*"
 ## Global Variables
-email: "akiritsu@outlook.com"
-github: "akiritsu/pRoJEct-NeGYa"
+email: "vchitai@outlook.com"
+github: "vchitai/vchitai.github.io"
 # path to: css/, fonts/, img/ and js/
 assets_path: "/assets" # i.e. "/assets" 
 statement: "Designed by DeerRIDER, All Rights Reserved"
