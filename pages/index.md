@@ -11,9 +11,30 @@ encrypted_text: true
 permalink: /
 ---
 
-# PROJECT NEGYA - HACKER-STYLE PERSONAL HOMEPAGE
+# PROJECT Quetzalcoatl
 
-##  Features
+## Overview
+
+Project dùng để note những gì đang theo dõi / nghiên cứu / học tập.
+
+##  Film series đang theo dõi
+
+- 3-gatsu no lion (March comes in like a lion) - Ep 14
+- Mononoke - Arc 2
+- Kamen Rider Build - Ep 7
+- Oregairu - SS3
+
+## Manga đang theo dõi
+
+- One punch man - Chap 158
+- Shokugeki no Soma - Chap 316
+- Kimetsu No Yaiba - Chap 101
+
+## Novel đang theo dõi
+ - Mao sơn tróc quỷ nhân - Chap 1264
+<!-- 
+## 
+
 * Highly customizable, content-oriented with The Matrix style
 * Eyesight-protection layout
 * Decrypt and encrypt text (access token: 233): 
@@ -37,5 +58,5 @@ end
 ```
 ## Download and Documentation
 
-[**pRoJEct NeGYa (Github)**](https://github.com/akiritsu/pRoJEct-NeGYa)
+[**pRoJEct NeGYa (Github)**](https://github.com/akiritsu/pRoJEct-NeGYa) -->
 
