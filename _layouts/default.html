@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="en-us">
-
+<html>
   {% include head.html %}
-
-  <body class="{{ page.layout }}{% if page.url == '/' %} home{% endif %}">
-
-    {% include sidebar.html %}
-
-    <main class="container">
-      {{ content }}
-    </main>
-
-    {% include custom-foot.html %}
+  <body class="page">
+    {% include background.html %}
+    <div class="container" id="ctner">
+      {% include header.html %}
+      <div class="div_article" id="div_atcl">       
+        <article id="main_atcl" itemscope itemtype="http://schema.org/BlogPosting">
+          {{content}}
+          {% include list_of_articles.html %}
+        </article>
+          {% if page.footer == true %}
+          {% include footer.html %}
+          {% endif %}
+      </div>
+    </div>
   </body>
 </html>

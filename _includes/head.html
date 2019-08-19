@@ -1,30 +1,34 @@
 <head>
-  <link href="https://gmpg.org/xfn/11" rel="profile" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-
-  <!-- Enable responsiveness on mobile devices-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-
+  <meta charset="utf-8" />
+  <!-- multi-device width -->
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <!-- site description -->
+  {% if page.excerpt %}
+  {% assign desc = page.excerpt | strip_html |
+  strip_newlines | truncate: 160 %}
+  {% else %}
+  {% assign desc = site.description
+  %}
+  {% endif %}
+  <meta content="{{ desc }}" name="description" />
+  <!-- referer for 3rd-part images-->
+  <meta content="no-referrer" name="referrer" />
+  <!-- title -->
   <title>
-    {% if page.title == "Home" %}
-      {{ site.title }}{% if site.tagline %} &middot; {{ site.tagline }}{% endif %}
+    {% if page.title %}
+    {{ page.title | escape }}
     {% else %}
-      {{ page.title }} &middot; {{ site.title }}
+    {{ site.title | escape }}
     {% endif %}
   </title>
-
-  {% include google-analytics.html %}
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}" />
-  {% include font-includes.html %}
-
-  <!-- Icons -->
-  {% include favicons.html %}
-
-  <!-- RSS -->
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ site.feed.path | default: 'feed.xml' | relative_url }}" />
-
-  {% include custom-head.html %}
-</head>
+  <!-- icon -->
+  <link href="{{site.url }}{{site.baseurl}}{{site.assets_path}}/img/favicon.ico?" rel="shortcut icon bookmark" type="image/x-icon" />
+  <!-- main stylesheet -->
+  <link rel="stylesheet" href="{{site.url}}{{site.baseurl}}{{site.assets_path}}/css/main.css" type="text/css" />
+  <!-- fa 5.9.0 -->
+  <link rel="stylesheet" href="{{site.url}}{{site.baseurl}}{{site.assets_path}}/css/fa.min.css" type="text/css" />
+  <!-- rouge theme-->
+  <link rel="stylesheet" href="{{site.url}}{{site.baseurl}}{{site.assets_path}}/css/rouge-bg.css" />
+  <!-- mathjax 2.7.5 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  </head>
