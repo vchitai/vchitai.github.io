@@ -2,7 +2,7 @@
 title: vchitai.github.io
 owner: "DeerRIDER"
 url: "https://vchitai.github.io"
-baseurl: "/vchitai.github.io"
+baseurl: "/"
 permalink: /:title/
 description: ""
 markdown: kramdown
@@ -10,12 +10,13 @@ webrick:
   headers:
     Access-Control-Allow-Origin: "*"
 ## Global Variables
-email: "vchitai@outlook.com"
-github: "vchitai/vchitai.github.io"
+email: "vchitai@gmail.com"
+github: "vchitai"
 # path to: css/, fonts/, img/ and js/
 assets_path: "/assets" # i.e. "/assets" 
-statement: "Designed by DeerRIDER, All Rights Reserved"
+statement: "Designed by DeerRIDER, Modded by Vchitai, All Rights Reserved"
 # default max toc levels: 1 - 6 (h1 - h6)
 toc_level: 3
 # texts randomly displayed in background
-bgtext: "αβγδεζηθικλμνξοπρστυφχψω∷∫∮∝∞∧∨∑∏∪∩∈∵∴⊥‖∠⌒⊙≌√"
+bgtext: "vchitai"
+# bgtext: "αβγδεζηθικλμνξοπρστυφχψω∷∫∮∝∞∧∨∑∏∪∩∈∵∴⊥‖∠⌒⊙≌√"
