@@ -1,9 +1,15 @@
 ---
 layout: post
+type: 
 title: "Big Data Platform - Apache Beam"
-excerpt: "Custom written post descriptions are the way to go... if you're not lazy."
-categories: [paragraph, feature photo]
+description:
+category: Technical
+tags: [technical]
+headline: 
+video: 
+imagefeature: 
 comments: true
+mathjax: 
 ---
 
 # Tổng quát về Apache Beam

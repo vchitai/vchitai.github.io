@@ -1,0 +1,15 @@
+default_author:
+  name:           Chí Tài
+  picture:        
+  email:          chitai.vct@gmail.com
+  # Use the coder's toolbox at http://coderstoolbox.net/string/#!encoding=xml&action=encode&charset=us_ascii to encode your description into XML string
+  description:    A man of noone
+  # Social networking links used in footer. Update and remove as you like.
+  twitter:
+  facebook:
+  github:
+  linkedin:
+  instagram:
+  tumblr:
+  # For Google Authorship https://plus.google.com/authorship
+  google_plus:    

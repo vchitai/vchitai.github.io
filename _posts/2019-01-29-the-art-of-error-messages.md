@@ -1,11 +1,24 @@
+---
+layout: post
+type: 
+title: "Nghệ thuật thông báo lỗi"
+description: "The Art of the Error Message"
+category: Technical
+tags: [technical]
+headline: 
+video: 
+imagefeature: 
+comments: true
+mathjax: 
+---
+Khái niệm nắm bắt failure mang ý nghĩa khá lớn trong ngành công nghệ. “Fail fast, fail often” hầu như đã trở thành một câu thần chú của ngành. Nhưng có một loại failure hàng ngày mà chưa được chú ý nhiều trong quá trình phát triển sản phẩm: những thông báo lỗi bình thường.
+
+`Thông báo lỗi phải giúp người dùng giải quyết vấn đề và tiếp tục công việc.`
+
 Bài viết gốc:
 [_The Art of the Error Message (Nghệ thuật thông báo lỗi)_](https://medium.com/s/user-friendly/the-art-of-the-error-message-9f878d0bff80)
 
 _Bởi [Marina Posniak](https://medium.com/u/aacfeaaa2521) & [Tamara Hilmes](https://medium.com/u/86255198a82f)_
-
-Khái niệm nắm bắt failure mang ý nghĩa khá lớn trong ngành công nghệ. “Fail fast, fail often” hầu như đã trở thành một câu thần chú của ngành. Nhưng có một loại failure hàng ngày mà chưa được chú ý nhiều trong quá trình phát triển sản phẩm: những thông báo lỗi bình thường.
-
-`Thông báo lỗi phải giúp người dùng giải quyết vấn đề và tiếp tục công việc.`
 
 # Khi thông báo lỗi là một vấn đề
 

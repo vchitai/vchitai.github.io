@@ -1,11 +1,16 @@
 ---
 layout: post
+type: 
 title: "Big Data Platform"
-description: "Custom written post descriptions are the way to go... if you're not lazy."
-categories: [paragraph, feature photo]
+description:
+category: Technical
+tags: [technical]
+headline: 
+video: 
+imagefeature: 
 comments: true
+mathjax: 
 ---
-
 > Những khái niệm cơ bản của Big Data. Những thông tin trong bài viết được tổng kết từ khóa học Big Data ở trường KHTN.
 
 # Những công nghệ và nền tảng Big Data

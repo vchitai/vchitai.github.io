@@ -1,3 +1,16 @@
+---
+layout: post
+type: 
+title: "Four decisions in Microservice Architecture"
+description:
+category: Technical
+tags: [technical]
+headline: 
+video: 
+imagefeature: 
+comments: true
+mathjax: 
+---
 Bài viết gốc:
 
 [_Walking the wire: Mastering the Four Decisions in Microservices Architecture
