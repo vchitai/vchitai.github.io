@@ -1,0 +1,23 @@
+# section information
+section:
+  name: Achievements
+  enable: true
+  weight: 6
+  showOnNavbar: true
+  # Can optionally hide the title in sections
+  # hideTitle: true
+
+# Your achievements achievements
+achievements:
+- title: TEKO Summit 2020 Guest Speaker
+  image: images/achievements/summit2020.jpg
+  summary: Be a guest speak at the TEKO Summit 2020 event.
+- title: Prospect award - The best student team.
+  image: images/achievements/hackathon2018.jpg
+  summary: Prospect award - The best student team at KMS Hackathon 2018.
+- title: Graduation
+  image: images/achievements/graduation2019.jpg
+  summary: Received Honored Bachelor of Science (B.Sc.) in Computer Science from University of Science - VNU-HCMC.
+- title: 3rd Prize Winner
+  image: images/achievements/thachthuc2018.jpg
+  summary: Win 3rd Prize at School Thach Thuc (Challenge) Contest
