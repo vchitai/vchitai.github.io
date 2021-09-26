@@ -40,14 +40,14 @@
   margin-top: 30px;
   margin-bottom: 10px;
   border-radius: 5px;
-  background-color: #e5e9f2;
+  background-color: #EDCA5F;
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
   border: 1px solid #c0ccda;
 }
 
 #search-box:focus {
-  border: 1pt solid #248aaa;
+  border: 1pt solid #3044A1;
   outline: none;
 }
 
@@ -79,12 +79,12 @@ ul {
 
 .tree li a.active {
   display: inline;
-  color: #2098d1;
+  color: #0834FF;
 }
 
 .tree li a:hover {
   margin-left: 3px;
-  color: #2098d1;
+  color: #0834FF;
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 }
@@ -157,7 +157,7 @@ ul > ul {
 }
 
 a.focused {
-  color: #2098d1 !important;
+  color: #0834FF !important;
 }
 
 /* ============= Device specific fixes ======= */

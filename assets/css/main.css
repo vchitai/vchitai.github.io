@@ -3,7 +3,7 @@ Heading:     #1C2D41
 Paragraph:   #3C4858
 Iconography: #8392A5
 Secondary:   #C0CCDA
-Dirty Snow:  #E5E9F2
+Dirty Snow:  #EDCA5F
 Snow:        #F9FAFC
 
 Magenta: #7551E9
@@ -15,7 +15,7 @@ Yellow:  #FFC212
 
 body {
   background-color: #f9fafc;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Roboto Slab", sans-serif;
 }
 
 h1,
@@ -24,7 +24,7 @@ h3,
 h4,
 h5 {
   color: #1c2d41;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Roboto Slab", sans-serif;
   font-weight: 500;
 }
 
@@ -37,7 +37,7 @@ p {
 }
 
 a {
-  color: #248aaa;
+  color: #3044A1;
 }
 
 a:hover {
@@ -54,37 +54,37 @@ a:hover {
 .btn-dark {
   background-color: #3c4858;
   border-color: #3c4858;
-  color: #e5e9f2;
+  color: #EDCA5F;
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 }
 
 .btn-dark:hover,
 .btn-dark:focus {
-  background-color: #248aaa;
-  border-color: #248aaa;
+  background-color: #3044A1;
+  border-color: #3044A1;
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 }
 
 .btn-outline-info {
-  color: #2098d1 !important;
-  border-color: #2098d1 !important;
+  color: #0834FF !important;
+  border-color: #0834FF !important;
 }
 
 .btn-outline-info:hover {
-  background-color: #2098d1 !important;
-  color: #e5e9f2 !important;
+  background-color: #0834FF !important;
+  color: #EDCA5F !important;
 }
 
 .btn-info {
-  background-color: #248aaa !important;
-  color: #e5e9f2 !important;
+  background-color: #3044A1 !important;
+  color: #EDCA5F !important;
 }
 
 .btn-info:hover {
-  background-color: #2098d1 !important;
-  color: #e5e9f2 !important;
+  background-color: #0834FF !important;
+  color: #EDCA5F !important;
 }
 
 .bg-white {
@@ -92,7 +92,7 @@ a:hover {
 }
 
 .bg-dimmed {
-  background-color: #e5e9f2;
+  background-color: #EDCA5F;
 }
 
 .anchor {
@@ -173,8 +173,8 @@ img.right {
 
 .footer {
   /*color: #8392a5 !important;*/
-  /*background-color: #248aaa;*/
-  border-top: 1px solid #248aaa;
+  /*background-color: #3044A1;*/
+  border-top: 1px solid #3044A1;
   background: whitesmoke;
   position: relative;
   z-index: 9999;
@@ -217,7 +217,7 @@ img.right {
 }
 
 .footer input:focus {
-  background-color: #e5e9f2;
+  background-color: #EDCA5F;
 }
 
 .footer #theme {
@@ -305,5 +305,15 @@ img.right {
 }
 
 .section-title {
-  color: #248aaa;
+  color: #3044A1;
+}
+
+.navbar-nav .nav-link {
+  font-family: "Roboto Slab", sans-serif;
+  color: #3044A1;
+  font-weight: 600;
+}
+
+.card-body {
+  background: lightcyan;
 }
