@@ -300,8 +300,10 @@ img.right {
 }
 
 #ava {
-  max-height: 100%;
+  height: 400px;
   max-width: 100%;
+  object-fit: cover;
+  object-position: 0 0;
 }
 
 .section-title {
