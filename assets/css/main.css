@@ -74,17 +74,17 @@ a:hover {
 
 .btn-outline-info:hover {
   background-color: #0834FF !important;
-  color: #EDCA5F !important;
+  /*color: #EDCA5F !important;*/
 }
 
 .btn-info {
   background-color: #3044A1 !important;
-  color: #EDCA5F !important;
+  /*color: #EDCA5F !important;*/
 }
 
 .btn-info:hover {
   background-color: #0834FF !important;
-  color: #EDCA5F !important;
+  /*color: #EDCA5F !important;*/
 }
 
 .bg-white {
