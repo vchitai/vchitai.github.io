@@ -167,7 +167,7 @@
     }
 
     .final-navbar .navbar-collapse.show {
-        box-shadow: 5px 10px 10px #007bff;
+        box-shadow: 5px 10px 10px 0 rgba(0,0,0,.15)!important;
         transition: all 0.3s ease-out;
         -webkit-transition: all 0.3s ease-out;
     }
@@ -208,7 +208,7 @@
     }
 
     .final-navbar .navbar-collapse.show {
-        box-shadow: 5px 10px 10px #007bff;
+        box-shadow: 5px 10px 10px 0 rgba(0,0,0,.15)!important;
         transition: all 0.3s ease-out;
         -webkit-transition: all 0.3s ease-out;
     }
@@ -249,7 +249,7 @@
     }
 
     .final-navbar .navbar-collapse.show {
-        box-shadow: 5px 10px 10px #007bff;
+        box-shadow: 5px 10px 10px 0 rgba(0,0,0,.15)!important;
         transition: all 0.3s ease-out;
         -webkit-transition: all 0.3s ease-out;
     }
