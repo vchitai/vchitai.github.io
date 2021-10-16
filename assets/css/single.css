@@ -1,5 +1,5 @@
 body {
-  background-color: #EDCA5F;
+  background-color: rgb(220, 230, 241);
   position: relative;
 }
 .read-area {
@@ -26,7 +26,7 @@ body {
   padding-right: 1rem;
 }
 .content {
-  background: #EDCA5F;
+  background: rgb(220, 230, 241);
 }
 .toc-section {
   flex: 20%;
@@ -85,7 +85,7 @@ body {
 .toc .nav-link.active {
   padding-left: 1rem;
   padding-right: 0.5rem;
-  background-color: #3044A1;
+  background-color: #007bff;
   color: #f9f9f9;
   transition: all ease-out 0.3s;
   -webkit-transition: all ease-out 0.3s;
@@ -148,7 +148,7 @@ h6 {
 }
 
 .post-content blockquote {
-  border-left: 4px solid #3044A1;
+  border-left: 4px solid #007bff;
   background-color: #248baa15;
   padding: 0.3rem;
   padding-left: 1rem;
@@ -162,7 +162,7 @@ h6 {
 
 table {
   border-radius: 0.1rem;
-  background: #EDCA5F;
+  background: rgb(220, 230, 241);
   border: 1px solid #c0ccda;
   padding: 0.1rem;
 }
@@ -179,12 +179,12 @@ td {
 }
 
 table thead tr {
-  background: #3044A1;
-  color: #EDCA5F;
+  background: #007bff;
+  color: rgb(220, 230, 241);
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #EDCA5F;
+  background-color: rgb(220, 230, 241);
 }
 
 tbody tr:hover {
@@ -250,7 +250,7 @@ a.header-anchor code {
 }
 
 kbd {
-  background-color: #3044A1 !important;
+  background-color: #007bff !important;
   color: #f9fafc;
 }
 
@@ -291,15 +291,15 @@ mark {
 
 .next-prev-navigator .btn-outline-info {
   color: #f9fafc !important;
-  border-color: #EDCA5F !important;
-  background-color: #3044A1 !important;
+  border-color: rgb(220, 230, 241) !important;
+  background-color: #007bff !important;
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 }
 
 .next-prev-navigator .btn-outline-info:hover {
   color: #3c4858 !important;
-  background-color: #EDCA5F !important;
+  background-color: rgb(220, 230, 241) !important;
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 }

@@ -22,7 +22,7 @@
 .circle {
   padding: 13px 20px;
   border-radius: 50%;
-  background-color: #3044A1;
+  background-color: #007bff;
   color: #f9fafc;
   max-height: 50px;
   z-index: 2;
@@ -35,7 +35,7 @@
 .timeline .vertical-line::after {
   content: "";
   position: absolute;
-  border-left: 3px solid #3044A1;
+  border-left: 3px solid #007bff;
   z-index: 1;
   height: 100%;
   left: 50%;
@@ -51,7 +51,7 @@
 }
 
 .timeline .horizontal-line hr {
-  border-top: 3px solid #3044A1;
+  border-top: 3px solid #007bff;
   margin: 0;
   top: 17px;
   position: relative;
@@ -63,7 +63,7 @@
 }
 
 .timeline .horizontal-line .corner {
-  border: 3px solid #3044A1;
+  border: 3px solid #007bff;
   width: 100%;
   position: relative;
   border-radius: 15px;

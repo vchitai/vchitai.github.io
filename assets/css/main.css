@@ -3,7 +3,7 @@ Heading:     #1C2D41
 Paragraph:   #3C4858
 Iconography: #8392A5
 Secondary:   #C0CCDA
-Dirty Snow:  #EDCA5F
+Dirty Snow:  rgb(220, 230, 241)
 Snow:        #F9FAFC
 
 Magenta: #7551E9
@@ -15,7 +15,7 @@ Yellow:  #FFC212
 
 body {
   background-color: #f9fafc;
-  font-family: "Roboto Slab", sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 h1,
@@ -24,7 +24,7 @@ h3,
 h4,
 h5 {
   color: #1c2d41;
-  font-family: "Roboto Slab", sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 500;
 }
 
@@ -33,11 +33,11 @@ strong {
 }
 
 p {
-  color: #3c4858;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 a {
-  color: #3044A1;
+  color: #007bff;
 }
 
 a:hover {
@@ -54,37 +54,41 @@ a:hover {
 .btn-dark {
   background-color: #3c4858;
   border-color: #3c4858;
-  color: #EDCA5F;
+  color: rgb(220, 230, 241);
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 }
 
 .btn-dark:hover,
 .btn-dark:focus {
-  background-color: #3044A1;
-  border-color: #3044A1;
+  background-color: #007bff;
+  border-color: #007bff;
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 }
 
 .btn-outline-info {
-  color: #0834FF !important;
-  border-color: #0834FF !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  color: rgba(0,0,0,0.7) !important;
+  border-color: #b3d7ff !important;
+  font-weight: 400;
 }
 
 .btn-outline-info:hover {
-  background-color: #0834FF !important;
-  /*color: #EDCA5F !important;*/
+  background-color: #b3d7ff !important;
+  /*color: rgb(220, 230, 241) !important;*/
 }
 
 .btn-info {
-  background-color: #3044A1 !important;
-  /*color: #EDCA5F !important;*/
+  background-color: #b3d7ff !important;
+  color: rgba(0,0,0,0.7) !important;
+  border-color: #b3d7ff !important;
 }
 
 .btn-info:hover {
-  background-color: #0834FF !important;
-  /*color: #EDCA5F !important;*/
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  /*background-color: #0834FF !important;*/
+  /*color: rgb(220, 230, 241) !important;*/
 }
 
 .bg-white {
@@ -92,7 +96,7 @@ a:hover {
 }
 
 .bg-dimmed {
-  background-color: #EDCA5F;
+  background-color: rgb(220, 230, 241);
 }
 
 .anchor {
@@ -173,8 +177,8 @@ img.right {
 
 .footer {
   /*color: #8392a5 !important;*/
-  /*background-color: #3044A1;*/
-  border-top: 1px solid #3044A1;
+  /*background-color: #007bff;*/
+  border-top: 1px solid #007bff;
   background: whitesmoke;
   position: relative;
   z-index: 9999;
@@ -217,7 +221,7 @@ img.right {
 }
 
 .footer input:focus {
-  background-color: #EDCA5F;
+  background-color: rgb(220, 230, 241);
 }
 
 .footer #theme {
@@ -307,15 +311,20 @@ img.right {
 }
 
 .section-title {
-  color: #3044A1;
+  color: #007bff;
 }
 
 .navbar-nav .nav-link {
-  font-family: "Roboto Slab", sans-serif;
-  color: #3044A1;
-  font-weight: 600;
+  font-family: "Noto Sans KR", sans-serif;
+  color: #343a40;
+  font-weight: 400;
+  font-size: 16px;
 }
 
-.card-body {
-  background: lightcyan;
+.navbar-nav .nav-link:hover {
+  color: #007bff;
+}
+
+.full-screen {
+  height: 100%;
 }

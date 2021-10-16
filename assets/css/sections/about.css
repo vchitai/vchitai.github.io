@@ -5,12 +5,12 @@
 
 .social-link a {
   font-size: 1.5rem;
-  color: #3044A1;
+  color: #007bff;
   padding: 0.5rem;
 }
 
 .social-link a:hover {
-  color: #3044A1;
+  color: #007bff;
   transition: all 0.3s ease-in;
 }
 

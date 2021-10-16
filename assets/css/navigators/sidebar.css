@@ -40,14 +40,14 @@
   margin-top: 30px;
   margin-bottom: 10px;
   border-radius: 5px;
-  background-color: #EDCA5F;
+  background-color: rgb(220, 230, 241);
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
   border: 1px solid #c0ccda;
 }
 
 #search-box:focus {
-  border: 1pt solid #3044A1;
+  border: 1pt solid #007bff;
   outline: none;
 }
 

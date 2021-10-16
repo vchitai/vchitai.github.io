@@ -15,14 +15,14 @@
     font-size: 18px;
     font-weight: 400;
     background: whitesmoke;
-    /*background: #3044A1;*/
+    /*background: #007bff;*/
 }
 
 /* --- initial state start ------ */
 
 .initial-navbar {
-    /*background-color: #EDCA5F;*/
-    /*border-bottom: 1px solid #3044A1;*/
+    /*background-color: rgb(220, 230, 241);*/
+    /*border-bottom: 1px solid #007bff;*/
 }
 #1c2d41
 .initial-navbar .navbar-brand {
@@ -55,7 +55,7 @@
 /* --- state after scroll start --- */
 
 .final-navbar {
-    /*background-color: #EDCA5F;*/
+    /*background-color: rgb(220, 230, 241);*/
     /*color: #f9f9f9;*/
     transition: all 0.3s ease-out;
     -webkit-transition: all 0.3s ease-out;
@@ -167,7 +167,7 @@
     }
 
     .final-navbar .navbar-collapse.show {
-        box-shadow: 5px 10px 10px #3044A1;
+        box-shadow: 5px 10px 10px #007bff;
         transition: all 0.3s ease-out;
         -webkit-transition: all 0.3s ease-out;
     }
@@ -208,7 +208,7 @@
     }
 
     .final-navbar .navbar-collapse.show {
-        box-shadow: 5px 10px 10px #3044A1;
+        box-shadow: 5px 10px 10px #007bff;
         transition: all 0.3s ease-out;
         -webkit-transition: all 0.3s ease-out;
     }
@@ -249,7 +249,7 @@
     }
 
     .final-navbar .navbar-collapse.show {
-        box-shadow: 5px 10px 10px #3044A1;
+        box-shadow: 5px 10px 10px #007bff;
         transition: all 0.3s ease-out;
         -webkit-transition: all 0.3s ease-out;
     }

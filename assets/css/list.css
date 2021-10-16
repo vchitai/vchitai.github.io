@@ -72,11 +72,11 @@
 }
 
 .content-cards .paginator .page-item > a {
-  color: #3044A1;
+  color: #007bff;
 }
 
 .content-cards .paginator .page-item.active > a {
-  background-color: #3044A1;
+  background-color: #007bff;
   color: #f9fafc;
 }
 
