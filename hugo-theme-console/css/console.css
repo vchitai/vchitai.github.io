@@ -284,3 +284,10 @@ figure {
     height: 24px;
 }
 
+a.social {
+    font-size: 1.33rem;
+    color: var(--secondary-color);
+}
+a.social:hover {
+    background: transparent;
+}
