@@ -280,8 +280,8 @@ figure {
 
 
 .card-img-xs {
-    width: 24px;
-    height: 24px;
+    width: 1rem;
+    height: 1rem;
 }
 
 a.social {
@@ -289,5 +289,12 @@ a.social {
     color: var(--secondary-color);
 }
 a.social:hover {
+    background: transparent;
+}
+a.projurl {
+    font-size: 1rem;
+    color: var(--primary-color);
+}
+a.projurl:hover {
     background: transparent;
 }
