@@ -328,3 +328,8 @@ img.right {
 .full-screen {
   height: 100%;
 }
+
+.card-img-xs {
+  width: 24px;
+  height: 24px;
+}
