@@ -449,35 +449,69 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .card-stat {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.stat-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--accent);
 }
 
 .stat-value {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   background: var(--gradient-blue);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  line-height: 1;
 }
 
 .stat-label {
-  font-size: 0.875rem;
-  color: var(--text-muted);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
-.stat-icon {
-  width: 40px;
-  height: 40px;
-  background: rgba(59, 130, 246, 0.1);
-  border-radius: 10px;
+.stat-highlights {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
-  font-size: 1.125rem;
-  color: var(--accent);
-  margin-bottom: auto;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.stat-highlights span {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-muted);
+  transition: all var(--duration) var(--ease);
+}
+
+.card-stat:hover .stat-highlights span {
+  border-color: var(--border-hover);
 }
 
 /* Variant colors */
@@ -1524,6 +1558,109 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   border-radius: 100px;
   font-size: 0.8rem;
   color: var(--accent-purple);
+}
+
+/* ============================================
+   EDUCATION SECTION
+   ============================================ */
+.education-section {
+  margin-top: 60px;
+}
+
+.education-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: var(--text);
+}
+
+.education-section .section-title i {
+  color: var(--accent);
+}
+
+.education-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--duration) var(--ease);
+}
+
+.education-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.education-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-blue);
+  border-radius: var(--radius-sm);
+  font-size: 1.5rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.education-content {
+  flex: 1;
+}
+
+.education-degree {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.education-school {
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.education-details {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.education-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.education-badge.honors {
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--accent-purple);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.education-badge.gpa {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+@media (max-width: 600px) {
+  .education-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .education-details {
+    justify-content: center;
+  }
 }
 
 /* ============================================
