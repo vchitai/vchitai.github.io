@@ -4,17 +4,17 @@
    ============================================ */
 
 :root {
-  /* Dark elegant palette */
-  --bg: #09090b;
-  --bg-card: #18181b;
-  --bg-card-hover: #1f1f23;
-  --border: rgba(255,255,255,0.08);
-  --border-hover: rgba(255,255,255,0.15);
+  /* Light elegant palette */
+  --bg: #fafafa;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f4f4f5;
+  --border: rgba(0,0,0,0.08);
+  --border-hover: rgba(0,0,0,0.15);
 
   /* Text */
-  --text: #fafafa;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
+  --text: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
 
   /* Accents */
   --accent: #3b82f6;
@@ -73,6 +73,24 @@ a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 button { font: inherit; cursor: pointer; border: none; background: none; }
 
+/* Cursor Glow */
+.cursor-glow {
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(168, 85, 247, 0.05) 30%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .cursor-glow { display: none; }
+}
+
 /* ============================================
    NAVIGATION - Clean Minimal Style
    ============================================ */
@@ -88,7 +106,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 }
 
 .nav.scrolled {
-  background: rgba(9, 9, 11, 0.9);
+  background: rgba(250, 250, 250, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -288,7 +306,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .bento-card:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-hover);
-  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.08),
+    0 0 0 1px rgba(59, 130, 246, 0.1),
+    inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
 /* Card Glow Effect */
@@ -299,7 +320,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent);
   opacity: 0;
   transition: opacity var(--duration) var(--ease);
 }
@@ -354,12 +375,163 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   50% { opacity: 0.5; transform: scale(1.2); }
 }
 
+/* ============================================
+   ENTRANCE ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.15), inset 0 0 20px rgba(59, 130, 246, 0.05);
+  }
+  50% {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.2), inset 0 0 30px rgba(168, 85, 247, 0.05);
+  }
+}
+
+@keyframes morphBlob {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50% { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
+  75% { border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%; }
+}
+
+@keyframes spotlight {
+  0% { background-position: -100% -100%; }
+  100% { background-position: 200% 200%; }
+}
+
+/* Bento Cards Staggered Animation */
+.bento-card:not(.card-passion) {
+  opacity: 0;
+  animation: fadeInUp 0.6s var(--ease) forwards;
+}
+
+.card-passion {
+  opacity: 0;
+  animation: fadeInUp 0.6s var(--ease) forwards;
+}
+
+.bento-card:nth-child(1) { animation-delay: 0.1s; }
+.bento-card:nth-child(2) { animation-delay: 0.15s; }
+.bento-card:nth-child(3) { animation-delay: 0.2s; }
+.bento-card:nth-child(4) { animation-delay: 0.25s; }
+.bento-card:nth-child(5) { animation-delay: 0.3s; }
+.bento-card:nth-child(6) { animation-delay: 0.35s; }
+.bento-card:nth-child(7) { animation-delay: 0.4s; }
+.bento-card:nth-child(8) { animation-delay: 0.45s; }
+.bento-card:nth-child(9) { animation-delay: 0.5s; }
+.bento-card:nth-child(10) { animation-delay: 0.55s; }
+.bento-card:nth-child(11) { animation-delay: 0.6s; }
+.bento-card:nth-child(12) { animation-delay: 0.65s; }
+
+/* Hero Card Special Animation */
+.card-hero {
+  animation: fadeInScale 0.8s var(--ease) forwards;
+  animation-delay: 0s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero Card Spotlight Effect */
+.card-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    125deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(59, 130, 246, 0.03) 45%,
+    rgba(168, 85, 247, 0.05) 50%,
+    rgba(59, 130, 246, 0.03) 55%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 300% 300%;
+  animation: spotlight 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Navigation Animation */
+.nav {
+  animation: slideInLeft 0.5s var(--ease) forwards;
+}
+
 .hero-name {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
   margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 50%, var(--text) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
 }
 
 .hero-title {
@@ -397,6 +569,16 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   font-size: 0.875rem;
   font-weight: 500;
   transition: all var(--duration) var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn i {
+  transition: transform var(--duration) var(--ease-spring);
+}
+
+.btn:hover i {
+  transform: translateX(3px);
 }
 
 .btn-primary {
@@ -406,17 +588,17 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 
 .btn-primary:hover {
   transform: scale(1.02);
-  box-shadow: 0 8px 30px rgba(255,255,255,0.15);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
 }
 
 .btn-ghost {
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.04);
   color: var(--text);
   border: 1px solid var(--border);
 }
 
 .btn-ghost:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.08);
   border-color: var(--border-hover);
 }
 
@@ -436,11 +618,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease);
+  transition: transform 0.6s var(--ease), filter 0.6s var(--ease);
 }
 
 .card-avatar:hover .avatar-img {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  filter: brightness(1.1);
 }
 
 /* ============================================
@@ -472,6 +655,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   justify-content: center;
   font-size: 1.25rem;
   color: var(--accent);
+  transition: all var(--duration) var(--ease-spring);
+}
+
+.card-stat:hover .stat-icon {
+  transform: scale(1.1) rotate(5deg);
+  background: rgba(59, 130, 246, 0.2);
 }
 
 .stat-value {
@@ -479,10 +668,16 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   font-weight: 700;
   letter-spacing: -0.02em;
   background: var(--gradient-blue);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1;
+  transition: all 0.5s var(--ease);
+}
+
+.card-stat:hover .stat-value {
+  animation: gradientShift 2s ease infinite;
 }
 
 .stat-label {
@@ -503,7 +698,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .stat-highlights span {
   font-size: 0.7rem;
   padding: 4px 10px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.04);
   border: 1px solid var(--border);
   border-radius: 100px;
   color: var(--text-muted);
@@ -538,10 +733,55 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 }
 
 /* ============================================
-   PASSION CARDS
+   PASSION CARDS - FLIP EFFECT
    ============================================ */
 .card-passion {
   cursor: pointer;
+  perspective: 1000px;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.passion-inner {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.card-passion.flipped .passion-inner {
+  transform: rotateY(180deg);
+}
+
+.passion-front,
+.passion-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  border-radius: var(--radius);
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.passion-front {
+  transform: rotateY(0deg);
+}
+
+.passion-back {
+  transform: rotateY(180deg);
+  justify-content: space-between;
 }
 
 .passion-icon {
@@ -551,7 +791,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   align-items: center;
   justify-content: center;
   font-size: 1.75rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.04);
   border-radius: 12px;
   margin-bottom: 12px;
   flex-shrink: 0;
@@ -559,7 +799,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 }
 
 .card-passion:hover .passion-icon {
-  background: rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.08);
   transform: scale(1.1) rotate(-5deg);
 }
 
@@ -578,9 +818,56 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   overflow: hidden;
 }
 
+.passion-click-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: auto;
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.card-passion:hover .passion-click-hint {
+  opacity: 1;
+}
+
+/* Back side content */
+.passion-back-title {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.passion-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.passion-tag {
+  padding: 4px 10px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.passion-back-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 /* Passion card variants */
-.card-passion.code { border-top: 2px solid var(--accent); }
-.card-passion.systems { border-top: 2px solid var(--accent-purple); }
+.card-passion.code .passion-front { border-top: 2px solid var(--accent); }
+.card-passion.code .passion-back { border-top: 2px solid var(--accent); }
+.card-passion.code .passion-tag { color: var(--accent); }
+
+.card-passion.systems .passion-front { border-top: 2px solid var(--accent-purple); }
+.card-passion.systems .passion-back { border-top: 2px solid var(--accent-purple); }
+.card-passion.systems .passion-tag { color: var(--accent-purple); }
 
 /* ============================================
    HOBBIES CARD (combined interests)
@@ -610,45 +897,68 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   align-items: center;
   gap: 8px;
   padding: 16px 12px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(0,0,0,0.03);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition: all var(--duration) var(--ease);
-  cursor: default;
+  transition: all 0.4s var(--ease);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.hobby-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hobby-item:hover::before {
+  opacity: 1;
 }
 
 .hobby-item:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: var(--border-hover);
-  transform: translateY(-4px);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
 }
 
 .hobby-icon {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   flex-shrink: 0;
-  transition: transform var(--duration) var(--ease-spring);
+  transition: transform 0.4s var(--ease-spring);
 }
 
 .hobby-item:hover .hobby-icon {
-  transform: scale(1.2);
+  transform: scale(1.3) rotate(-10deg);
 }
 
 .hobby-name {
   font-size: 0.75rem;
   color: var(--text-secondary);
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-/* Hobby color accents */
+.hobby-item:hover .hobby-name {
+  color: var(--text);
+}
+
+/* Hobby color accents with glow */
 .hobby-item:nth-child(1) { border-top: 2px solid var(--accent-cyan); }
+.hobby-item:nth-child(1):hover { box-shadow: 0 12px 24px rgba(6, 182, 212, 0.2); }
 .hobby-item:nth-child(2) { border-top: 2px solid var(--accent-pink); }
+.hobby-item:nth-child(2):hover { box-shadow: 0 12px 24px rgba(236, 72, 153, 0.2); }
 .hobby-item:nth-child(3) { border-top: 2px solid var(--accent-orange); }
+.hobby-item:nth-child(3):hover { box-shadow: 0 12px 24px rgba(249, 115, 22, 0.2); }
 .hobby-item:nth-child(4) { border-top: 2px solid var(--accent-green); }
+.hobby-item:nth-child(4):hover { box-shadow: 0 12px 24px rgba(34, 197, 94, 0.2); }
 
 @media (max-width: 640px) {
   .hobbies-grid {
@@ -660,12 +970,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
    GITHUB CARD
    ============================================ */
 .card-github {
-  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255,255,255,0.03) 100%);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(0,0,0,0.03) 100%);
   border: 1px solid var(--border);
 }
 
 .card-github:hover {
-  border-color: rgba(255,255,255,0.2);
+  border-color: rgba(0,0,0,0.12);
 }
 
 .github-header {
@@ -725,6 +1035,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
    ============================================ */
 .card-skills {
   grid-column: span 2;
+  overflow: hidden;
 }
 
 .skills-label {
@@ -738,26 +1049,73 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .skills-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .skill-tag {
-  padding: 8px 14px;
-  background: rgba(255,255,255,0.05);
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.04);
   border: 1px solid var(--border);
   border-radius: 100px;
   font-size: 0.8rem;
   font-family: var(--font-mono);
   color: var(--text-secondary);
-  transition: all var(--duration) var(--ease);
+  transition: all 0.3s var(--ease);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.skill-tag:hover::before {
+  left: 100%;
 }
 
 .skill-tag:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
+
+/* Skill tag colors */
+.skill-tag:nth-child(1) { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+.skill-tag:nth-child(1):hover { background: var(--accent-cyan); color: white; border-color: var(--accent-cyan); }
+
+.skill-tag:nth-child(2) { border-color: var(--accent-green); color: var(--accent-green); }
+.skill-tag:nth-child(2):hover { background: var(--accent-green); color: white; border-color: var(--accent-green); }
+
+.skill-tag:nth-child(3) { border-color: var(--accent-purple); color: var(--accent-purple); }
+.skill-tag:nth-child(3):hover { background: var(--accent-purple); color: white; border-color: var(--accent-purple); }
+
+.skill-tag:nth-child(4) { border-color: var(--accent-orange); color: var(--accent-orange); }
+.skill-tag:nth-child(4):hover { background: var(--accent-orange); color: white; border-color: var(--accent-orange); }
+
+.skill-tag:nth-child(5) { border-color: var(--accent-pink); color: var(--accent-pink); }
+.skill-tag:nth-child(5):hover { background: var(--accent-pink); color: white; border-color: var(--accent-pink); }
+
+.skill-tag:nth-child(6) { border-color: var(--accent); color: var(--accent); }
+.skill-tag:nth-child(6):hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+.skill-tag:nth-child(7) { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+.skill-tag:nth-child(7):hover { background: var(--accent-cyan); color: white; border-color: var(--accent-cyan); }
+
+.skill-tag:nth-child(8) { border-color: var(--accent-green); color: var(--accent-green); }
+.skill-tag:nth-child(8):hover { background: var(--accent-green); color: white; border-color: var(--accent-green); }
+
+.skill-tag:nth-child(9) { border-color: var(--accent-purple); color: var(--accent-purple); }
+.skill-tag:nth-child(9):hover { background: var(--accent-purple); color: white; border-color: var(--accent-purple); }
+
+.skill-tag:nth-child(10) { border-color: var(--accent-orange); color: var(--accent-orange); }
+.skill-tag:nth-child(10):hover { background: var(--accent-orange); color: white; border-color: var(--accent-orange); }
 
 /* ============================================
    EXPERIENCE CARD
@@ -933,7 +1291,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .social-btn {
   width: 44px;
   height: 44px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.04);
   border: 1px solid var(--border);
   border-radius: 12px;
   display: flex;
@@ -947,7 +1305,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   background: var(--text);
   border-color: var(--text);
   color: var(--bg);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.05);
 }
 
 /* ============================================
@@ -1124,7 +1482,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 
 .tag {
   padding: 4px 10px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.04);
   border-radius: 6px;
   font-size: 0.7rem;
   font-family: var(--font-mono);
@@ -1229,7 +1587,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .project-link {
   width: 36px;
   height: 36px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.04);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -1383,7 +1741,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.04);
   border-radius: 10px;
   color: var(--text-muted);
   transition: all var(--duration) var(--ease);
@@ -1741,14 +2099,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(0,0,0,0.03);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   transition: all var(--duration) var(--ease);
 }
 
 .hobby-link-card:hover {
-  background: rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.06);
   border-color: var(--border-hover);
   transform: translateY(-2px);
 }
@@ -1781,14 +2139,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
   align-items: center;
   gap: 8px;
   padding: 20px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(0,0,0,0.03);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   transition: all var(--duration) var(--ease);
 }
 
 .sport-item:hover {
-  background: rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.06);
   border-color: var(--border-hover);
   transform: translateY(-2px);
 }
@@ -1811,7 +2169,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; }
 .travel-stat {
   text-align: center;
   padding: 20px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(0,0,0,0.03);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
 }

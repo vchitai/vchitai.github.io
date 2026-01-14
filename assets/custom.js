@@ -13,6 +13,11 @@
     initNavigation();
     initBackToTop();
     initScrollEffects();
+    initCardTilt();
+    initCountUp();
+    initCursorGlow();
+    initMagneticButtons();
+    initFlipCards();
   }
 
   // === NAVIGATION ===
@@ -119,6 +124,170 @@
         observer.observe(el);
       });
     });
+  }
+
+  // === CARD TILT EFFECT ===
+  function initCardTilt() {
+    // Exclude flip cards from tilt effect
+    const cards = document.querySelectorAll('.bento-card:not(.card-passion)');
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+      });
+    });
+  }
+
+  // === COUNT UP ANIMATION ===
+  function initCountUp() {
+    const statValues = document.querySelectorAll('.stat-value');
+
+    const observerOptions = {
+      threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const text = el.textContent;
+          const match = text.match(/^(\d+)(\+?)$/);
+
+          if (match) {
+            const target = parseInt(match[1]);
+            const suffix = match[2] || '';
+            animateCount(el, target, suffix);
+          }
+
+          observer.unobserve(el);
+        }
+      });
+    }, observerOptions);
+
+    statValues.forEach(el => observer.observe(el));
+  }
+
+  function animateCount(el, target, suffix) {
+    const duration = 1500;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Easing function (ease-out-expo)
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(easeOut * target);
+
+      el.textContent = current + suffix;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = target + suffix;
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  // === CURSOR GLOW EFFECT ===
+  function initCursorGlow() {
+    // Only on desktop
+    if (window.innerWidth < 768) return;
+
+    const glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    document.body.appendChild(glow);
+
+    let mouseX = 0, mouseY = 0;
+    let glowX = 0, glowY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animate() {
+      // Smooth follow
+      glowX += (mouseX - glowX) * 0.1;
+      glowY += (mouseY - glowY) * 0.1;
+
+      glow.style.left = glowX + 'px';
+      glow.style.top = glowY + 'px';
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Hide when leaving window
+    document.addEventListener('mouseleave', () => {
+      glow.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      glow.style.opacity = '1';
+    });
+  }
+
+  // === MAGNETIC BUTTONS ===
+  function initMagneticButtons() {
+    const buttons = document.querySelectorAll('.btn, .social-btn');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate(0, 0)';
+      });
+    });
+  }
+
+  // === FLIP CARDS ===
+  function initFlipCards() {
+    // Use event delegation on document
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('.card-passion');
+      if (!card) return;
+
+      console.log('Click detected on passion card');
+
+      const inner = card.querySelector('.passion-inner');
+      if (!inner) return;
+
+      const isFlipped = card.dataset.flipped === 'true';
+
+      if (isFlipped) {
+        inner.style.transform = 'rotateY(0deg)';
+        card.dataset.flipped = 'false';
+      } else {
+        inner.style.transform = 'rotateY(180deg)';
+        card.dataset.flipped = 'true';
+      }
+
+      console.log('Card flipped:', !isFlipped);
+    });
+
+    console.log('Flip cards initialized with event delegation');
   }
 
   // === CONSOLE MESSAGE ===
