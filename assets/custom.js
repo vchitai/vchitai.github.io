@@ -1,143 +1,124 @@
-/* ============================================
-   TAI VONG - Portfolio
-   Minimal JavaScript
-   ============================================ */
-
-(function() {
+/* ============================================================
+   TAI VONG — Terminal CV
+   Main orchestrator
+   ============================================================ */
+(function () {
   'use strict';
 
   document.addEventListener('DOMContentLoaded', init);
 
   function init() {
-    initNavHighlight();
-    initSmoothScroll();
-    initMouseSpotlight();
-    initMobileNav();
+    MatrixRain.init();
+    BootSequence.init();
+    TerminalNav.init();
+    initScrollReveal();
+    initPhotosTabs();
+    initMapTooltips();
   }
 
-  // === NAVIGATION HIGHLIGHT (Homepage) ===
-  function initNavHighlight() {
-    const sections = document.querySelectorAll('.section');
-    const navItems = document.querySelectorAll('.nav-item[href^="#"]');
+  // Reveal .ssh-block, .project-row-term, .post-row on scroll (inner pages only)
+  function initScrollReveal() {
+    if (document.body.classList.contains('is-home')) return;
 
-    if (!sections.length || !navItems.length) return;
+    var targets = document.querySelectorAll(
+      '.ssh-block, .project-row-term, .post-row'
+    );
+    if (!targets.length) return;
 
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -70% 0px',
-      threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === `#${id}`) {
-              item.classList.add('active');
-            }
-          });
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
       });
-    }, observerOptions);
+    }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
 
-    sections.forEach(section => observer.observe(section));
+    targets.forEach(function (el) { observer.observe(el); });
   }
 
-  // === SMOOTH SCROLL ===
-  function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const href = this.getAttribute('href');
-        if (href === '#') return;
+  // === PHOTOS PAGE TABS ===
+  function initPhotosTabs() {
+    var tabs = document.querySelectorAll('.photos-tab');
+    var contents = document.querySelectorAll('.photos-tab-content');
+    if (!tabs.length) return;
 
-        const target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var target = this.getAttribute('data-tab');
+
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        contents.forEach(function(c) { c.classList.remove('active'); });
+
+        this.classList.add('active');
+        var targetEl = document.getElementById('tab-' + target);
+        if (targetEl) targetEl.classList.add('active');
+
+        history.replaceState(null, '', '#' + target);
       });
     });
-  }
 
-  // === MOUSE SPOTLIGHT EFFECT ===
-  function initMouseSpotlight() {
-    // Works on both homepage and inner pages
-    const wrapper = document.querySelector('.portfolio-wrapper') || document.querySelector('.page-wrapper');
-    if (!wrapper) return;
+    // Map sub-tabs (World / Vietnam)
+    var mapToggles = document.querySelectorAll('.map-toggle-btn');
+    var mapPanels = document.querySelectorAll('.map-panel');
 
-    // Create spotlight element
-    const spotlight = document.createElement('div');
-    spotlight.style.cssText = `
-      position: fixed;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      pointer-events: none;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
-      transform: translate(-50%, -50%);
-      z-index: 0;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-    `;
-    document.body.appendChild(spotlight);
+    mapToggles.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = this.getAttribute('data-map');
 
-    let mouseX = 0;
-    let mouseY = 0;
-    let spotlightX = 0;
-    let spotlightY = 0;
+        mapToggles.forEach(function(t) { t.classList.remove('active'); });
+        mapPanels.forEach(function(p) { p.classList.remove('active'); });
 
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      spotlight.style.opacity = '1';
+        this.classList.add('active');
+        var panel = document.getElementById('map-' + target);
+        if (panel) panel.classList.add('active');
+      });
     });
 
-    document.addEventListener('mouseleave', () => {
-      spotlight.style.opacity = '0';
-    });
-
-    // Smooth animation
-    function animate() {
-      spotlightX += (mouseX - spotlightX) * 0.1;
-      spotlightY += (mouseY - spotlightY) * 0.1;
-      spotlight.style.left = spotlightX + 'px';
-      spotlight.style.top = spotlightY + 'px';
-      requestAnimationFrame(animate);
+    // Restore tab from URL hash on load
+    var hash = window.location.hash.substring(1);
+    if (hash === 'travel-map') {
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      contents.forEach(function(c) { c.classList.remove('active'); });
+      var mapTab = document.querySelector('[data-tab="travel-map"]');
+      var mapContent = document.getElementById('tab-travel-map');
+      if (mapTab) mapTab.classList.add('active');
+      if (mapContent) mapContent.classList.add('active');
     }
-    animate();
   }
 
-  // === MOBILE NAVIGATION (Inner pages) ===
-  function initMobileNav() {
-    const toggle = document.getElementById('nav-toggle');
-    const navLinks = document.getElementById('nav-links');
+  // === MAP SVG TOOLTIPS ===
+  function initMapTooltips() {
+    var tooltip = document.getElementById('map-tooltip');
+    if (!tooltip) return;
 
-    if (!toggle || !navLinks) return;
+    var paths = document.querySelectorAll('.map-country[data-name], .map-province[data-name]');
 
-    toggle.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-      toggle.classList.toggle('active');
-    });
-
-    // Close menu when clicking a link
-    navLinks.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        toggle.classList.remove('active');
+    paths.forEach(function(path) {
+      path.addEventListener('mouseenter', function() {
+        tooltip.textContent = this.getAttribute('data-name');
+        tooltip.classList.add('visible');
       });
-    });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!toggle.contains(e.target) && !navLinks.contains(e.target)) {
-        navLinks.classList.remove('active');
-        toggle.classList.remove('active');
-      }
+      path.addEventListener('mousemove', function(e) {
+        tooltip.style.left = (e.clientX + 12) + 'px';
+        tooltip.style.top = (e.clientY - 30) + 'px';
+      });
+
+      path.addEventListener('mouseleave', function() {
+        tooltip.classList.remove('visible');
+      });
+
+      // Touch support
+      path.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        tooltip.textContent = this.getAttribute('data-name');
+        tooltip.classList.add('visible');
+        var touch = e.touches[0];
+        tooltip.style.left = (touch.clientX + 12) + 'px';
+        tooltip.style.top = (touch.clientY - 40) + 'px';
+        setTimeout(function() { tooltip.classList.remove('visible'); }, 2000);
+      });
     });
   }
 
