@@ -14,6 +14,8 @@
   --cyan-glow:     rgba(0, 212, 255, 0.25);
   --green:         #22c55e;
   --amber:         #f59e0b;
+  --map-visited:   #00d4ff;
+  --map-planned:   #f59e0b;
   --red:           #ef4444;
   --magenta:       #c084fc;
   --text:          #e2e8f0;
@@ -651,15 +653,16 @@ button { background: none; border: none; cursor: pointer; font: inherit; }
 /* World / Vietnam toggle */
 .map-toggle {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 12px;
 }
 
 .map-toggle-btn {
-  padding: 6px 16px;
+  padding: 5px 14px;
   font-family: var(--font);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-muted);
+  background: transparent;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   cursor: pointer;
@@ -668,98 +671,104 @@ button { background: none; border: none; cursor: pointer; font: inherit; }
 .map-toggle-btn.active {
   color: var(--cyan);
   border-color: var(--cyan);
-  background: rgba(0, 212, 255, 0.06);
+  background: rgba(0, 212, 255, 0.07);
 }
-.map-toggle-btn:hover:not(.active) { color: var(--text); border-color: var(--text-muted); }
+.map-toggle-btn:hover:not(.active) { color: var(--text); border-color: rgba(255,255,255,0.2); }
 
 /* Map panel visibility */
 .map-panel { display: none; }
 .map-panel.active { display: block; }
 
 /* SVG map container */
-.travel-map-container { width: 100%; overflow: hidden; }
-.map-wrapper { width: 100%; }
-
-.travel-map {
+.travel-map-container {
   width: 100%;
-  height: auto;
-  display: block;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
-/* Country paths */
+.map-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Vietnam map: constrain height so it doesn't stretch too tall */
+#vietnam-map-container .map-wrapper { max-height: 520px; }
+#vietnam-map-container .travel-map { max-height: 520px; width: auto; }
+
+#world-map-container .travel-map { width: 100%; height: auto; }
+
+.travel-map { display: block; }
+
+/* Country / province paths */
 .map-country,
-.map-country-part {
-  fill: var(--text-muted);
-  stroke: var(--bg-term);
-  stroke-width: 0.5;
+.map-country-part,
+.map-province {
+  fill: #2a3a4a;
+  stroke: #0d1a24;
+  stroke-width: 0.6;
   cursor: default;
-  transition: fill 0.15s ease;
-  opacity: 0.5;
-}
-
-.map-country.visited,
-.map-country-part.visited {
-  fill: var(--cyan);
-  opacity: 0.85;
-  cursor: pointer;
-}
-
-.map-country.planned,
-.map-country-part.planned {
-  fill: var(--amber);
-  opacity: 0.7;
-  cursor: pointer;
+  transition: fill 0.15s ease, opacity 0.15s ease;
+  opacity: 0.9;
 }
 
 .map-country:hover,
-.map-country-part:hover { opacity: 1; }
+.map-country-part:hover,
+.map-province:hover {
+  fill: #3a4e60;
+  opacity: 1;
+  cursor: pointer;
+}
 
 /* Legend */
 .map-legend {
   display: flex;
   gap: 20px;
-  margin: 12px 0;
+  margin: 10px 0 6px;
   flex-wrap: wrap;
 }
 
 .legend-item { display: flex; align-items: center; gap: 6px; }
 
 .legend-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
-.legend-dot--visited  { background: var(--cyan); }
+.legend-dot--visited  { background: var(--cyan); box-shadow: 0 0 4px var(--cyan); }
 .legend-dot--planned  { background: var(--amber); }
-.legend-dot--default  { background: var(--text-muted); opacity: 0.5; }
+.legend-dot--default  { background: #2a3a4a; border: 1px solid var(--text-muted); }
 
-.legend-label { font-size: 12px; color: var(--text-muted); }
+.legend-label { font-size: 11px; color: var(--text-muted); }
 
 /* Stats bar */
 .travel-stats-bar {
   display: flex;
-  gap: 24px;
+  gap: 32px;
   flex-wrap: wrap;
-  padding: 12px 0;
+  padding: 12px 0 4px;
   border-top: 1px solid var(--border);
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .travel-stat-item { display: flex; flex-direction: column; gap: 2px; }
 
 .stat-value {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--cyan);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
   font-size: 11px;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 /* SVG Tooltip */
