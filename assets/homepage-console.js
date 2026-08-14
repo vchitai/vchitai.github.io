@@ -206,6 +206,12 @@
     var commandHistory = [];
     var historyIndex = 0;
 
+    // The console ships on more than one page, so commands resolve their target
+    // at run time: scroll if the section is in this document, otherwise route.
+    var homeURL = consoleEl.getAttribute('data-console-home') || '/';
+    var projectsURL = consoleEl.getAttribute('data-console-projects') || '/projects/';
+    var NAVIGATE_DELAY = 450;
+
     function getFocusableElements() {
       return Array.prototype.slice.call(consoleEl.querySelectorAll(
         'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -300,7 +306,7 @@
       triggers.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
       var restoreTarget = lastFocusedElement;
       if (!restoreTarget || !document.documentElement.contains(restoreTarget) || restoreTarget.getClientRects().length === 0) {
-        restoreTarget = document.querySelector('[data-nav-toggle]') || toggles[0];
+        restoreTarget = document.querySelector('[data-nav-toggle]') || triggers[0];
       }
       if (restoreTarget && typeof restoreTarget.focus === 'function') {
         restoreTarget.focus();
@@ -319,9 +325,22 @@
     function scheduleNavigateClose(sectionId, message) {
       appendLine(message, 'hb-console-line-muted');
       setTimeout(function () {
+        var target = document.getElementById(sectionId);
         closeConsole();
-        goToSection(sectionId);
-      }, 450);
+        if (target) {
+          goToSection(sectionId);
+          return;
+        }
+        window.location.assign(homeURL + '#' + encodeURIComponent(sectionId));
+      }, NAVIGATE_DELAY);
+    }
+
+    function schedulePageNavigate(url, message) {
+      appendLine(message, 'hb-console-line-muted');
+      setTimeout(function () {
+        closeConsole();
+        window.location.assign(url);
+      }, NAVIGATE_DELAY);
     }
 
     function runHelp() {
@@ -330,6 +349,7 @@
         'help                 show this list',
         'whoami, about        who is Tai VONG',
         'work                 open selected work',
+        'projects             open the complete project archive',
         'services             open ways to work together',
         'writing              open writing & open source',
         'contact              show contact details',
@@ -347,6 +367,14 @@
 
     function runWork() {
       scheduleNavigateClose('work', 'Opening selected work...');
+    }
+
+    function runProjects() {
+      if (document.getElementById('archive')) {
+        scheduleNavigateClose('archive', 'Opening project archive...');
+        return;
+      }
+      schedulePageNavigate(projectsURL, 'Opening project archive...');
     }
 
     function runServices() {
@@ -380,6 +408,7 @@
       whoami: runAbout,
       about: runAbout,
       work: runWork,
+      projects: runProjects,
       services: runServices,
       writing: runWriting,
       contact: runContact,
@@ -437,6 +466,8 @@
 
     document.addEventListener('keydown', function (event) {
       keepFocusInsideConsole(event);
+
+      if (event.isComposing) return;
 
       if (event.key === 'Escape' && isOpen()) {
         event.preventDefault();

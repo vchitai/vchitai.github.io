@@ -1,7 +1,11 @@
 /* ============================================================
-   Tai VONG — Homepage
+   Tai VONG — Shell (homepage + portfolio archive)
    Backend & platform engineering · dark navy canvas
    Geist / Geist Mono · restrained cyan + amber signal accents
+
+   Scoped to `body.hb-shell`, which is set on every page that uses
+   this design system. Page-specific styles live alongside it —
+   see projects.css for the /projects/ archive.
    ============================================================ */
 
 :root {
@@ -29,7 +33,7 @@
 }
 
 /* === RESET / BASE (scoped to homepage only) === */
-body.is-home {
+body.hb-shell {
   background: var(--hb-bg);
   color: var(--hb-text-dim);
   font-family: var(--hb-font-sans);
@@ -39,15 +43,15 @@ body.is-home {
   position: relative;
 }
 
-body.is-home * { box-sizing: border-box; }
-body.is-home img { display: block; max-width: 100%; }
-body.is-home ul, body.is-home ol { list-style: none; margin: 0; padding: 0; }
-body.is-home h1, body.is-home h2, body.is-home h3, body.is-home p, body.is-home dl, body.is-home dd, body.is-home dt { margin: 0; }
-body.is-home a { color: inherit; text-decoration: none; }
-body.is-home ::selection { background: var(--hb-cyan); color: #04141c; }
+body.hb-shell * { box-sizing: border-box; }
+body.hb-shell img { display: block; max-width: 100%; }
+body.hb-shell ul, body.hb-shell ol { list-style: none; margin: 0; padding: 0; }
+body.hb-shell h1, body.hb-shell h2, body.hb-shell h3, body.hb-shell p, body.hb-shell dl, body.hb-shell dd, body.hb-shell dt { margin: 0; }
+body.hb-shell a { color: inherit; text-decoration: none; }
+body.hb-shell ::selection { background: var(--hb-cyan); color: #04141c; }
 
 /* subtle noise film */
-body.is-home::before {
+body.hb-shell::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -58,8 +62,8 @@ body.is-home::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-body.is-home a:focus-visible,
-body.is-home button:focus-visible {
+body.hb-shell a:focus-visible,
+body.hb-shell button:focus-visible {
   outline: 2px solid var(--hb-cyan);
   outline-offset: 3px;
   border-radius: 4px;
@@ -85,6 +89,10 @@ body.is-home button:focus-visible {
   font-family: var(--hb-font-mono);
   font-size: 13px;
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  box-sizing: border-box;
   padding: 10px 16px;
   border-radius: var(--hb-radius-sm);
   transition: top 0.18s var(--hb-ease);
@@ -125,6 +133,9 @@ body.is-home button:focus-visible {
 }
 
 .hb-wordmark {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-family: var(--hb-font-mono);
   font-weight: 600;
   font-size: 16px;
@@ -141,6 +152,9 @@ body.is-home button:focus-visible {
   font-size: 14px;
 }
 .hb-nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--hb-text-dim);
   position: relative;
   padding: 6px 2px;
@@ -266,7 +280,7 @@ body.is-home button:focus-visible {
   font-weight: 600;
   box-shadow: 0 0 0 1px rgba(73, 211, 255, 0.4), 0 12px 30px -12px rgba(73, 211, 255, 0.55);
 }
-body.is-home .hb-btn-primary { color: #04141c; }
+body.hb-shell .hb-btn-primary { color: #04141c; }
 .hb-btn-primary:hover { background: #7fe2ff; transform: translateY(-1px); }
 .hb-btn-ghost {
   background: transparent;
@@ -598,6 +612,13 @@ body.is-home .hb-btn-primary { color: #04141c; }
   color: var(--hb-text);
 }
 
+.hb-section-lede {
+  margin-top: 16px;
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--hb-text-dim);
+}
+
 .hb-badge {
   display: inline-flex;
   align-items: center;
@@ -614,79 +635,17 @@ body.is-home .hb-btn-primary { color: #04141c; }
 .hb-badge-amber { color: var(--hb-amber); border-color: rgba(245, 165, 36, 0.4); background: var(--hb-amber-soft); }
 
 /* === SELECTED WORK === */
-.hb-work-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 24px;
-  margin-bottom: 24px;
-  align-items: stretch;
-}
-
-.hb-oss-card {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 28px;
-  border: 1px solid var(--hb-border);
-  border-radius: var(--hb-radius);
-  background: var(--hb-surface);
-  transition: border-color 0.2s ease, transform 0.2s var(--hb-ease), background 0.2s ease;
-}
-.hb-oss-card:hover { border-color: var(--hb-cyan-dim); background: var(--hb-surface-2); transform: translateY(-2px); }
-.hb-oss-card-top { display: flex; align-items: center; justify-content: space-between; }
-.hb-oss-icon { font-size: 20px; color: var(--hb-text-muted); }
-.hb-oss-name { font-family: var(--hb-font-mono); font-size: 22px; font-weight: 700; color: var(--hb-text); }
-.hb-oss-desc { font-size: 14.5px; line-height: 1.65; color: var(--hb-text-dim); flex-grow: 1; }
-.hb-oss-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.hb-oss-tags li {
-  font-family: var(--hb-font-mono);
-  font-size: 11.5px;
-  color: var(--hb-text-muted);
-  border: 1px solid var(--hb-border);
-  border-radius: 999px;
-  padding: 3px 10px;
-}
-.hb-oss-link { font-family: var(--hb-font-mono); font-size: 13.5px; color: var(--hb-cyan); }
-
-.hb-writing-proof {
-  padding: 28px;
-  border: 1px solid var(--hb-border);
-  border-radius: var(--hb-radius);
-  background: var(--hb-surface);
-  display: flex;
-  flex-direction: column;
-}
-.hb-writing-proof-label {
-  font-family: var(--hb-font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--hb-text-muted);
-  margin-bottom: 18px;
-}
-.hb-writing-proof-list { display: flex; flex-direction: column; gap: 4px; }
-.hb-writing-proof-list a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  min-height: 44px;
-  font-size: 14px;
-  color: var(--hb-text);
-  border-bottom: 1px solid rgba(148, 197, 255, 0.08);
-  transition: color 0.15s ease;
-}
-.hb-writing-proof-list li:last-child a { border-bottom: none; }
-.hb-writing-proof-list a:hover { color: var(--hb-cyan); }
-.hb-writing-proof-list a span { color: var(--hb-text-muted); flex-shrink: 0; }
-.hb-writing-proof-list a:hover span { color: var(--hb-cyan); }
-
+/* Flagship impact stories, rendered from data/projects.yaml. Each card carries
+   the same four beats: audience, obstacle, intervention, what became possible. */
 .hb-case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .hb-case-card {
+  display: flex;
+  flex-direction: column;
   padding: 24px;
   border: 1px solid var(--hb-border);
   border-radius: var(--hb-radius);
   background: transparent;
+  overflow-wrap: anywhere;
   transition: border-color 0.2s ease;
 }
 .hb-case-card:hover { border-color: var(--hb-border-strong); }
@@ -710,10 +669,53 @@ body.is-home .hb-btn-primary { color: #04141c; }
 }
 .hb-case-meta dd { font-size: 13px; line-height: 1.55; color: var(--hb-text-dim); }
 .hb-case-meta dd a { color: var(--hb-cyan); text-decoration: underline; text-decoration-color: var(--hb-cyan-dim); text-underline-offset: 2px; }
+/* The outcome is the point of the card, so it is the one row that is not dim. */
+.hb-case-meta > div:last-child dt { color: var(--hb-amber); }
+.hb-case-meta > div:last-child dd { color: var(--hb-text); }
 
-@media (max-width: 860px) {
-  .hb-work-grid { grid-template-columns: 1fr; }
-  .hb-case-grid { grid-template-columns: 1fr; }
+.hb-case-proof {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  min-height: 44px;
+  margin-top: auto;
+  padding-top: 12px;
+  font-family: var(--hb-font-mono);
+  font-size: 12.5px;
+  color: var(--hb-cyan);
+  border-bottom: 1px solid transparent;
+}
+.hb-case-proof:hover { border-bottom-color: var(--hb-cyan-dim); }
+.hb-case-proof-none { color: var(--hb-text-muted); }
+
+/* === SELECTED WORK OUTRO / ROUTE TO THE ARCHIVE === */
+.hb-work-outro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hb-border);
+}
+.hb-work-outro-text {
+  flex: 1 1 380px;
+  min-width: 0;
+  max-width: 62ch;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--hb-text-muted);
+}
+
+@media (max-width: 1080px) {
+  .hb-case-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .hb-case-grid { grid-template-columns: minmax(0, 1fr); }
+  .hb-work-outro .hb-btn { width: 100%; justify-content: center; }
 }
 
 /* === SERVICES === */
@@ -892,12 +894,12 @@ body.is-home .hb-btn-primary { color: #04141c; }
   gap: 16px;
 }
 .hb-footer-wordmark { font-size: 14px; }
-.hb-footer-social { display: flex; align-items: center; gap: 18px; }
+.hb-footer-social { display: flex; align-items: center; gap: 10px; }
 .hb-footer-social a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px; height: 36px;
+  width: 44px; height: 44px;
   color: var(--hb-text-muted);
   font-size: 16px;
   border-radius: var(--hb-radius-sm);
@@ -1118,9 +1120,9 @@ html.hb-scroll-lock body {
 
 /* === REDUCED MOTION === */
 @media (prefers-reduced-motion: reduce) {
-  body.is-home *,
-  body.is-home *::before,
-  body.is-home *::after {
+  body.hb-shell *,
+  body.hb-shell *::before,
+  body.hb-shell *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
