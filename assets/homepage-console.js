@@ -1,6 +1,6 @@
 /* ============================================================
    Tai VONG — Homepage systems console
-   Boot overlay, ambient background, interactive terminal mode
+   Boot overlay, ambient background
    No external dependencies
    ============================================================ */
 (function () {
@@ -11,7 +11,6 @@
   function init() {
     initBootOverlay();
     initAmbientBackground();
-    initConsole();
   }
 
   function prefersReducedMotion() {
@@ -107,6 +106,20 @@
       }
     }
 
+    /* The canvas cannot use CSS variables, so it reads the theme once and on
+       every switch. Values are the same rgb triples the stylesheet uses. */
+    var palette = { link: '8, 118, 158', dot: '22, 48, 88' };
+
+    function readPalette() {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      palette = dark
+        ? { link: '73, 211, 255', dot: '148, 197, 255' }
+        : { link: '8, 118, 158', dot: '22, 48, 88' };
+    }
+
+    readPalette();
+    window.addEventListener('hb:themechange', readPalette);
+
     function draw() {
       ctx.clearRect(0, 0, width, height);
 
@@ -128,7 +141,7 @@
           dy = particle.y - other.y;
           distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < LINK_DISTANCE) {
-            ctx.strokeStyle = 'rgba(73, 211, 255, ' + (0.16 * (1 - distance / LINK_DISTANCE)) + ')';
+            ctx.strokeStyle = 'rgba(' + palette.link + ', ' + (0.16 * (1 - distance / LINK_DISTANCE)) + ')';
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -140,7 +153,7 @@
 
       for (i = 0; i < particles.length; i++) {
         particle = particles[i];
-        ctx.fillStyle = 'rgba(148, 197, 255, 0.55)';
+        ctx.fillStyle = 'rgba(' + palette.dot + ', 0.55)';
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
         ctx.fill();
@@ -191,307 +204,6 @@
     });
 
     resize();
-  }
-
-  // === TERMINAL CONSOLE ===
-  function initConsole() {
-    var consoleEl = document.getElementById('hb-console');
-    var input = document.getElementById('hb-console-input');
-    var output = document.getElementById('hb-console-output');
-    if (!consoleEl || !input || !output) return;
-
-    var triggers = document.querySelectorAll('[data-console-toggle]');
-    var closers = consoleEl.querySelectorAll('[data-console-close]');
-    var lastFocusedElement = null;
-    var commandHistory = [];
-    var historyIndex = 0;
-
-    // The console ships on more than one page, so commands resolve their target
-    // at run time: scroll if the section is in this document, otherwise route.
-    var homeURL = consoleEl.getAttribute('data-console-home') || '/';
-    var projectsURL = consoleEl.getAttribute('data-console-projects') || '/projects/';
-    var NAVIGATE_DELAY = 450;
-
-    function getFocusableElements() {
-      return Array.prototype.slice.call(consoleEl.querySelectorAll(
-        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      )).filter(function (element) {
-        return !element.hidden && element.getAttribute('aria-hidden') !== 'true';
-      });
-    }
-
-    function keepFocusInsideConsole(event) {
-      if (event.key !== 'Tab' || !isOpen()) return;
-
-      var focusableElements = getFocusableElements();
-      if (!focusableElements.length) {
-        event.preventDefault();
-        return;
-      }
-
-      var firstElement = focusableElements[0];
-      var lastElement = focusableElements[focusableElements.length - 1];
-      if (event.shiftKey && document.activeElement === firstElement) {
-        event.preventDefault();
-        lastElement.focus();
-      } else if (!event.shiftKey && document.activeElement === lastElement) {
-        event.preventDefault();
-        firstElement.focus();
-      }
-    }
-
-    function isOpen() {
-      return !consoleEl.hidden;
-    }
-
-    function lockScroll() {
-      document.documentElement.classList.add('hb-scroll-lock');
-    }
-
-    function unlockScroll() {
-      document.documentElement.classList.remove('hb-scroll-lock');
-    }
-
-    function moveCaretToEnd(field) {
-      var length = field.value.length;
-      if (typeof field.setSelectionRange === 'function') {
-        field.setSelectionRange(length, length);
-      }
-    }
-
-    function scrollOutputToEnd() {
-      output.scrollTop = output.scrollHeight;
-    }
-
-    function appendLine(text, extraClassName) {
-      var line = document.createElement('p');
-      line.className = extraClassName ? 'hb-console-line ' + extraClassName : 'hb-console-line';
-      line.textContent = text;
-      output.appendChild(line);
-      return line;
-    }
-
-    function appendEcho(commandText) {
-      var line = document.createElement('p');
-      line.className = 'hb-console-line hb-console-line-echo';
-      var prompt = document.createElement('span');
-      prompt.className = 'hb-console-echo-prompt';
-      prompt.textContent = 'tai@systems:~$';
-      line.appendChild(prompt);
-      line.appendChild(document.createTextNode(commandText));
-      output.appendChild(line);
-    }
-
-    function appendWelcome() {
-      appendLine('tai@systems console — type "help" for available commands.', 'hb-console-line-muted');
-    }
-
-    function openConsole(trigger) {
-      if (isOpen()) return;
-      lastFocusedElement = trigger || document.activeElement;
-      consoleEl.hidden = false;
-      lockScroll();
-      output.textContent = '';
-      appendWelcome();
-      triggers.forEach(function (t) { t.setAttribute('aria-expanded', 'true'); });
-      historyIndex = commandHistory.length;
-      input.value = '';
-      input.focus();
-    }
-
-    function closeConsole() {
-      if (!isOpen()) return;
-      consoleEl.hidden = true;
-      unlockScroll();
-      triggers.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
-      var restoreTarget = lastFocusedElement;
-      if (!restoreTarget || !document.documentElement.contains(restoreTarget) || restoreTarget.getClientRects().length === 0) {
-        restoreTarget = document.querySelector('[data-nav-toggle]') || triggers[0];
-      }
-      if (restoreTarget && typeof restoreTarget.focus === 'function') {
-        restoreTarget.focus();
-      }
-    }
-
-    function goToSection(sectionId) {
-      var target = document.getElementById(sectionId);
-      if (!target) return;
-      target.scrollIntoView({
-        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-        block: 'start'
-      });
-    }
-
-    function scheduleNavigateClose(sectionId, message) {
-      appendLine(message, 'hb-console-line-muted');
-      setTimeout(function () {
-        var target = document.getElementById(sectionId);
-        closeConsole();
-        if (target) {
-          goToSection(sectionId);
-          return;
-        }
-        window.location.assign(homeURL + '#' + encodeURIComponent(sectionId));
-      }, NAVIGATE_DELAY);
-    }
-
-    function schedulePageNavigate(url, message) {
-      appendLine(message, 'hb-console-line-muted');
-      setTimeout(function () {
-        closeConsole();
-        window.location.assign(url);
-      }, NAVIGATE_DELAY);
-    }
-
-    function runHelp() {
-      appendLine('AVAILABLE COMMANDS');
-      [
-        'help                 show this list',
-        'whoami, about        who is Tai VONG',
-        'work                 open selected work',
-        'projects             open the complete project archive',
-        'services             open ways to work together',
-        'writing              open writing & open source',
-        'contact              show contact details',
-        'clear                clear the console',
-        'exit                 close the console'
-      ].forEach(function (line) { appendLine('  ' + line, 'hb-console-line-muted'); });
-      appendLine('Shortcuts: ↑ / ↓ history · Esc close · ` toggle', 'hb-console-line-muted');
-    }
-
-    function runAbout() {
-      appendLine('Tai VONG — Backend & Platform Engineer, Technical Manager @ Gearment.');
-      appendLine('Go, gRPC, distributed systems — diagnosing, stabilizing, and hardening production backends.', 'hb-console-line-muted');
-      scheduleNavigateClose('about', 'Opening about...');
-    }
-
-    function runWork() {
-      scheduleNavigateClose('work', 'Opening selected work...');
-    }
-
-    function runProjects() {
-      if (document.getElementById('archive')) {
-        scheduleNavigateClose('archive', 'Opening project archive...');
-        return;
-      }
-      schedulePageNavigate(projectsURL, 'Opening project archive...');
-    }
-
-    function runServices() {
-      scheduleNavigateClose('services', 'Opening ways to work together...');
-    }
-
-    function runWriting() {
-      scheduleNavigateClose('writing', 'Opening writing & open source...');
-    }
-
-    function runContact() {
-      appendLine('EMAIL   chitai.vct@gmail.com');
-      appendLine('Click to open your mail client:', 'hb-console-line-muted');
-      var link = document.createElement('a');
-      link.className = 'hb-console-mailto';
-      link.href = 'mailto:chitai.vct@gmail.com?subject=Project%20inquiry%20via%20vchitai.github.io';
-      link.textContent = 'chitai.vct@gmail.com';
-      output.appendChild(link);
-    }
-
-    function runClear() {
-      output.textContent = '';
-    }
-
-    function runExit() {
-      closeConsole();
-    }
-
-    var COMMANDS = {
-      help: runHelp,
-      whoami: runAbout,
-      about: runAbout,
-      work: runWork,
-      projects: runProjects,
-      services: runServices,
-      writing: runWriting,
-      contact: runContact,
-      clear: runClear,
-      exit: runExit
-    };
-
-    function runCommand(rawInput) {
-      var trimmed = rawInput.trim();
-      if (!trimmed) return;
-
-      commandHistory.push(trimmed);
-      historyIndex = commandHistory.length;
-      appendEcho(trimmed);
-
-      var commandName = trimmed.split(/\s+/)[0].toLowerCase();
-      var handler = COMMANDS[commandName];
-      if (handler) {
-        handler();
-      } else {
-        appendLine('command not found: ' + commandName, 'hb-console-line-error');
-        appendLine('Type "help" for available commands.', 'hb-console-line-muted');
-      }
-      scrollOutputToEnd();
-    }
-
-    triggers.forEach(function (trigger) {
-      trigger.addEventListener('click', function () { openConsole(trigger); });
-    });
-
-    closers.forEach(function (closer) {
-      closer.addEventListener('click', closeConsole);
-    });
-
-    input.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        var value = input.value;
-        input.value = '';
-        runCommand(value);
-      } else if (event.key === 'ArrowUp') {
-        if (!commandHistory.length) return;
-        event.preventDefault();
-        historyIndex = Math.max(0, historyIndex - 1);
-        input.value = commandHistory[historyIndex] || '';
-        moveCaretToEnd(input);
-      } else if (event.key === 'ArrowDown') {
-        if (!commandHistory.length) return;
-        event.preventDefault();
-        historyIndex = Math.min(commandHistory.length, historyIndex + 1);
-        input.value = commandHistory[historyIndex] || '';
-        moveCaretToEnd(input);
-      }
-    });
-
-    document.addEventListener('keydown', function (event) {
-      keepFocusInsideConsole(event);
-
-      if (event.isComposing) return;
-
-      if (event.key === 'Escape' && isOpen()) {
-        event.preventDefault();
-        closeConsole();
-        return;
-      }
-
-      if (event.key === '`') {
-        var boot = document.getElementById('hb-boot');
-        if (boot && !boot.hidden) return;
-
-        var active = document.activeElement;
-        var tagName = active && active.tagName ? active.tagName.toLowerCase() : '';
-        var isEditable = tagName === 'input' || tagName === 'textarea' || (active && active.isContentEditable);
-        if (isEditable) return;
-
-        event.preventDefault();
-        if (isOpen()) {
-          closeConsole();
-        } else {
-          openConsole(document.activeElement);
-        }
-      }
-    });
   }
 
 })();

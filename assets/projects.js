@@ -30,6 +30,7 @@
     var emptyEl = document.querySelector('[data-projects-empty]');
     var clearButtons = document.querySelectorAll('[data-projects-clear]');
     var groups = list.querySelectorAll('[data-category-section]');
+    var subgroups = list.querySelectorAll('[data-subgroup]');
     var categoryButtons = toolbar.querySelectorAll('[data-filter-category]');
     var techButtons = toolbar.querySelectorAll('[data-filter-tech]');
 
@@ -38,21 +39,27 @@
       return {
         node: node,
         category: node.getAttribute('data-category') || '',
+        year: node.getAttribute('data-year') || '',
         tech: node.getAttribute('data-tech') || '',
         search: node.getAttribute('data-search') || ''
       };
     });
 
     var total = cards.length;
-    var state = { query: '', category: 'all', tech: 'all' };
+    var state = { query: '', category: 'all', tech: 'all', year: 'all' };
     var searchTimer = null;
 
     // Hand control over to the toolbar only now that everything resolved.
+    // The class is what opens the two-column layout: without it the page stays
+    // single-column, so a failed init can never leave an empty sidebar gutter.
     if (index) index.hidden = true;
     toolbar.hidden = false;
+    var shell = document.querySelector('[data-projects-shell]');
+    if (shell) shell.classList.add('is-enhanced');
 
     function matches(card) {
       if (state.category !== 'all' && card.category !== state.category) return false;
+      if (state.year !== 'all' && card.year !== state.year) return false;
       if (state.tech !== 'all' && card.tech.indexOf('|' + state.tech + '|') === -1) return false;
       if (state.query) {
         var tokens = state.query.split(/\s+/).filter(Boolean);
@@ -64,7 +71,7 @@
     }
 
     function isFiltered() {
-      return state.query !== '' || state.category !== 'all' || state.tech !== 'all';
+      return state.query !== '' || state.category !== 'all' || state.tech !== 'all' || state.year !== 'all';
     }
 
     function describe(shown) {
@@ -83,6 +90,27 @@
         cards[i].node.hidden = !visible;
         if (visible) shown++;
       }
+
+      // An org / ownership block emptied by a filter is noise the same way an
+      // empty category is; hide it before its parent band is counted.
+      Array.prototype.forEach.call(subgroups, function (sub) {
+        var subShown = 0;
+        Array.prototype.forEach.call(sub.querySelectorAll('[data-project]'), function (node) {
+          if (!node.hidden) subShown++;
+        });
+        sub.hidden = subShown === 0;
+        var subCount = sub.querySelector('[data-sub-count]');
+        if (subCount) {
+          // Keep whichever noun the band was rendered with ("projects" vs "entries").
+          if (!subCount.getAttribute('data-noun')) {
+            var words = (subCount.textContent || '').trim().split(/\s+/);
+            subCount.setAttribute('data-noun', words[words.length - 1] || 'entries');
+          }
+          var noun = subCount.getAttribute('data-noun');
+          var singular = noun.replace(/s$/, '');
+          subCount.textContent = subShown + ' ' + (subShown === 1 ? singular : noun);
+        }
+      });
 
       // A category heading with nothing under it is noise — hide the whole group.
       Array.prototype.forEach.call(groups, function (group) {
@@ -154,6 +182,7 @@
       state.query = '';
       state.category = 'all';
       state.tech = 'all';
+      state.year = 'all';
       if (searchInput) searchInput.value = '';
       selectInGroup(categoryButtons, 'data-filter-category', 'all');
       selectInGroup(techButtons, 'data-filter-tech', 'all');
@@ -194,8 +223,6 @@
       if (event.metaKey || event.ctrlKey || event.altKey) return;
       if (event.isComposing) return;
 
-      var consoleEl = document.getElementById('hb-console');
-      if (consoleEl && !consoleEl.hidden) return;
       var boot = document.getElementById('hb-boot');
       if (boot && !boot.hidden) return;
       var mobileNav = document.querySelector('[data-mobile-nav]');
