@@ -34,12 +34,20 @@
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--page);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 40px;display:grid;gap:14px}
+.wrap{max-width:1180px;margin:0 auto;padding:12px 20px 40px;display:grid;gap:14px}
+.wrap .hint{margin:0;color:var(--ink-soft);font-size:14px}
+/* header and street signs float in the sky of the scene itself: no frame around the street */
+.top{position:absolute;left:0;right:0;top:0;z-index:4;max-width:1180px;margin:0 auto;padding:22px 20px 0;display:grid;gap:12px;pointer-events:none}
+.top a,.top button{pointer-events:auto}
 header{display:grid;gap:4px}
-h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.4vw,44px);line-height:1.05;margin:0;text-wrap:balance}
-.lede{margin:0;color:var(--ink-soft);max-width:64ch}
+.head-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.head-top button{flex:none;margin-top:6px}
+@media (max-width:520px){.row>.lbl{min-width:0;width:100%}}
+@media (max-width:640px){.scene .stage .sunbox{top:auto;bottom:calc(var(--street-h,560px)*.62);right:4%;height:96px}}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,60px);line-height:1;margin:0;text-wrap:balance;color:var(--head)}
+.lede{margin:0;color:var(--head-soft);max-width:60ch;font-weight:500}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.row>.lbl{font-size:13px;font-weight:600;color:var(--ink-soft);min-width:74px}
+.row>.lbl{font-size:13px;font-weight:600;color:var(--head-soft);min-width:74px}
 [hidden]{display:none!important}
 
 /* ---------- scene ---------- */
@@ -49,27 +57,33 @@ h1{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4.4vw,44px)
   --s-ink:#262b3f; --shadow:rgba(38,43,63,.26); --glass:#35506e; --steel:#c9d3d8;
   --leaf:#2f8f6b; --leaf2:#1f6f5c; --orange:#f29f4b; --pink:#ee6f84; --teal:#2fa39a; --yellow:#f3c54e;
   --cream:#fbf1d6; --indigo:#3b4a7a; --red:#d9433f; --brown:#7a5a44; --spark:#ffffff; --dark:#1f2336; --skin:#e9b48c;
-  --n1:#e6dbc6; --n2:#cbdad1; --n3:#dcc9c2; --n4:#d0d4df; --alleybg:#4f7f86;
-  position:relative;border-radius:10px;overflow:hidden;background:var(--sky);perspective:1600px;
-  box-shadow:0 1px 0 #fff inset, 4px 6px 0 rgba(38,43,63,.18);
+  --n1:#e6dbc6; --n2:#cbdad1; --n3:#dcc9c2; --n4:#d0d4df; --alleybg:#4f7f86; --head:#262b3f; --head-soft:#46506a;
+  position:relative;overflow:hidden;background:var(--sky);perspective:1600px;
 }
 .scene[data-where="alley"]{--sky:#f6d8a8;--far:#ecbf92;--mid:#d99a78;--mid-win:#bf7f62;--cloud:#fff3dc}
+.scene[data-where="vl"]{--sky:#d8d2f2;--far:#b9b1e2;--mid:#978dcf;--mid-win:#7c70bb;--cloud:#f5f2ff}
 .scene[data-night="1"]{
   --sky:#1f2547; --sun:#f4ecc8; --cloud:#3a4272; --far:#2a3260; --mid:#313a6b; --mid-win:#f6d36b;
   --walk:#8f8aa3; --curb:#6f6a86; --road:#2a2e48; --road-mark:#9a94b8;
   --s-ink:#141729; --shadow:rgba(8,10,25,.45); --glass:#ffd76a; --steel:#8e99b3;
   --leaf:#1f6a5a; --leaf2:#16483f; --orange:#b9743f; --pink:#b5566f; --teal:#237a78; --yellow:#b8964a;
   --cream:#d9cfb8; --indigo:#2c3760; --red:#a8363a; --brown:#54404a; --spark:#ffe27a; --dark:#f2b84b; --skin:#b98d72;
-  --n1:#7d7890; --n2:#66788a; --n3:#7a6a80; --n4:#666c8c; --alleybg:#20264a;
+  --n1:#7d7890; --n2:#66788a; --n3:#7a6a80; --n4:#666c8c; --alleybg:#20264a; --head:#f6efdc; --head-soft:#c9c7dc;
 }
-.stage{height:clamp(340px,58vw,560px);overflow-x:auto;overflow-y:hidden;position:relative;cursor:grab;transform-origin:50% 100%;scrollbar-width:thin;scrollbar-color:var(--s-ink) transparent}
+.stage{height:760px;overflow-x:auto;overflow-y:hidden;position:relative;cursor:grab;transform-origin:50% 100%;scrollbar-width:thin;scrollbar-color:var(--s-ink) transparent}
 .stage.dragging{cursor:grabbing}
 .track{height:100%}
 .view{position:sticky;left:0;height:100%;overflow:hidden}
-.layer{position:absolute;left:0;top:0;height:100%;will-change:transform;pointer-events:none}
+.layer{position:absolute;left:0;bottom:0;height:var(--street-h,560px);overflow:visible;will-change:transform;pointer-events:none}
 .layer .proj,.layer .door{pointer-events:auto}
-.sunbox{position:absolute;right:7%;top:5%;height:24%;aspect-ratio:1}
+.sunbox{position:absolute;right:max(3%,calc(50% - 600px));top:8px;height:clamp(120px,17vw,210px);aspect-ratio:1;overflow:visible}
 .scene[data-night="1"] .rays{display:none}
+.sunbox{pointer-events:auto;cursor:pointer;outline:none;transform-origin:50% 50%;transition:transform .25s steps(3,end)}
+.sunbox:hover,.sunbox:focus-visible{transform:rotate(14deg) scale(1.06)}
+.sunbox:focus-visible .ring{display:block}
+.sunbox .ring{display:none;fill:none;stroke:var(--s-ink);stroke-width:2.5;stroke-dasharray:6 5}
+.sunbox .cut{display:none}
+.scene[data-night="1"] .sunbox .cut{display:block}
 .grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:multiply;opacity:.55}
 .sgn{font-family:var(--f-display);font-weight:800;letter-spacing:.02em}
 .pop,.boil{transform-box:fill-box;transform-origin:50% 100%}
@@ -98,6 +112,8 @@ button.plate{background:var(--plate);color:#fff;border-color:#fff;box-shadow:0 0
 button.plate:hover{background:#2a5fc0}
 button.chip{border-radius:999px;padding:7px 12px;font-size:14px;box-shadow:2px 2px 0 var(--ink)}
 button.chip[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+.scene[data-night="1"] button.chip[aria-pressed="true"]{background:var(--accent);border-color:#f6efdc;color:#262b3f}
+.scene[data-night="1"] .top button{box-shadow:3px 3px 0 #0c0e1c}
 button.chip i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;background:var(--c)}
 .bar .hint{color:var(--ink-soft);font-size:14px;margin-left:auto}
 .tag{background:var(--card);border-radius:10px;padding:18px 20px;box-shadow:4px 6px 0 rgba(38,43,63,.18);display:grid;gap:8px;border-left:10px solid var(--accent)}
@@ -111,7 +127,7 @@ button.chip i{display:inline-block;width:10px;height:10px;border-radius:50%;marg
 .chips li{font-size:13px;font-weight:600;padding:4px 9px;border-radius:999px;border:1.5px solid var(--ink)}
 .note{font-size:13px;color:var(--ink-soft);margin:0}
 /* newspaper */
-.news{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:14px;background:rgba(38,43,63,.5)}
+.news{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:calc(var(--sky-pad,0px) + 14px) 14px 14px;background:rgba(38,43,63,.5)}
 .sheet{position:relative;width:min(580px,100%);max-height:100%;overflow:auto;background:#f7f1e1;color:#262b3f;padding:18px 22px 18px;box-shadow:5px 7px 0 rgba(20,23,41,.4);transform-origin:50% 0;
   background-image:linear-gradient(to bottom,transparent calc(50% - 1px),rgba(38,43,63,.13) 50%,transparent calc(50% + 1px))}
 .sheet .mast{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,5vw,40px);line-height:1;text-align:center;margin:0;letter-spacing:.03em}
@@ -125,6 +141,7 @@ button.chip i{display:inline-block;width:10px;height:10px;border-radius:50%;marg
 .sheet .meta{font-size:12.5px;color:#5a6076}
 .sheet .stamp{position:absolute;right:16px;top:14px;transform:rotate(9deg);border:2px solid #d9433f;color:#d9433f;font:800 12px/1.4 var(--f-display);padding:1px 8px;letter-spacing:.1em}
 .sheet .x{margin-top:14px}
+.sheet .x-top{position:sticky;top:-6px;float:right;z-index:2;margin:-6px -8px 6px 12px;padding:8px 11px;font-size:16px;line-height:1}
 .sheet.board{background:#fdfbf3;border:6px solid #1f4fa3;background-image:none}
 .board .mast{color:#d9433f}
 .board .no{color:#1f4fa3}
@@ -134,7 +151,7 @@ button.chip i{display:inline-block;width:10px;height:10px;border-radius:50%;marg
 .board .cta a{font:800 17px/1 var(--f-display);color:#fff;background:#d9433f;padding:11px 16px 9px;border-radius:8px;text-decoration:none;box-shadow:3px 3px 0 #262b3f}
 .board .cta span{font-size:14px;font-weight:600}
 header .contact{display:flex;flex-wrap:wrap;gap:6px 16px;margin:4px 0 0;font-size:15px;font-weight:600}
-header .contact a{color:var(--ink);text-underline-offset:3px}
+header .contact a{color:var(--head);text-underline-offset:3px}
 .sheet.house .mast{text-align:left;font-size:clamp(24px,4.6vw,34px)}
 .sheet.house{background-image:none;border-left:12px solid var(--accent)}
 .house .where{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#5a6076;margin:0 0 4px}
@@ -142,19 +159,33 @@ header .contact a{color:var(--ink);text-underline-offset:3px}
 .house p{margin:0 0 8px}
 .house ul.floors{margin:0 0 10px;padding-left:20px}
 .house ul.floors b{font-weight:600}
+.house .chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:2px 0 0}
+.house .chips li{display:block;font-size:13px;font-weight:600;padding:4px 9px;border-radius:999px;border:1.5px solid #262b3f}
+.house ul.floors li{display:list-item;padding:0;border:0}
 .sheet.card{width:min(460px,100%);background-image:none;border-top:12px solid #1f4fa3}
 .card .mast{text-align:left;font-size:clamp(26px,5vw,36px)}
 .card .sub{margin:4px 0 12px;font-size:14px;color:#5a6076;font-weight:500}
-.plain{display:grid;gap:22px;margin-top:10px}
-.plain>h2{font-family:var(--f-display);font-weight:800;font-size:28px;line-height:1.1;margin:0}
-.plain .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px 28px;align-items:start}
-.plain section{display:grid;gap:8px;align-content:start}
-.plain h3{font-family:var(--f-display);font-weight:800;font-size:19px;margin:0;border-bottom:2px solid var(--ink);padding-bottom:2px}
-.plain ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
-.plain li{font-size:15px;line-height:1.45}
-.plain li b{font-weight:600}
-.plain li span{display:block;color:var(--ink-soft);font-size:14px}
-.plain a{color:var(--ink);text-underline-offset:3px}
+.plain{margin-top:6px}
+.plain>summary{cursor:pointer;display:inline-flex;align-items:center;gap:8px;font:600 15px/1 var(--f-body);color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:8px;padding:10px 14px;box-shadow:3px 3px 0 var(--ink);list-style:none}
+.plain>summary::-webkit-details-marker{display:none}
+.plain>summary::before{content:"+";font:800 18px/1 var(--f-display)}
+.plain[open]>summary::before{content:"–"}
+.plain>summary:focus-visible{outline:3px solid var(--accent-2);outline-offset:2px}
+.plain .cols{columns:340px;column-gap:18px;margin-top:18px}
+.plain section{break-inside:avoid;background:var(--card);border-radius:10px;padding:16px 18px 18px;margin:0 0 18px;box-shadow:4px 6px 0 rgba(38,43,63,.18);border-top:8px solid var(--accent-2)}
+.plain section:nth-child(3n+1){border-top-color:var(--accent)}
+.plain section:nth-child(3n+2){border-top-color:var(--plate)}
+.plain h3{font-family:var(--f-display);font-weight:800;font-size:21px;line-height:1.15;margin:0 0 10px}
+.plain .items{margin:0;padding:0;list-style:none;display:grid;gap:14px}
+.plain .items>li{display:grid;gap:3px;padding-bottom:12px;border-bottom:1px dashed rgba(38,43,63,.3)}
+.plain .items>li:last-child{border-bottom:0;padding-bottom:0}
+.plain .nm{font-family:var(--f-display);font-weight:800;font-size:17px;line-height:1.2;color:var(--ink);text-underline-offset:3px}
+.plain .rl{font-size:13.5px;font-weight:500;color:var(--ink-soft)}
+.plain .ds{font-size:14.5px;line-height:1.45}
+.plain .fl{margin:2px 0 0;padding-left:18px;font-size:14px;line-height:1.4}
+.plain .fl b{font-weight:600}
+.plain .tg{display:flex;flex-wrap:wrap;gap:5px;list-style:none;padding:0;margin:4px 0 0}
+.plain .tg li{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;border:1.5px solid var(--ink)}
 .tag .more{font-size:14px;font-weight:600;color:var(--ink)}
 @media (max-width:520px){.bar .hint{margin-left:0;width:100%}}
 </style>
@@ -170,23 +201,25 @@ header .contact a{color:var(--ink);text-underline-offset:3px}
     <feColorMatrix type="matrix" values="0 0 0 0 .3  0 0 0 0 .26  0 0 0 0 .22  -1.4 0 0 0 .78"/>
   </filter>
 </svg>
-<div class="wrap">
+<div class="scene" id="scene" data-where="main">
+  <div class="top">
   <header>
     <h1>Tai Vong</h1>
     <p class="lede">Backend and platform engineer, technical lead. I build the parts nobody demos. Walk the street: each house is a place I worked, each floor a project, each wire a technology.</p>
     <p class="contact"><a href="mailto:chitai.vct@gmail.com">chitai.vct@gmail.com</a><a href="https://www.linkedin.com/in/vchitai/">LinkedIn</a><a href="https://github.com/vchitai">GitHub</a><a href="https://medium.com/@vchitai">Medium</a></p>
   </header>
-
   <div class="row" id="khu-row"><span class="lbl">Go to</span></div>
   <div class="row" id="tech-row"><span class="lbl">Wires</span></div>
   <div class="row" id="dom-row"><span class="lbl">Domain</span></div>
-
-  <div class="scene" id="scene" data-where="main">
+    <div class="row" id="back-row" hidden><button type="button" id="back">← Back to main street</button></div>
+  </div>
     <div class="stage" id="stage-main" aria-label="Main street. Scroll sideways to walk along it."></div>
     <div class="stage" id="stage-alley" aria-label="Alley 42. Scroll sideways to walk along it." hidden></div>
+    <div class="stage" id="stage-vl" aria-label="Velocity Labs lane. Scroll sideways to walk along it." hidden></div>
     <div class="news" id="news" hidden>
       <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mast">
-        <p class="mast" id="mast">TIN PHỐ GIẤY</p>
+        <button type="button" class="x-top" aria-label="Close">✕</button>
+        <p class="mast" id="mast">BÁO TECH</p>
         <div class="dl"><span>Writing by Tai Vong</span><span id="dl-n"></span></div>
         <ol id="arts"></ol>
         <button type="button" class="x">Fold the paper</button>
@@ -194,6 +227,7 @@ header .contact a{color:var(--ink);text-underline-offset:3px}
     </div>
     <div class="news" id="house" hidden>
       <div class="sheet house" role="dialog" aria-modal="true" aria-labelledby="h-name">
+        <button type="button" class="x-top" aria-label="Close">✕</button>
         <p class="where" id="h-where"></p>
         <p class="mast" id="h-name"></p>
         <p class="sub" id="h-role"></p>
@@ -205,6 +239,8 @@ header .contact a{color:var(--ink);text-underline-offset:3px}
     </div>
     <div class="news" id="card" hidden>
       <div class="sheet card" role="dialog" aria-modal="true" aria-labelledby="c-mast">
+        <button type="button" class="x-top" aria-label="Close">✕</button>
+        <p class="where" style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#1f4fa3;margin:0 0 2px">DANH THIẾP · CONTACT</p>
         <p class="mast" id="c-mast">Tai Vong</p>
         <p class="sub">Backend &amp; Platform Engineer · Technical Lead · Ho Chi Minh City</p>
         <ol id="links"></ol>
@@ -213,6 +249,7 @@ header .contact a{color:var(--ink);text-underline-offset:3px}
     </div>
     <div class="news" id="board" hidden>
       <div class="sheet board" role="dialog" aria-modal="true" aria-labelledby="b-mast">
+        <button type="button" class="x-top" aria-label="Close">✕</button>
         <p class="mast" id="b-mast">SỬA BACKEND</p>
         <div class="dl"><span>Backend repair shop</span><span>Ask for a quote</span></div>
         <ol id="svc"></ol>
@@ -220,37 +257,23 @@ header .contact a{color:var(--ink);text-underline-offset:3px}
         <button type="button" class="x">Close the board</button>
       </div>
     </div>
-  </div>
+</div>
 
-  <div class="row bar">
-    <button type="button" id="back" hidden>← Back to main street</button>
-    <button type="button" id="prev">← Previous</button>
-    <button type="button" id="next">Next →</button>
-    <button type="button" id="replay">Rebuild the street</button>
-    <button type="button" id="night" aria-pressed="false">Night</button>
-    <span class="hint">Scroll or drag sideways. Click any house with a big sign, the repair shop, the newsstand, the alley, or me in the white hard hat.</span>
-  </div>
+<div class="wrap">
+  <p class="hint">Scroll or drag sideways. Click any house with a big sign, the repair shop, the newsstand, the alley, or me in the white hard hat. Click the sun to make it night.</p>
 
-  <section class="tag" id="tag" aria-live="polite">
-    <p class="where" id="t-where"></p>
-    <h2 id="t-name"></h2>
-    <p class="role" id="t-role"></p>
-    <p id="t-desc"></p>
-    <ul class="floors" id="t-floors"></ul>
-    <ul class="chips" id="t-chips"></ul>
-    <p class="note" id="t-note"></p>
-  </section>
 
-  <div class="plain" id="index">
-    <h2>The same street, in plain text</h2>
+
+  <details class="plain" id="index">
+    <summary>Read the street as a list</summary>
     <div class="cols" id="plain-cols"></div>
-  </div>
+  </details>
 </div>
 
 <script>
 /* ================= content: edit here ================= */
 const TECH={ 'Go':{k:0,c:['#147a9c','#6fd6ee']}, 'gRPC':{k:1,c:['#1c7d52','#74e0a8']}, 'PostgreSQL':{k:2,c:['#2f4fb0','#8fb0ff']}, 'Kubernetes':{k:3,c:['#7c35ad','#d59bff']}, 'Redis':{k:4,c:['#c9342f','#ff8a7a']}, 'Python':{k:5,c:['#a86a00','#ffd166']}, 'MySQL':{k:6,c:['#a8327a','#ff9ecb']} };
-const DOMAINS=['E-commerce','EdTech','Ride-hailing','Fintech & Web3'];
+const DOMAINS=['E-commerce','EdTech','Ride-hailing'];
 const KHU={ career:'Career', vl:'Velocity Labs', alley:'Alley 42 · personal' };
 const DATA={
   andpad:{khu:'career',dom:'Construction',name:'ANDPAD Viet Nam',role:'Software Engineer · Oct 2026 – now',desc:"Under construction. That's me in the white hard hat with the blueprint, watching the site while the team builds.",stack:['Go','gRPC','Kubernetes','Redis','MySQL']},
@@ -329,7 +352,8 @@ const HOUSE={
   podbench:{w:168,floors:2,wall:'--orange',trim:'--cream',door:'--indigo',awn:'--indigo',signBg:'--s-ink',signFg:'--cream',sign:'POD BENCHMARK',roof:'none',shop:'receipts'}
 };
 const g_=n=>({t:'gate',khu:n}), n_=(w,fl)=>({t:'nb',w,fl}), p_=id=>({t:'p',id});
-const PLAN_MAIN=[p_('garage'),n_(124,2),g_('career'),n_(104,2),p_('andpad'),n_(112,2),p_('gearment'),n_(110,3),p_('geniebook'),p_('be'),n_(108,2),p_('teko'),p_('ailab'),n_(110,2),g_('vl'),p_('yuzu'),p_('perp'),n_(106,2),p_('btse'),p_('collectible'),p_('caller'),n_(104,3),p_('novaland'),p_('pokerage'),{t:'alley'},n_(112,2)];
+const PLAN_MAIN=[p_('garage'),n_(124,2),g_('career'),n_(104,2),p_('andpad'),n_(112,2),p_('gearment'),n_(110,3),p_('geniebook'),p_('be'),n_(108,2),p_('teko'),p_('ailab'),n_(110,2),{t:'alley',to:'vl',w:104},n_(116,3),{t:'alley',to:'alley',w:76},n_(112,2)];
+const PLAN_VL=[{t:'exit'},g_('vl'),p_('yuzu'),p_('perp'),n_(106,2),p_('btse'),p_('collectible'),p_('caller'),n_(104,3),p_('novaland'),p_('pokerage'),n_(108,2)];
 const PLAN_ALLEY=[{t:'exit'},n_(104,2),p_('grpcx'),n_(96,3),p_('oss'),p_('quorum'),n_(100,2),p_('trendypod'),p_('podbench'),n_(108,2)];
 
 /* ================= tiny paper toolkit ================= */
@@ -373,14 +397,17 @@ class Scene{
     this.name=name; this.stage=stage; this.plan=plan;
     this.layers=[]; this.pop=[]; this.proj=[]; this.dots=[]; this.swings=[]; this.clouds=[]; this.bobs=[]; this.spokes=[]; this.arms=[]; this.nb=[]; this.khu=[];
     this.armed=false; this.S=1; this.viewW=0; this.dragged=false; this.sel=null;
-    this.W=140+plan.reduce((a,it)=>a+6+(it.t==='gate'?124:it.t==='alley'?76:it.t==='exit'?90:it.t==='nb'?it.w:HOUSE[it.id].w),0);
+    this.W=140+plan.reduce((a,it)=>a+6+(it.t==='gate'?124:it.t==='alley'?(it.w||76):it.t==='exit'?90:it.t==='nb'?it.w:HOUSE[it.id].w),0);
     stage.innerHTML='<div class="track"><div class="view"><svg class="sunbox" viewBox="0 0 120 120" aria-hidden="true"></svg><svg class="grain" aria-hidden="true"><rect width="100%" height="100%" filter="url(#g1)"/><rect width="100%" height="100%" filter="url(#g2)" opacity=".7"/></svg></div></div>';
     this.track=stage.firstChild; this.view=this.track.firstChild; this.grain=this.view.querySelector('.grain');
     this.bind();
   }
   layer(f,w){const svg=E('svg',{class:'layer',viewBox:`0 0 ${w} ${H}`,preserveAspectRatio:'xMinYMin meet'});this.view.insertBefore(svg,this.grain);this.layers.push({el:svg,f,w});return svg}
   layout(){
-    this.viewW=this.stage.clientWidth; this.S=this.stage.clientHeight/H;
+    const topH=document.querySelector('.top').offsetHeight, streetH=Math.round(Math.max(420,Math.min((innerHeight-topH)/.9,860))), pad=Math.max(0,topH-Math.round(streetH*.1));
+    this.stage.style.height=(pad+streetH+(this.stage.offsetHeight-this.stage.clientHeight))+'px';
+    sceneEl.style.setProperty('--street-h',streetH+'px'); sceneEl.style.setProperty('--sky-pad',pad+'px');
+    this.viewW=this.stage.clientWidth; this.S=streetH/H;
     this.view.style.width=this.viewW+'px';
     this.track.style.width=Math.max(this.viewW,Math.round(this.W*this.S))+'px';
     this.layers.forEach(l=>l.el.style.width=(l.w*this.S)+'px');
@@ -416,10 +443,16 @@ function drawSun(svg){
   for(let i=0;i<12;i++){const a=i/12*Math.PI*2,a2=a+.14,a3=a-.14;
     paper(rays,[[60+Math.cos(a)*56,60+Math.sin(a)*56],[60+Math.cos(a2)*36,60+Math.sin(a2)*36],[60+Math.cos(a3)*36,60+Math.sin(a3)*36]],'--sun',{sh:1.5,amp:.4});}
   blob(svg,60,60,30,'--sun',{n:16,wob:.04,sh:2});
+  const cut=E('g',{class:'cut'},svg); blob(cut,73,50,24,'--sky',{n:16,wob:.04,sh:0});   /* bite that turns the disc into a crescent at night */
+  E('circle',{class:'ring',cx:60,cy:60,r:44},svg);
+  svg.removeAttribute('aria-hidden'); svg.setAttribute('role','button'); svg.setAttribute('tabindex','0'); svg.setAttribute('aria-pressed','false'); svg.setAttribute('aria-label','Sun: switch to night');
+  E('title',{},svg).textContent='Switch between day and night';
 }
 function drawSky(sc,midMin,midMax){
   const W=sc.W, Lc=sc.layer(.08,W), Lf=sc.layer(.22,W), Lm=sc.layer(.55,W);
   for(let x=180;x<W;x+=520+rnd()*120){const y=70+rnd()*80,k=.8+rnd()*.3,g=E('g',{},Lc);sc.clouds.push({g,x:0});
+    paper(g,[...blobPts(x,y,34*k,10,.08).slice(4,10),...blobPts(x+46*k,y-12*k,40*k,10,.08).slice(5,11),...blobPts(x+96*k,y,30*k,10,.08).slice(6,10),[x+120*k,y+26*k],[x-30*k,y+26*k]],'--cloud',{sh:3,amp:.5});}
+  for(let x=60;x<W;x+=380+rnd()*200){const y=-70-rnd()*190,k=.7+rnd()*.5,g=E('g',{},Lc);sc.clouds.push({g,x:0});
     paper(g,[...blobPts(x,y,34*k,10,.08).slice(4,10),...blobPts(x+46*k,y-12*k,40*k,10,.08).slice(5,11),...blobPts(x+96*k,y,30*k,10,.08).slice(6,10),[x+120*k,y+26*k],[x-30*k,y+26*k]],'--cloud',{sh:3,amp:.5});}
   for(let x=-30;x<W+60;){const w=50+rnd()*70,h=170+rnd()*210;
     paper(Lf,rc(x,GY+20-h,w,h+90),'--far',{sh:0,amp:.6});
@@ -647,6 +680,38 @@ function construction(sc,pr,p){
   const go=()=>{if(!sc.dragged) openSheet('card',meD)};
   meD.addEventListener('click',go); meD.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openSheet('card',meD)}});
 }
+/* easter egg: a bug swinging along the wires on a thread. Click it and it is fixed; another one turns up later. */
+function wireBug(sc,wg){
+  const d=E('g',{class:'door',role:'button',tabindex:0,'aria-label':'A bug hanging from the wire. Click to fix it.'},wg), g=E('g',{},d);
+  line(g,0,0,0,40,1.4); line(g,-5,50,-1,38,2); line(g,5,50,1,38,2);
+  [-1,1].forEach(k=>{line(g,k*8,56,k*18,51,2);line(g,k*9,62,k*19,67,2)});
+  blob(g,0,58,11.5,'--yellow',{sh:2,n:12,wob:.05}); line(g,0,49,0,69,1.2,'--s-ink',.5);
+  [[-4.5,55],[4.5,60],[-3.5,64]].forEach(([x,y])=>E('circle',{cx:x,cy:y,r:2,fill:'--s-ink'},g));
+  blob(g,0,45.5,6.2,'--s-ink',{sh:0,n:9,wob:.04});
+  [-2.4,2.4].forEach(x=>E('circle',{cx:x,cy:45,r:1.6,fill:'--cream'},g));
+  E('path',{d:'M-2 40.5 q-5 -6 -10 -2 M2 40.5 q5 -6 10 -2',fill:'none',stroke:'--s-ink','stroke-width':1.3,'stroke-linecap':'round'},g);
+  E('circle',{class:'hit',cx:0,cy:54,r:26},d);
+  const tag=E('g',{style:'display:none'},wg); paper(tag,rc(-52,-34,104,24),'--cream',{sh:2,amp:.3}); const txt=label(tag,0,-17,'BUG FIXED',11,'--red');
+  const b=sc.bug={d,tag,span:0,u:.55,state:'swing',vy:0,dy:0,rot:0,wait:0,n:0,x:0,y:0};
+  const fix=()=>{ if(b.state!=='swing'||sc.dragged) return;
+    b.n++; txt.textContent='BUG #'+b.n+' FIXED'; tag.setAttribute('transform',`translate(${b.x.toFixed(1)},${b.y.toFixed(1)})`); tag.style.display='';
+    if(still){d.style.display='none';b.state='gone';return}
+    b.state='fall'; b.vy=-9; b.dy=0; };
+  d.addEventListener('click',fix);
+  d.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fix()}});
+  placeBug(sc,0);
+}
+function placeBug(sc,tick){
+  const b=sc.bug, w=sc.lowWires[b.span], p=w.p.getPointAtLength(b.u*w.len); b.x=p.x; b.y=p.y;
+  b.d.setAttribute('transform',`translate(${p.x.toFixed(1)},${(p.y+b.dy).toFixed(1)}) rotate(${((still?0:34*Math.sin(tick*.5))+b.rot).toFixed(1)})`);
+}
+function tickBug(sc,tick){
+  const b=sc.bug;
+  if(b.state==='swing'){b.u+=.006; if(b.u>=1){b.u=0;b.span=(b.span+1)%sc.lowWires.length} placeBug(sc,tick)}
+  else if(b.state==='fall'){b.vy+=5; b.dy+=b.vy; b.rot+=40; placeBug(sc,tick); if(b.dy>560){b.state='gone';b.wait=80;b.d.style.display='none'}}
+  else{ b.wait--; if(b.wait===50) b.tag.style.display='none';
+    if(b.wait<=0){b.state='swing';b.dy=0;b.rot=0;b.u=.1;b.span=(b.span+1)%sc.lowWires.length;b.d.style.display='';placeBug(sc,tick)} }
+}
 /* yellow post box: another way to the contact card */
 function mailbox(sc,pr,x){
   const d=E('g',{class:'door',tabindex:0,role:'button','aria-label':'Post box: open my contact card'},pr), g=E('g',{class:'boil'},d);
@@ -673,10 +738,10 @@ function trees(sc,every,start){
 }
 const NB_WALLS=['--n1','--n2','--n3','--n4'];
 function street(sc,L,signs){
-  let x=70, last='', si=0; const marks={gates:[],doors:[]};
+  let x=70, last='', si=0; const marks={gates:[],alleys:{}};
   sc.plan.forEach(it=>{
     if(it.t==='gate'){gate(sc,L,x,it.khu);marks.gates.push(x);x+=130;return}
-    if(it.t==='alley'){marks.alley=x;x+=82;return}
+    if(it.t==='alley'){marks.alleys[it.to]=x;x+=(it.w||76)+6;return}
     if(it.t==='exit'){marks.exit=x;x+=96;return}
     if(it.t==='p'){house(sc,L,{trim:'--cream',...HOUSE[it.id],id:it.id,proj:1,x});x+=HOUSE[it.id].w+6;return}
     let wall; do{wall=pick(NB_WALLS)}while(wall===last); last=wall; sc.nb.push(x);
@@ -690,6 +755,7 @@ function street(sc,L,signs){
 const sceneEl=document.getElementById('scene');
 const main=new Scene('main',document.getElementById('stage-main'),PLAN_MAIN);
 const alley=new Scene('alley',document.getElementById('stage-alley'),PLAN_ALLEY);
+const vl=new Scene('vl',document.getElementById('stage-vl'),PLAN_VL);
 (function(){
   const sc=main, W=sc.W;
   drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,140,310);
@@ -697,7 +763,8 @@ const alley=new Scene('alley',document.getElementById('stage-alley'),PLAN_ALLEY)
   paper(L,rc(-20,GY,W+40,34),'--walk',{sh:0,amp:.6}); paper(L,rc(-20,GY+30,W+40,8),'--curb',{sh:0,amp:.5}); paper(L,rc(-20,GY+38,W+40,80),'--road',{sh:0,amp:.5});
   for(let x=30;x<W;x+=120) paper(L,rc(x,GY+64,52,6),'--road-mark',{sh:0,amp:.5});
   const marks=street(sc,L,['PHỞ','SỬA XE','TẠP HÓA','CƠM TẤM','TRÀ SỮA','PHOTO','HỦ TIẾU','MAY ĐO','NHA KHOA','CẮT TÓC','CHÈ','GIẶT ỦI'].sort(()=>rnd()-.5));
-  sc.alleyX=doorway(sc,L,marks.alley,76,{sign:'HẺM 42',tag:'TURN IN',aria:'Turn into alley 42: personal projects',go:()=>swap(alley)});
+  sc.doorX={alley:doorway(sc,L,marks.alleys.alley,76,{sign:'HẺM 42',tag:'TURN IN',aria:'Turn into alley 42: personal projects',go:()=>swap(alley)}),
+            vl:doorway(sc,L,marks.alleys.vl,104,{sign:'NGÕ VELOCITY',tag:'TURN IN',aria:'Turn into the Velocity Labs lane',go:()=>swap(vl)})};
   /* wires: one per tech, strung pole to pole; drops link each house to the wires it uses */
   const NW=Object.keys(TECH).length, poles=[26], wg=E('g',{},L);
   /* poles stand in front of neighbours and gates, never across a project sign */
@@ -713,6 +780,7 @@ const alley=new Scene('alley',document.getElementById('stage-alley'),PLAN_ALLEY)
       const p=E('path',{class:'wire','data-k':k,d:`M${a} ${y0} C${a+d*.3} ${y0+sag}, ${b-d*.3} ${y0+sag}, ${b} ${y0}`,fill:'none',stroke:'--s-ink','stroke-width':k?1.4:2,'stroke-linecap':'round'},wg);
       const c=E('circle',{class:'dot'+(k===1||k===4?'':' extra'),'data-k':k,r:4,fill:'--spark',stroke:'--s-ink','stroke-width':1},wg);
       sc.dots.push({p,c,len:p.getTotalLength(),t:rnd(),v:(k%2?.011:-.008)*(700/d)});
+      if(k===NW-1) (sc.lowWires=sc.lowWires||[]).push({p,len:p.getTotalLength()});
     }
   }
   sc.proj.forEach(p=>{
@@ -721,9 +789,10 @@ const alley=new Scene('alley',document.getElementById('stage-alley'),PLAN_ALLEY)
   });
   sc.wireEls=[...wg.querySelectorAll('.wire,.drop,.dot')];
   poles.slice(1,-1).forEach(px=>flyer(wg,px,()=>openSheet('board',null)));
+  wireBug(sc,wg);
   /* props */
   const pr=E('g',{},L), at=id=>sc.proj.find(p=>p.id===id);
-  [[at('gearment').x+110,'--indigo'],[at('be').x+20,'--teal'],[at('be').x+84,'--yellow'],[at('yuzu').x+100,'--red'],[at('caller').x+30,'--indigo']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
+  [[at('gearment').x+110,'--indigo'],[at('be').x+20,'--teal'],[at('be').x+84,'--yellow'],[at('teko').x+110,'--red']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
   cart(sc,pr,at('teko').x-150);
   newsstand(sc,pr,sc.nb[0]+6,()=>openSheet('news',sc.newsEl));
   construction(sc,pr,at('andpad'));
@@ -750,27 +819,36 @@ const alley=new Scene('alley',document.getElementById('stage-alley'),PLAN_ALLEY)
   trees(sc,1250,1500);
 })();
 
-/* ================= build: alley ================= */
-(function(){
-  const sc=alley, W=sc.W;
+/* ================= build: side lanes (alley 42, Velocity Labs) ================= */
+function buildLane(sc,signs,props){
+  const W=sc.W;
   drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,230,380);
   const L=sc.layer(1,W); sc.L=L;
   paper(L,rc(-20,GY,W+40,120),'--walk',{sh:0,amp:.6});
   for(let x=0;x<W;x+=58) line(L,x,GY+2,x-30,H,1,'--s-ink',.14);
   [GY+30,GY+66].forEach(y=>line(L,0,y,W,y,1,'--s-ink',.14));
-  const marks=street(sc,L,['BÚN RIÊU','TIỆM NET','XÔI','SỬA KHÓA','CHÈ'].sort(()=>rnd()-.5));
+  const marks=street(sc,L,signs.sort(()=>rnd()-.5));
   doorway(sc,L,marks.exit,84,{sign:'PHỐ CHÍNH',tag:'BACK',left:1,aria:'Back to the main street',go:()=>swap(main)});
-  /* string lights across the alley */
-  const sg=E('g',{},L);
+  const sg=E('g',{},L);   /* string lights across the lane */
   for(let a=40;a<W-100;a+=300){const b=a+300,y0=150+j(14);
     E('path',{d:`M${a} ${y0} Q${a+150} ${y0+52} ${b} ${y0}`,fill:'none',stroke:'--s-ink','stroke-width':1.3},sg);
     for(let k=1;k<10;k++){const t=k/10;E('circle',{cx:a+300*t,cy:y0+3+104*t*(1-t),r:4,fill:k%2?'--yellow':'--red',stroke:'--s-ink','stroke-width':.8},sg)}}
   const pr=E('g',{},L), at=id=>sc.proj.find(p=>p.id===id);
-  stools(pr,at('quorum').cx);
-  [[at('grpcx').x-60,'--teal'],[at('trendypod').x+50,'--red']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
+  props(pr,at);
   for(let x=200;x<W;x+=260){const g=E('g',{class:'boil'},pr);paper(g,[[x,GY+10],[x+22,GY+10],[x+18,GY+30],[x+4,GY+30]],'--brown',{sh:2,amp:.3});blob(g,x+11,GY+2,13,'--leaf',{sh:2,n:10});blob(g,x+4,GY-8,9,'--leaf2',{sh:1.5,n:9})}
   trees(sc,900,1400);
-})();
+}
+buildLane(alley,['BÚN RIÊU','TIỆM NET','XÔI','SỬA KHÓA','CHÈ'],(pr,at)=>{
+  stools(pr,at('quorum').cx);
+  [[at('grpcx').x-60,'--teal'],[at('trendypod').x+50,'--red']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
+});
+buildLane(vl,['CÀ PHÊ','IN ẤN','VĂN PHÒNG','CƠM VĂN PHÒNG'],(pr,at)=>{
+  stools(pr,at('perp').cx+120);
+  [[at('yuzu').x+100,'--red'],[at('caller').x+30,'--indigo'],[at('novaland').x+40,'--teal']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
+  /* founding-team plaque by the gate */
+  const k=vl.khu[0], g=E('g',{class:'boil'},pr);
+  paper(g,rc(k.x+18,GY-150,88,40),'--cream',{sh:2.5,amp:.4}); label(g,k.x+62,GY-134,'FOUNDING TEAM',8.6,'--s-ink'); label(g,k.x+62,GY-120,'since 2021',9,'--red');
+});
 
 /* ================= UI ================= */
 const $=id=>document.getElementById(id);
@@ -778,25 +856,17 @@ let cur=main, tech=null, busy=false;
 function select(id){
   const d=DATA[id]; cur.sel=id;
   cur.proj.forEach(p=>p.el.classList.toggle('is-on',p.id===id));
-  $('t-where').textContent=KHU[d.khu]+(d.dom?' · '+d.dom:'');
-  $('t-name').textContent=d.name; $('t-role').textContent=d.role; $('t-desc').textContent=d.desc;
-  $('t-floors').replaceChildren(...(d.floors||[]).map(([n,t])=>{const li=document.createElement('li'),b=document.createElement('b');b.textContent=n+': ';li.append(b,t);return li}));
-  $('t-floors').hidden=!d.floors;
-  $('t-chips').replaceChildren(...[...d.stack,...(d.more||[])].map(c=>{const li=document.createElement('li');li.textContent=c;return li}));
-  $('t-note').hidden=true;
-  /* same content on the sheet that opens over the street when a house is clicked */
-  $('h-where').textContent=$('t-where').textContent; $('h-name').textContent=d.name; $('h-role').textContent=d.role; $('h-desc').textContent=d.desc;
-  $('h-floors').replaceChildren(...[...$('t-floors').children].map(n=>n.cloneNode(true))); $('h-floors').hidden=!d.floors;
-  $('h-chips').replaceChildren(...[...$('t-chips').children].map(n=>n.cloneNode(true)));
+  $('h-where').textContent=KHU[d.khu]+(d.dom?' · '+d.dom:'');
+  $('h-name').textContent=d.name; $('h-role').textContent=d.role; $('h-desc').textContent=d.desc;
+  $('h-floors').replaceChildren(...(d.floors||[]).map(([n,t])=>{const li=document.createElement('li'),b=document.createElement('b');b.textContent=n+': ';li.append(b,t);return li}));
+  $('h-floors').hidden=!d.floors;
+  $('h-chips').replaceChildren(...[...d.stack,...(d.more||[])].map(c=>{const li=document.createElement('li');li.textContent=c;return li}));
 }
-[main,alley].forEach(sc=>sc.proj.forEach(p=>{
+[main,alley,vl].forEach(sc=>sc.proj.forEach(p=>{
   p.el.addEventListener('click',()=>{if(!sc.dragged){select(p.id);openSheet('house',p.el)}});
   p.el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(p.id);openSheet('house',p.el)}});
   p.el.addEventListener('focus',()=>{const sx=p.cx*sc.S-sc.stage.scrollLeft;if(sx<60||sx>sc.viewW-60) sc.scrollToX(p.cx,false)});
 }));
-function step_(dir){const o=cur.proj.map(p=>p.id),id=o[(o.indexOf(cur.sel)+dir+o.length)%o.length];cur.scrollToX(cur.proj.find(p=>p.id===id).cx);select(id)}
-$('next').addEventListener('click',()=>step_(1)); $('prev').addEventListener('click',()=>step_(-1));
-$('replay').addEventListener('click',()=>{if(still) return;cur.flatten(true);cur.checkPops()});
 $('back').addEventListener('click',()=>swap(main));
 
 /* sheets that unfold over the street: the newspaper and the service board */
@@ -813,34 +883,38 @@ function openSheet(id,ret,key){
   if(busy||(cur!==main&&id!=='house')) return; closeSheets();
   const o=$(id); o.hidden=false; sheetRet=ret;
   o.querySelectorAll('li').forEach(li=>li.classList.toggle('on',!!key&&li.dataset.key===key));
-  o.querySelector('.x').focus({preventScroll:true});
+  o.querySelector('.x-top').focus({preventScroll:true});
   if(!still) o.firstElementChild.animate([{transform:'perspective(900px) rotateX(-84deg)'},{transform:'perspective(900px) rotateX(0deg)'}],{duration:340,easing:'steps(5,end)'});
 }
 function closeSheets(){['news','board','card','house'].forEach(id=>{const o=$(id);if(!o.hidden){o.hidden=true;if(sheetRet) sheetRet.focus({preventScroll:true})}})}
-['news','board','card','house'].forEach(id=>{const o=$(id);o.querySelector('.x').addEventListener('click',closeSheets);o.addEventListener('click',e=>{if(e.target===o) closeSheets()})});
+['news','board','card','house'].forEach(id=>{const o=$(id);o.querySelectorAll('.x,.x-top').forEach(b=>b.addEventListener('click',closeSheets));o.addEventListener('click',e=>{if(e.target===o) closeSheets()})});
 document.addEventListener('keydown',e=>{if(e.key==='Escape') closeSheets()});
 
-/* plain-text index: everything on the street as an ordinary list, for phones, readers and search */
+/* the street as a list: same data, folded away by default, for phones, readers and search */
 (function(){
-  const cols=$('plain-cols');
-  const sec=(title,rows)=>{const s=document.createElement('section'),h=document.createElement('h3'),ul=document.createElement('ul');h.textContent=title;
-    rows.forEach(r=>{const li=document.createElement('li'),b=document.createElement(r.url?'a':'b');b.textContent=r.t;if(r.url)b.href=r.url;li.append(b);
-      (r.lines||[]).forEach(l=>{const sp=document.createElement('span');sp.textContent=l;li.append(sp)});ul.append(li)});
-    s.append(h,ul);cols.append(s)};
-  const house=id=>{const d=DATA[id];return {t:d.name,lines:[d.role,d.desc,...(d.floors||[]).map(f=>f[0]+': '+f[1]),[...d.stack,...(d.more||[])].join(' · ')].filter(Boolean)}};
+  const cols=$('plain-cols'), el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
+  const sec=(title,rows)=>{const s=el('section'),ul=el('ul','items');s.append(el('h3',null,title),ul);
+    rows.forEach(r=>{const li=el('li'),nm=el(r.url?'a':'span','nm',r.t);if(r.url)nm.href=r.url;li.append(nm);
+      if(r.role) li.append(el('span','rl',r.role)); if(r.desc) li.append(el('span','ds',r.desc));
+      if(r.floors){const f=el('ul','fl');r.floors.forEach(([n,t])=>{const x=el('li');x.append(el('b',null,n+': '),t);f.append(x)});li.append(f)}
+      if(r.tags&&r.tags.length){const t=el('ul','tg');r.tags.forEach(x=>t.append(el('li',null,x)));li.append(t)}
+      ul.append(li)});
+    cols.append(s)};
+  const house=id=>{const d=DATA[id];return {t:d.name,role:d.role,desc:d.desc,floors:d.floors,tags:[...d.stack,...(d.more||[])]}};
   const ids=k=>Object.keys(DATA).filter(id=>DATA[id].khu===k);
-  sec('Services',SERVICES.map(v=>({t:v.name+': '+v.what,lines:[v.out]})));
+  sec('Services',SERVICES.map(v=>({t:v.name,role:v.what,desc:v.out})));
   sec('Career',ids('career').map(house));
   sec('Velocity Labs · founding member since 2021',ids('vl').map(house));
   sec('Personal projects and open source',ids('alley').map(house));
-  sec('Writing',ARTICLES.map(a=>({t:a.title,url:a.url,lines:[a.tag+' · '+a.date]})));
-  sec('Contact',CONTACT.map(c=>({t:c.name,url:c.url,lines:[c.handle]})));
+  sec('Writing',ARTICLES.map(a=>({t:a.title,url:a.url,role:a.tag+' · '+a.date})));
+  sec('Contact',CONTACT.map(c=>({t:c.name,url:c.url,role:c.handle})));
 })();
 
 /* street-sign nav */
 function plate(txt,fn){const b=document.createElement('button');b.type='button';b.className='plate';b.textContent=txt;b.addEventListener('click',fn);$('khu-row').appendChild(b)}
 plate('Backend repair',()=>{main.scrollToX(main.shopX,false);openSheet('board',main.shopEl)});
-main.khu.forEach(k=>plate(KHU[k.khu],()=>{main.stage.scrollTo({left:Math.max(0,(k.x-30)*main.S),behavior:still?'auto':'smooth'});const first=main.proj.find(p=>DATA[p.id].khu===k.khu);if(first) select(first.id)}));
+main.khu.forEach(k=>plate('Career',()=>{main.stage.scrollTo({left:Math.max(0,(k.x-30)*main.S),behavior:still?'auto':'smooth'});const first=main.proj.find(p=>DATA[p.id].khu===k.khu);if(first) select(first.id)}));
+plate('Velocity Labs →',()=>swap(vl));
 plate('Alley 42 →',()=>swap(alley));
 plate('Contact',()=>{main.scrollToX(main.meX,false);openSheet('card',main.meEl)});
 plate('Newsstand',()=>{main.scrollToX(main.newsX,false);openSheet('news',main.newsEl)});
@@ -862,15 +936,26 @@ function chip(row,type,v,txt,color){
 }
 chip('tech-row','tech','','All'); Object.keys(TECH).forEach(t=>chip('tech-row','tech',t,t,TECH[t].c[0]));
 DOMAINS.forEach(d=>chip('dom-row','dom',d,d));
-$('night').addEventListener('click',()=>{const on=sceneEl.dataset.night!=='1';sceneEl.dataset.night=on?'1':'0';$('night').setAttribute('aria-pressed',on);$('night').textContent=on?'Day':'Night';setFilter(filt)});
+{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent='Fintech & Web3 →';b.addEventListener('click',()=>swap(vl));$('dom-row').appendChild(b)}
+/* day / night: the sun (or moon) in the sky is the switch */
+function toggleNight(){
+  const on=sceneEl.dataset.night!=='1'; sceneEl.dataset.night=on?'1':'0';
+  document.querySelectorAll('.sunbox').forEach(b=>{b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Moon: switch to day':'Sun: switch to night')});
+  setFilter(filt);
+}
+document.querySelectorAll('.sunbox').forEach(b=>{
+  b.addEventListener('click',()=>{if(!cur.dragged) toggleNight()});
+  b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleNight()}});
+});
 
 /* turning the corner: the street folds flat like a pop-up page, the next one stands up */
 function swap(to){
   if(busy||to===cur) return; closeSheets(); const from=cur; busy=true;
+  if(from!==main&&to!==main){busy=false;return}
   const land=()=>{
     from.stage.hidden=true; to.stage.hidden=false; sceneEl.dataset.where=to.name; cur=to;
-    $('khu-row').hidden=$('tech-row').hidden=$('dom-row').hidden=to===alley; $('back').hidden=to!==alley;
-    to.layout(); if(to===main) main.scrollToX(main.alleyX,false);
+    $('khu-row').hidden=$('tech-row').hidden=$('dom-row').hidden=to!==main; $('back-row').hidden=to===main;
+    to.layout(); if(to===main) main.scrollToX(main.doorX[from.name],false);
     select(to.sel||to.proj[0].id);
     if(still){busy=false;return}
     to.flatten(true);
@@ -882,11 +967,12 @@ function swap(to){
 
 /* ================= 12 fps ticker ================= */
 let tick=0;
-[main,alley].forEach(sc=>sc.boils=[...sc.stage.querySelectorAll('.boil')]);
+[main,alley,vl].forEach(sc=>sc.boils=[...sc.stage.querySelectorAll('.boil')]);
 main.dots.forEach(d=>{const p=d.p.getPointAtLength(d.t*d.len);d.c.setAttribute('cx',p.x);d.c.setAttribute('cy',p.y)});
 function frame(){
   tick++; const sc=cur;
   sc.dots.forEach(d=>{d.t=(d.t+d.v+1)%1;const p=d.p.getPointAtLength(d.t*d.len);d.c.setAttribute('cx',p.x.toFixed(1));d.c.setAttribute('cy',p.y.toFixed(1))});
+  if(sc.bug) tickBug(sc,tick);
   if(sc.rider){sc.riderX+=11;if(sc.riderX>sc.W+160) sc.riderX=-180;sc.rider.setAttribute('transform',`translate(${sc.riderX},${tick%4<2?0:-1.5})`)}
   sc.spokes.forEach(o=>o.s.setAttribute('transform',`rotate(${(tick*30)%360} ${o.cx} ${o.cy})`));
   sc.arms.forEach(a=>{if(tick%a.n===0) a.g.setAttribute('transform',`rotate(${a.a[(tick/a.n)%a.a.length]} ${a.pin[0]} ${a.pin[1]})`)});
