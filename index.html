@@ -42,7 +42,33 @@ body{background:var(--page);color:var(--ink);font-family:var(--f-body);font-size
 header{display:grid;gap:4px}
 .head-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .head-top button{flex:none;margin-top:6px}
-@media (max-width:520px){.row>.lbl{min-width:0;width:100%}}
+header .contact .short{display:none}
+#filters>summary{display:none}
+#filters .row+.row{margin-top:12px}
+/* phones: one-line header, nav in a single swipeable row, filters folded away, so the street gets the screen */
+@media (max-width:640px){
+  .top{padding:12px 14px 0;gap:6px}
+  h1{font-size:30px}
+  .lede{font-size:14px;line-height:1.35}
+  .lede .more{display:none}
+  header{gap:2px}
+  header .contact{font-size:14px;gap:2px 14px;margin:2px 0 0}
+  header .contact .full{display:none}
+  header .contact .short{display:inline}
+  .row>.lbl{display:none}
+  .top .row{flex-wrap:nowrap;overflow-x:auto;pointer-events:auto;margin:0 -14px;padding:3px 14px 7px;scrollbar-width:none}
+  .top .row::-webkit-scrollbar{display:none}
+  .top .row>*{flex:none}
+  button.plate{font-size:12.5px;padding:8px 10px 6px}
+  button.chip{font-size:13px;padding:6px 10px}
+  #filters{pointer-events:auto}
+  #filters>summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;list-style:none;font:600 13px/1 var(--f-body);color:var(--ink);background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:6px 11px;box-shadow:2px 2px 0 var(--ink)}
+  #filters>summary::-webkit-details-marker{display:none}
+  #filters>summary::after{content:"+";font:800 15px/1 var(--f-display)}
+  #filters[open]>summary::after{content:"–"}
+  #filters[open]>summary{margin-bottom:6px}
+  #filters .row+.row{margin-top:0}
+}
 @media (max-width:640px){.scene .stage .sunbox{top:auto;bottom:calc(var(--street-h,560px)*.62);right:4%;height:96px}}
 h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,60px);line-height:1;margin:0;text-wrap:balance;color:var(--head)}
 .lede{margin:0;color:var(--head-soft);max-width:60ch;font-weight:500}
@@ -61,7 +87,7 @@ h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,60px)
   position:relative;overflow:hidden;background:var(--sky);perspective:1600px;
 }
 .scene[data-where="alley"]{--sky:#f6d8a8;--far:#ecbf92;--mid:#d99a78;--mid-win:#bf7f62;--cloud:#fff3dc}
-.scene[data-where="vl"]{--sky:#d8d2f2;--far:#b9b1e2;--mid:#978dcf;--mid-win:#7c70bb;--cloud:#f5f2ff}
+.scene[data-where="vl"]{--sky:#2b1d55;--far:#3a2a72;--mid:#4b3792;--mid-win:#ff5fd2;--cloud:#57449f;--sun:#ff5fd2;--walk:#3d3663;--curb:#2c2748;--s-ink:#120b26;--shadow:rgba(8,4,26,.5);--glass:#58f5ff;--dark:#150c2b;--steel:#8f8fc0;--leaf:#1fa08a;--leaf2:#157a6d;--cream:#e9dfc8;--brown:#4a3350;--alleybg:#1a1038;--n1:#4a4478;--n2:#3f4d7c;--n3:#553f72;--n4:#3d4472;--head:#f6efdc;--head-soft:#cfc7ea}
 .scene[data-night="1"]{
   --sky:#1f2547; --sun:#f4ecc8; --cloud:#3a4272; --far:#2a3260; --mid:#313a6b; --mid-win:#f6d36b;
   --walk:#8f8aa3; --curb:#6f6a86; --road:#2a2e48; --road-mark:#9a94b8;
@@ -70,6 +96,9 @@ h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,60px)
   --cream:#d9cfb8; --indigo:#2c3760; --red:#a8363a; --brown:#54404a; --spark:#ffe27a; --dark:#f2b84b; --skin:#b98d72;
   --n1:#7d7890; --n2:#66788a; --n3:#7a6a80; --n4:#666c8c; --alleybg:#20264a; --head:#f6efdc; --head-soft:#c9c7dc;
 }
+.scene[data-where="vl"][data-night="1"]{--sky:#0f0926;--far:#1b1244;--mid:#27195c;--mid-win:#58f5ff;--cloud:#2c2166;--sun:#58f5ff;--glass:#ffe14d;--dark:#ff8a3c;--walk:#262045;--curb:#1b1634;--n1:#34305c;--n2:#2c3760;--n3:#3d2d58;--n4:#2b3158}
+#stage-vl .sgn{filter:drop-shadow(0 0 3px rgba(255,95,210,.8))}
+#stage-vl .neon{filter:drop-shadow(0 0 4px rgba(88,245,255,.9))}
 .stage{height:760px;overflow-x:auto;overflow-y:hidden;position:relative;cursor:grab;transform-origin:50% 100%;scrollbar-width:thin;scrollbar-color:var(--s-ink) transparent}
 .stage.dragging{cursor:grabbing}
 .track{height:100%}
@@ -143,11 +172,82 @@ button.chip i{display:inline-block;width:10px;height:10px;border-radius:50%;marg
 .sheet .x{margin-top:14px}
 .sheet .x-top{position:sticky;top:-6px;float:right;z-index:2;margin:-6px -8px 6px 12px;padding:8px 11px;font-size:16px;line-height:1}
 .sheet.board{background:#fdfbf3;border:6px solid #1f4fa3;background-image:none}
+/* the newsstand opens a newspaper front page */
+.sheet.paperfront{width:min(760px,100%);color:#1b1b1f;padding:12px 20px 18px;background:#f2ecd9;background-image:radial-gradient(rgba(0,0,0,.06) 1px,transparent 1.3px);background-size:5px 5px}
+.sheet.paperfront .mast{font-size:clamp(44px,11vw,86px);line-height:.9;letter-spacing:.02em;margin:8px 0 4px;color:#1b1b1f}
+.np{margin-top:12px}
+.np article{display:grid;gap:3px}
+.np .kick{justify-self:start;font:800 11.5px/1 var(--f-display);letter-spacing:.14em;text-transform:uppercase;background:#d9202a;color:#fff;padding:3px 7px 2px}
+.np .hd{font-family:var(--f-display);font-weight:800;color:#1b1b1f;text-decoration:none;text-wrap:balance}
+.np a.hd:hover{text-decoration:underline;text-underline-offset:3px}
+.np .by{font:600 11.5px/1.3 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:#5b5b63}
+.np-lead{padding-bottom:12px;border-bottom:3px double #1b1b1f}
+.np-lead .hd{font-size:clamp(26px,5.6vw,44px);line-height:1;text-transform:uppercase;margin-top:4px}
+.np-two{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;padding:12px 0;border-bottom:1px solid #1b1b1f}
+.np-sec .hd{font-size:clamp(18px,3vw,23px);line-height:1.08}
+.np-sec+.np-sec{border-left:1px solid #1b1b1f;padding-left:18px}
+.np-rule{margin:10px 0 8px;font:800 11.5px/1 var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:#d9202a}
+.np-arch{columns:2;column-gap:18px;column-rule:1px solid #1b1b1f}
+.np-old{break-inside:avoid;padding:0 0 9px;margin:0 0 9px;border-bottom:1px dashed rgba(27,27,31,.4)}
+.np-old .hd{font-size:15.5px;line-height:1.15}
+@media (max-width:600px){.np-two{grid-template-columns:1fr;gap:12px}.np-sec+.np-sec{border-left:0;padding-left:0;border-top:1px solid #1b1b1f;padding-top:12px}.np-arch{columns:1}}
+/* the contact sheet is a postcard sent from Saigon */
+.sheet.postcard{width:min(700px,100%);padding:20px 22px;background:#f7f1e1;background-image:none;border:1px solid #d8cfb6}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+.pc-left{display:grid;gap:6px;align-content:start;padding-right:22px;border-right:2px solid #262b3f}
+.pc-kick{margin:0;font:800 11.5px/1 var(--f-display);letter-spacing:.16em;text-transform:uppercase;color:#1f4fa3}
+.sheet.postcard .mast{text-align:left;font-size:clamp(34px,6vw,50px);line-height:.95;margin:2px 0 0}
+.pc-role{margin:0;font-size:14px;font-weight:600;color:#5a6076}
+.pc-msg{margin:10px 0 0;font-size:16px;line-height:1.5;font-style:italic}
+.pc-right{display:grid;gap:14px;align-content:start}
+.pc-post{display:flex;justify-content:flex-end;align-items:center;gap:0;height:92px;padding-right:44px}
+.pc-mark{display:grid;place-items:center;text-align:center;width:86px;height:86px;border-radius:50%;border:2px solid rgba(38,43,63,.55);font:800 9.5px/1.25 var(--f-display);letter-spacing:.1em;color:rgba(38,43,63,.6);transform:rotate(-14deg);margin-right:-22px;position:relative;z-index:1;
+  background:repeating-linear-gradient(0deg,transparent 0 13px,rgba(38,43,63,.18) 13px 14.5px)}
+.pc-stamp{display:grid;place-items:center;align-content:center;gap:2px;width:68px;height:84px;background:#d9433f;color:#fff3d6;font:600 10px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;border:4px dotted #f7f1e1;box-shadow:0 0 0 2px #d9433f;transform:rotate(4deg)}
+.pc-stamp b{font:800 24px/1 var(--f-display);letter-spacing:.02em}
+.pc-lines{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.sheet.postcard .pc-lines li{display:grid;grid-template-columns:76px 1fr;align-items:end;gap:8px;padding:9px 0 5px;border-bottom:1.5px solid #262b3f}
+.pc-lines span{font:800 11px/1.2 var(--f-display);letter-spacing:.12em;text-transform:uppercase;color:#1f4fa3}
+.pc-lines a{font-size:15px;font-weight:600;color:#262b3f;text-decoration:none;overflow-wrap:anywhere}
+.pc-lines a:hover{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:600px){.pc{grid-template-columns:1fr;gap:16px}.pc-left{border-right:0;padding-right:0;border-bottom:2px solid #262b3f;padding-bottom:14px}.pc-post{order:-1}}
+/* the service board is a page of loud classified ads from a tabloid */
+.sheet.board.ads{width:min(760px,100%);border:0;color:#1b1b1f;padding:12px 18px 18px;background:#f2ecd9;background-image:radial-gradient(rgba(0,0,0,.06) 1px,transparent 1.3px);background-size:5px 5px}
+.ads-head{display:flex;justify-content:space-between;gap:10px;font:800 11px/1 var(--f-display);letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid #1b1b1f;padding:2px 44px 5px 0}
+.sheet.board.ads .mast{font-size:clamp(42px,10vw,78px);line-height:.92;color:#d9202a;letter-spacing:.01em;margin:8px 0 4px;text-shadow:3px 3px 0 #1b1b1f}
+.ads-sub{margin:0;text-align:center;font:600 13px/1.3 var(--f-body);border-block:3px double #1b1b1f;padding:5px 0}
+.ads-cta{display:block;margin:10px 0 16px;background:#1b1b1f;color:#ffe14d;text-align:center;font:800 clamp(20px,4.4vw,32px)/1.05 var(--f-display);padding:9px 8px 8px;text-decoration:none;letter-spacing:.01em;overflow-wrap:anywhere}
+.ads-cta small{display:block;font:700 11.5px/1.3 var(--f-body);color:#fff;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
+.ads-cta:hover{background:#d9202a;color:#fff}
+.ads-grid{display:grid;grid-template-columns:1.12fr 1fr;gap:14px 12px}
+.ad{position:relative;padding:11px 12px 10px;border:3px solid #1b1b1f;background:#f9f4e4}
+.ad .kick{display:block;font:800 12px/1 var(--f-display);letter-spacing:.16em;color:#d9202a}
+.ad h3{font:800 clamp(20px,3.5vw,26px)/1 var(--f-display);text-transform:uppercase;margin:5px 0 9px;padding-right:62px;text-wrap:balance}
+.ad p{margin:0 0 6px;font-size:13.5px;line-height:1.4}
+.ad p b{font:800 11px/1 var(--f-display);text-transform:uppercase;letter-spacing:.08em;background:#1b1b1f;color:#f9f4e4;padding:2px 5px 1px;margin-right:6px}
+.ad .badge{position:absolute;right:-9px;top:-13px;width:74px;height:74px;display:grid;place-items:center;text-align:center;padding:12px;background:#d9202a;color:#fff;font:800 12.5px/1 var(--f-display);transform:rotate(12deg);clip-path:polygon(100.0% 50.0%,88.0% 58.7%,95.0% 71.7%,80.5% 74.3%,81.2% 89.1%,66.9% 85.1%,61.1% 98.7%,50.0% 89.0%,38.9% 98.7%,33.1% 85.1%,18.8% 89.1%,19.5% 74.3%,5.0% 71.7%,12.0% 58.7%,0.0% 50.0%,12.0% 41.3%,5.0% 28.3%,19.5% 25.7%,18.8% 10.9%,33.1% 14.9%,38.9% 1.3%,50.0% 11.0%,61.1% 1.3%,66.9% 14.9%,81.2% 10.9%,80.5% 25.7%,95.0% 28.3%,88.0% 41.3%)}
+.ad-2{border:6px double #1b1b1f}
+.ad-2 .badge{background:#1b1b1f;color:#ffe14d;transform:rotate(-9deg)}
+.ad-3{border:3px dashed #1b1b1f;background:#fff6b8}
+.ad-4{background:#1b1b1f;color:#f9f4e4}
+.ad-4 .kick{color:#ffe14d}
+.ad-4 p b{background:#ffe14d;color:#1b1b1f}
+.ad-4 .badge{background:#ffe14d;color:#1b1b1f;transform:rotate(-12deg)}
+.ad.on{outline:6px solid #ffe14d;outline-offset:3px}
+.ads-foot{font:600 11px/1.4 var(--f-body);text-align:center;margin:12px 0 0;letter-spacing:.06em;text-transform:uppercase;border-top:1px solid #1b1b1f;padding-top:6px}
+@media (max-width:600px){.ads-grid{grid-template-columns:1fr}.ads-head span:nth-child(2){display:none}}
 .board .mast{color:#d9433f}
 .board .no{color:#1f4fa3}
 .board .dl{border-color:#1f4fa3;color:#1f4fa3}
 .board li.on{background:#fff3c4;outline:8px solid #fff3c4}
-.board .cta{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:14px 0 0}
+.board .intro{margin:0 0 12px;font-size:15px;line-height:1.45}
+.board .no{grid-row:1 / span 4}
+.board .hl{font-size:19px}
+.board li:first-child .hl{font-size:19px}
+.board .pill{justify-self:start;margin:4px 0 5px;font-size:12px;font-weight:600;letter-spacing:.02em;color:#1f4fa3;border:1.5px solid #1f4fa3;border-radius:999px;padding:2px 9px}
+.board .wy{font-size:14px;line-height:1.45;color:#262b3f}
+.board .wy b{font-weight:600;color:#d9433f}
+.board .cta{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:0 0 16px}
 .board .cta a{font:800 17px/1 var(--f-display);color:#fff;background:#d9433f;padding:11px 16px 9px;border-radius:8px;text-decoration:none;box-shadow:3px 3px 0 #262b3f}
 .board .cta span{font-size:14px;font-weight:600}
 header .contact{display:flex;flex-wrap:wrap;gap:6px 16px;margin:4px 0 0;font-size:15px;font-weight:600}
@@ -205,23 +305,27 @@ header .contact a{color:var(--head);text-underline-offset:3px}
   <div class="top">
   <header>
     <h1>Tai Vong</h1>
-    <p class="lede">Backend and platform engineer, technical lead. I build the parts nobody demos. Walk the street: each house is a place I worked, each floor a project, each wire a technology.</p>
-    <p class="contact"><a href="mailto:chitai.vct@gmail.com">chitai.vct@gmail.com</a><a href="https://www.linkedin.com/in/vchitai/">LinkedIn</a><a href="https://github.com/vchitai">GitHub</a><a href="https://medium.com/@vchitai">Medium</a></p>
+    <p class="lede">Backend and platform engineer, technical lead. I build the parts nobody demos.<span class="more"> Every building on this street is something I built or helped build: each floor a system that shipped, each wire a technology holding it up.</span></p>
+    <p class="contact"><a href="mailto:chitai.vct@gmail.com"><span class="full">chitai.vct@gmail.com</span><span class="short">Email</span></a><a href="https://www.linkedin.com/in/vchitai/">LinkedIn</a><a href="https://github.com/vchitai">GitHub</a><a href="https://medium.com/@vchitai">Medium</a></p>
   </header>
   <div class="row" id="khu-row"><span class="lbl">Go to</span></div>
+  <details id="filters" open>
+    <summary>Filters</summary>
   <div class="row" id="tech-row"><span class="lbl">Wires</span></div>
   <div class="row" id="dom-row"><span class="lbl">Domain</span></div>
+  </details>
     <div class="row" id="back-row" hidden><button type="button" id="back">← Back to main street</button></div>
   </div>
     <div class="stage" id="stage-main" aria-label="Main street. Scroll sideways to walk along it."></div>
     <div class="stage" id="stage-alley" aria-label="Alley 42. Scroll sideways to walk along it." hidden></div>
     <div class="stage" id="stage-vl" aria-label="Velocity Labs lane. Scroll sideways to walk along it." hidden></div>
     <div class="news" id="news" hidden>
-      <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mast">
+      <div class="sheet paperfront" role="dialog" aria-modal="true" aria-labelledby="mast">
         <button type="button" class="x-top" aria-label="Close">✕</button>
+        <div class="ads-head"><span>Số đặc biệt</span><span>Go · gRPC · AI</span><span id="dl-n"></span></div>
         <p class="mast" id="mast">BÁO TECH</p>
-        <div class="dl"><span>Writing by Tai Vong</span><span id="dl-n"></span></div>
-        <ol id="arts"></ol>
+        <p class="ads-sub">Tin từ phố giấy · writing by Tai Vong</p>
+        <div class="np" id="arts"></div>
         <button type="button" class="x">Fold the paper</button>
       </div>
     </div>
@@ -238,23 +342,33 @@ header .contact a{color:var(--head);text-underline-offset:3px}
       </div>
     </div>
     <div class="news" id="card" hidden>
-      <div class="sheet card" role="dialog" aria-modal="true" aria-labelledby="c-mast">
+      <div class="sheet postcard" role="dialog" aria-modal="true" aria-labelledby="c-mast">
         <button type="button" class="x-top" aria-label="Close">✕</button>
-        <p class="where" style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#1f4fa3;margin:0 0 2px">DANH THIẾP · CONTACT</p>
-        <p class="mast" id="c-mast">Tai Vong</p>
-        <p class="sub">Backend &amp; Platform Engineer · Technical Lead · Ho Chi Minh City</p>
-        <ol id="links"></ol>
+        <div class="pc">
+          <div class="pc-left">
+            <p class="pc-kick">Bưu thiếp · Postcard</p>
+            <p class="mast" id="c-mast">Tai Vong</p>
+            <p class="pc-role">Backend &amp; Platform Engineer · Technical Lead</p>
+            <p class="pc-msg">Gửi từ Sài Gòn. Write to me about a system that needs fixing, a role, or a talk.</p>
+          </div>
+          <div class="pc-right">
+            <div class="pc-post" aria-hidden="true"><span class="pc-mark">HO CHI MINH<br>CITY</span><span class="pc-stamp"><b>TAI</b>Sài Gòn</span></div>
+            <ul class="pc-lines" id="links"></ul>
+          </div>
+        </div>
         <button type="button" class="x">Put the card away</button>
       </div>
     </div>
     <div class="news" id="board" hidden>
-      <div class="sheet board" role="dialog" aria-modal="true" aria-labelledby="b-mast">
+      <div class="sheet board ads" role="dialog" aria-modal="true" aria-labelledby="b-mast">
         <button type="button" class="x-top" aria-label="Close">✕</button>
+        <div class="ads-head"><span>Rao vặt</span><span>Classifieds · Backend</span><span>Trang 1</span></div>
         <p class="mast" id="b-mast">SỬA BACKEND</p>
-        <div class="dl"><span>Backend repair shop</span><span>Ask for a quote</span></div>
-        <ol id="svc"></ol>
-        <p class="cta"><a href="mailto:chitai.vct@gmail.com?subject=Project%20inquiry%20via%20vchitai.github.io">Call the mechanic</a><span>chitai.vct@gmail.com</span></p>
-        <button type="button" class="x">Close the board</button>
+        <p class="ads-sub">Thợ lành nghề · 9 years of Go and gRPC · Ho Chi Minh City</p>
+        <a class="ads-cta" href="mailto:chitai.vct@gmail.com?subject=Project%20inquiry%20via%20vchitai.github.io"><small>Gọi thợ ngay · call the mechanic</small>chitai.vct@gmail.com</a>
+        <div class="ads-grid" id="svc"></div>
+        <p class="ads-foot">Nhận làm theo dự án, hợp đồng hoặc full-time · project, contract or full-time</p>
+        <button type="button" class="x">Fold the paper</button>
       </div>
     </div>
 </div>
@@ -324,12 +438,20 @@ const CONTACT=[
   {name:'Medium',handle:'medium.com/@vchitai',url:'https://medium.com/@vchitai'}
 ];
 const SERVICES=[
-  {key:'check',name:'Engine check',what:'Backend reliability diagnostic · 5 days',out:'Investigation, failure map, remediation plan.'},
-  {key:'overhaul',name:'Full overhaul',what:'Go/gRPC production hardening · 2 to 4 week sprint',out:'Go services stabilised, observable and production-ready.'},
-  {key:'move',name:'Moving truck',what:'Migrations that cannot lose a row',out:'Not one row left behind.'},
-  {key:'oncall',name:'Mechanic on call',what:'Fractional technical lead',out:'Contract engagements, expert calls, speaking and workshops.'}
+  {key:'check',kick:'KHÁM MÁY',badge:'5 DAYS',title:'Find out why your backend keeps failing',tag:'Reliability diagnostic · 5 days',
+   when:'Outages or slowdowns keep coming back and nobody is sure of the cause.',
+   get:'A clear map of where the system fails, and a fix plan in priority order.'},
+  {key:'overhaul',kick:'ĐẠI TU',badge:'2–4 WEEKS',title:'Make a Go service safe to run in production',tag:'Production hardening · 2 to 4 weeks',
+   when:'A Go or gRPC service works in testing but is fragile under real traffic.',
+   get:'The service stabilised, with monitoring that shows problems before your users do.'},
+  {key:'move',kick:'CHUYỂN NHÀ',badge:'0 ROWS LOST',title:'Move to a new system without losing data',tag:'Migration',
+   when:'You are changing database, platform or architecture and cannot afford gaps.',
+   get:'A migration planned and carried out so that not one row is lost.'},
+  {key:'oncall',kick:'THỢ CẢ',badge:'PART-TIME',title:'A senior technical lead, part-time',tag:'Fractional technical lead',
+   when:'The team needs senior direction but not another full-time hire.',
+   get:'Hands-on leadership by contract. Also expert calls, talks and workshops.'}
 ];
-const VL={signBg:'--indigo',signFg:'--cream',vl:1,trim:'--cream'};
+const VL={signBg:'#170f2e',signFg:'#58f5ff',vl:1,trim:'--cream'};   /* neon signs on dark boards */
 const HOUSE={
   garage:{w:196,floors:2,wall:'--cream',trim:'--steel',door:'--indigo',awn:'--red',signBg:'--plate',signFg:'#fff',sign:'SỬA BACKEND',roof:'ton',shop:'garage',special:'board'},
   andpad:{w:196,floors:4,wall:'--cream',trim:'--steel',door:'--teal',awn:'--orange',signBg:'--orange',signFg:'--s-ink',sign:'ANDPAD',roof:'none',shop:'bricks',scaffold:1},
@@ -338,12 +460,12 @@ const HOUSE={
   be:{w:176,floors:3,wall:'--teal',trim:'--cream',door:'--yellow',awn:'--yellow',signBg:'--s-ink',signFg:'--cream',sign:'BE GROUP',roof:'tank',shop:'helmets',banners:['BIZOPS','BE PLATFORM']},
   teko:{w:190,floors:4,wall:'--yellow',trim:'--cream',door:'--red',awn:'--red',signBg:'--red',signFg:'--cream',sign:'TEKO',roof:'ton',shop:'shelves',banners:['ACCOUNT INTEGRATION','MARKET EYES','ORDER MANAGEMENT']},
   ailab:{w:172,floors:3,wall:'--steel',trim:'--cream',door:'--indigo',awn:'--indigo',signBg:'--s-ink',signFg:'--cream',sign:'AI LAB',roof:'mast',shop:'books'},
-  yuzu:{...VL,w:176,floors:4,wall:'--indigo',door:'--yellow',awn:'--yellow',signBg:'--yellow',signFg:'--s-ink',sign:'YUZU MONEY',roof:'ton',shop:'yuzu'},
+  yuzu:{...VL,w:186,floors:4,wall:'--red',trim:'--yellow',door:'--yellow',awn:'--yellow',signBg:'#b3121d',signFg:'#ffd34d',sign:'TIỆM VÀNG YUZU',roof:'ton',shop:'gold'},
   perp:{...VL,w:172,floors:3,wall:'--teal',door:'--indigo',awn:'--indigo',sign:'PERP CEX',roof:'mast',shop:'chart'},
-  btse:{...VL,w:140,floors:2,wall:'--cream',trim:'--steel',door:'--indigo',awn:'--indigo',sign:'BTSE INVOICE',roof:'none',shop:'receipts'},
+  btse:{...VL,signFg:'#ff5fd2',w:140,floors:2,wall:'--cream',trim:'--steel',door:'--indigo',awn:'--indigo',sign:'BTSE INVOICE',roof:'none',shop:'receipts'},
   collectible:{...VL,w:140,floors:2,wall:'--pink',door:'--indigo',awn:'--indigo',sign:'MY COLLECTIBLE',roof:'tank',shop:'cards'},
-  caller:{...VL,w:140,floors:2,wall:'--red',door:'--indigo',awn:'--cream',sign:'PREDICTIVE CALLER',roof:'mast',shop:'phones'},
-  novaland:{...VL,w:140,floors:2,wall:'--yellow',door:'--indigo',awn:'--indigo',sign:'NOVALAND LOYALTY',roof:'garden',shop:'box'},
+  caller:{...VL,signFg:'#ffd34d',w:140,floors:2,wall:'--red',door:'--indigo',awn:'--cream',sign:'PREDICTIVE CALLER',roof:'mast',shop:'phones'},
+  novaland:{...VL,signFg:'#ff5fd2',w:140,floors:2,wall:'--yellow',door:'--indigo',awn:'--indigo',sign:'NOVALAND LOYALTY',roof:'garden',shop:'box'},
   pokerage:{...VL,w:140,floors:2,wall:'--orange',door:'--indigo',awn:'--indigo',sign:'POKERAGE',roof:'none',shop:'cards'},
   grpcx:{w:180,floors:3,wall:'--teal',trim:'--cream',door:'--indigo',awn:'--indigo',signBg:'--s-ink',signFg:'--cream',sign:'GRPCX',roof:'mast',shop:'shelves'},
   oss:{w:186,floors:2,wall:'--cream',trim:'--steel',door:'--red',awn:'--red',signBg:'--red',signFg:'--cream',sign:'TIỆM ĐỒ NGHỀ',roof:'ton',shop:'garage'},
@@ -505,6 +627,8 @@ function shop(g,h,oY){
     case 'garage': [0,1,2].forEach(k=>{blob(g,x+38,GY-10-k*15,13,'--s-ink',{sh:1.5,n:12,wob:.03});E('circle',{cx:x+38,cy:GY-10-k*15,r:5,fill:'--steel'},g)});
       line(g,x+70,oY+10,x+w-24,oY+10,2,'--cream',.8); [0,1,2,3].forEach(k=>{const tx=x+80+k*((w-110)/3.4);line(g,tx,oY+12,tx,oY+34,3,'--steel');blob(g,tx,oY+14,5,'--steel',{sh:0,n:6})});
       paper(g,rc(x+w-70,GY-22,48,22),'--red',{sh:1.5,amp:.3}); break;
+    case 'gold': for(let r=0;r<3;r++) for(let k=0;k<3-r;k++){const bx=cx-44+k*30+r*15,by=GY-14-r*13;paper(g,[[bx+3,by],[bx+25,by],[bx+28,by+12],[bx,by+12]],'#ffd34d',{sh:1.5,amp:.3});line(g,bx+8,by+4,bx+20,by+4,1.3,'#fff6c2',.95)}
+      paper(g,rc(x+18,oY+8,46,17),'#b3121d',{sh:1.5,amp:.3}); label(g,x+41,oY+21,'9999',11,'#ffd34d'); break;
     case 'chart': [18,34,26,46,38,58].forEach((hh,k)=>{const bx=x+30+k*((w-66)/5);line(g,bx+5,GY-hh-16,bx+5,GY-4,1.6,'--cream');paper(g,rc(bx,GY-hh-8,10,hh*.6),k%3===1?'--red':'--leaf',{sh:1,amp:.3})}); break;
     case 'cards': [-14,0,14].forEach((a,k)=>{const cg=E('g',{transform:`rotate(${a} ${cx} ${GY-10})`},g);paper(cg,rc(cx-12,GY-52,24,36),'--cream',{sh:1.5,amp:.3});blob(cg,cx,GY-34,5,k===1?'--red':'--s-ink',{sh:0,n:8,wob:.04})}); break;
     default: paper(g,rc(x+20,GY-26,w-40,26),pick(['--brown','--indigo','--teal']),{sh:1.5});
@@ -820,7 +944,7 @@ const vl=new Scene('vl',document.getElementById('stage-vl'),PLAN_VL);
 })();
 
 /* ================= build: side lanes (alley 42, Velocity Labs) ================= */
-function buildLane(sc,signs,props){
+function buildLane(sc,signs,props,lights=['--yellow','--red']){
   const W=sc.W;
   drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,230,380);
   const L=sc.layer(1,W); sc.L=L;
@@ -832,7 +956,7 @@ function buildLane(sc,signs,props){
   const sg=E('g',{},L);   /* string lights across the lane */
   for(let a=40;a<W-100;a+=300){const b=a+300,y0=150+j(14);
     E('path',{d:`M${a} ${y0} Q${a+150} ${y0+52} ${b} ${y0}`,fill:'none',stroke:'--s-ink','stroke-width':1.3},sg);
-    for(let k=1;k<10;k++){const t=k/10;E('circle',{cx:a+300*t,cy:y0+3+104*t*(1-t),r:4,fill:k%2?'--yellow':'--red',stroke:'--s-ink','stroke-width':.8},sg)}}
+    for(let k=1;k<10;k++){const t=k/10;E('circle',{class:'neon',cx:a+300*t,cy:y0+3+104*t*(1-t),r:4,fill:lights[k%2],stroke:'--s-ink','stroke-width':.8},sg)}}
   const pr=E('g',{},L), at=id=>sc.proj.find(p=>p.id===id);
   props(pr,at);
   for(let x=200;x<W;x+=260){const g=E('g',{class:'boil'},pr);paper(g,[[x,GY+10],[x+22,GY+10],[x+18,GY+30],[x+4,GY+30]],'--brown',{sh:2,amp:.3});blob(g,x+11,GY+2,13,'--leaf',{sh:2,n:10});blob(g,x+4,GY-8,9,'--leaf2',{sh:1.5,n:9})}
@@ -847,8 +971,14 @@ buildLane(vl,['CÀ PHÊ','IN ẤN','VĂN PHÒNG','CƠM VĂN PHÒNG'],(pr,at)=>{
   [[at('yuzu').x+100,'--red'],[at('caller').x+30,'--indigo'],[at('novaland').x+40,'--teal']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
   /* founding-team plaque by the gate */
   const k=vl.khu[0], g=E('g',{class:'boil'},pr);
-  paper(g,rc(k.x+18,GY-150,88,40),'--cream',{sh:2.5,amp:.4}); label(g,k.x+62,GY-134,'FOUNDING TEAM',8.6,'--s-ink'); label(g,k.x+62,GY-120,'since 2021',9,'--red');
-});
+  paper(g,rc(k.x+18,GY-150,88,40),'#170f2e',{sh:2.5,amp:.4}); label(g,k.x+62,GY-134,'FOUNDING TEAM',8.6,'#58f5ff'); label(g,k.x+62,GY-120,'since 2021',9,'#ffd34d');
+  /* vertical neon sign, the kind that hangs off a shophouse */
+  const vx=at('perp').x+at('perp').w+38, v=E('g',{class:'boil'},pr);
+  paper(v,rc(vx,GY-338,34,150),'#170f2e',{sh:3,amp:.5}); ['W','E','B','3'].forEach((c,i)=>label(v,vx+17,GY-306+i*34,c,24,i%2?'#ff5fd2':'#58f5ff'));
+  line(v,vx+17,GY-188,vx+17,GY-170,2,'--s-ink');
+  const cx2=at('collectible').x+10, q=E('g',{class:'boil'},pr);
+  paper(q,rc(cx2,GY-36,70,22),'#170f2e',{sh:2,amp:.4}); label(q,cx2+35,GY-20,'GM · WAGMI',9,'#58f5ff');
+},['#58f5ff','#ff5fd2']);
 
 /* ================= UI ================= */
 const $=id=>document.getElementById(id);
@@ -875,14 +1005,27 @@ function fill(ol,rows){ol.replaceChildren(...rows.map((a,i)=>{
   const li=document.createElement('li'), no=document.createElement('span'), hl=document.createElement(a.url?'a':'span'), meta=document.createElement('span');
   no.className='no'; no.textContent=i+1; hl.className='hl'; hl.textContent=a.title; if(a.url) hl.href=a.url;
   meta.className='meta'; meta.textContent=a.meta; if(a.key) li.dataset.key=a.key; li.append(no,hl,meta); return li}))}
-fill($('arts'),ARTICLES.map(a=>({title:a.title,url:a.url,meta:a.tag+' · '+a.date})));
-fill($('links'),CONTACT.map(c=>({title:c.name,url:c.url,meta:c.handle})));
-fill($('svc'),SERVICES.map(v=>({title:v.name+': '+v.what,meta:v.out,key:v.key})));
-$('dl-n').textContent=ARTICLES.length+' pieces';
+(function(){ /* front page: one lead story, two seconds, the rest as an archive column */
+  const mk=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
+  const story=(a,cls,kick)=>{const el=mk('article',cls);if(kick)el.append(mk('span','kick',kick));
+    const h=mk(a.url?'a':'span','hd',a.title);if(a.url)h.href=a.url;el.append(h,mk('span','by',a.tag+' · '+a.date));return el};
+  const box=$('arts'), sec=mk('div','np-two'), arch=mk('div','np-arch');
+  box.append(story(ARTICLES[0],'np-lead','Tin nóng · latest'));
+  ARTICLES.slice(1,3).forEach(a=>sec.append(story(a,'np-sec')));
+  ARTICLES.slice(3).forEach(a=>arch.append(story(a,'np-old')));
+  box.append(sec,mk('p','np-rule','Tin cũ · from the archive'),arch);
+})();
+$('links').replaceChildren(...CONTACT.map(c=>{const li=document.createElement('li'),lb=document.createElement('span'),a=document.createElement('a');lb.textContent=c.name;a.textContent=c.handle;a.href=c.url;li.append(lb,a);return li}));
+$('svc').replaceChildren(...SERVICES.map((v,i)=>{
+  const ad=document.createElement('article'), mk=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;e.textContent=txt;return e};
+  const row=(lbl,txt)=>{const e=document.createElement('p');e.append(mk('b','',lbl),txt);return e};
+  ad.className='ad ad-'+(i+1); ad.dataset.key=v.key;
+  ad.append(mk('span','badge',v.badge),mk('span','kick',v.kick),mk('h3','',v.title),row('When',v.when),row('You get',v.get)); return ad}));
+$('dl-n').textContent=ARTICLES.length+' bài';
 function openSheet(id,ret,key){
   if(busy||(cur!==main&&id!=='house')) return; closeSheets();
   const o=$(id); o.hidden=false; sheetRet=ret;
-  o.querySelectorAll('li').forEach(li=>li.classList.toggle('on',!!key&&li.dataset.key===key));
+  o.querySelectorAll('[data-key]').forEach(li=>li.classList.toggle('on',!!key&&li.dataset.key===key));
   o.querySelector('.x-top').focus({preventScroll:true});
   if(!still) o.firstElementChild.animate([{transform:'perspective(900px) rotateX(-84deg)'},{transform:'perspective(900px) rotateX(0deg)'}],{duration:340,easing:'steps(5,end)'});
 }
@@ -902,7 +1045,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape') closeSheets()});
     cols.append(s)};
   const house=id=>{const d=DATA[id];return {t:d.name,role:d.role,desc:d.desc,floors:d.floors,tags:[...d.stack,...(d.more||[])]}};
   const ids=k=>Object.keys(DATA).filter(id=>DATA[id].khu===k);
-  sec('Services',SERVICES.map(v=>({t:v.name,role:v.what,desc:v.out})));
+  sec('Services',SERVICES.map(v=>({t:v.title,role:v.tag,desc:v.when+' '+v.get})));
   sec('Career',ids('career').map(house));
   sec('Velocity Labs · founding member since 2021',ids('vl').map(house));
   sec('Personal projects and open source',ids('alley').map(house));
@@ -954,7 +1097,7 @@ function swap(to){
   if(from!==main&&to!==main){busy=false;return}
   const land=()=>{
     from.stage.hidden=true; to.stage.hidden=false; sceneEl.dataset.where=to.name; cur=to;
-    $('khu-row').hidden=$('tech-row').hidden=$('dom-row').hidden=to!==main; $('back-row').hidden=to===main;
+    $('khu-row').hidden=$('filters').hidden=to!==main; $('back-row').hidden=to===main;
     to.layout(); if(to===main) main.scrollToX(main.doorX[from.name],false);
     select(to.sel||to.proj[0].id);
     if(still){busy=false;return}
@@ -983,6 +1126,11 @@ function frame(){
 }
 if(!still) setInterval(frame,1000/12);
 
+/* filters stay open on wide screens and fold behind one button on phones */
+const mqPhone=matchMedia('(max-width:640px)');
+$('filters').open=!mqPhone.matches;
+mqPhone.addEventListener('change',()=>{$('filters').open=!mqPhone.matches;cur.layout()});
+$('filters').addEventListener('toggle',()=>cur.layout());
 window.addEventListener('resize',()=>cur.layout());
 main.layout(); select('andpad'); setFilter(null); main.flatten(false);
 </script>
