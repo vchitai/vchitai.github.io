@@ -83,7 +83,7 @@ h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,60px)
   --s-ink:#262b3f; --shadow:rgba(38,43,63,.26); --glass:#35506e; --steel:#c9d3d8;
   --leaf:#2f8f6b; --leaf2:#1f6f5c; --orange:#f29f4b; --pink:#ee6f84; --teal:#2fa39a; --yellow:#f3c54e;
   --cream:#fbf1d6; --indigo:#3b4a7a; --red:#d9433f; --brown:#7a5a44; --spark:#ffffff; --dark:#1f2336; --skin:#e9b48c;
-  --n1:#e6dbc6; --n2:#cbdad1; --n3:#dcc9c2; --n4:#d0d4df; --alleybg:#4f7f86; --head:#262b3f; --head-soft:#46506a;
+  --n1:#e6dbc6; --n2:#cbdad1; --n3:#dcc9c2; --n4:#d0d4df; --alleybg:#4f7f86; --head:#262b3f; --head-soft:#46506a; --landmark:#7ab8ad; --brick:#cf6f60;
   position:relative;overflow:hidden;background:var(--sky);perspective:1600px;
 }
 .scene[data-where="alley"]{--sky:#f6d8a8;--far:#ecbf92;--mid:#d99a78;--mid-win:#bf7f62;--cloud:#fff3dc}
@@ -94,7 +94,7 @@ h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,60px)
   --s-ink:#141729; --shadow:rgba(8,10,25,.45); --glass:#ffd76a; --steel:#8e99b3;
   --leaf:#1f6a5a; --leaf2:#16483f; --orange:#b9743f; --pink:#b5566f; --teal:#237a78; --yellow:#b8964a;
   --cream:#d9cfb8; --indigo:#2c3760; --red:#a8363a; --brown:#54404a; --spark:#ffe27a; --dark:#f2b84b; --skin:#b98d72;
-  --n1:#7d7890; --n2:#66788a; --n3:#7a6a80; --n4:#666c8c; --alleybg:#20264a; --head:#f6efdc; --head-soft:#c9c7dc;
+  --n1:#7d7890; --n2:#66788a; --n3:#7a6a80; --n4:#666c8c; --alleybg:#20264a; --head:#f6efdc; --head-soft:#c9c7dc; --landmark:#3b4682; --brick:#6d4058;
 }
 .scene[data-where="vl"][data-night="1"]{--sky:#0f0926;--far:#1b1244;--mid:#27195c;--mid-win:#58f5ff;--cloud:#2c2166;--sun:#58f5ff;--glass:#ffe14d;--dark:#ff8a3c;--walk:#262045;--curb:#1b1634;--n1:#34305c;--n2:#2c3760;--n3:#3d2d58;--n4:#2b3158}
 #stage-vl .sgn{filter:drop-shadow(0 0 3px rgba(255,95,210,.8))}
@@ -172,6 +172,29 @@ button.chip i{display:inline-block;width:10px;height:10px;border-radius:50%;marg
 .sheet .x{margin-top:14px}
 .sheet .x-top{position:sticky;top:-6px;float:right;z-index:2;margin:-6px -8px 6px 12px;padding:8px 11px;font-size:16px;line-height:1}
 .sheet.board{background:#fdfbf3;border:6px solid #1f4fa3;background-image:none}
+/* a house opens as an architect's blueprint: grid paper, elevation of the floors, materials, title block */
+.sheet.house.bp{width:min(740px,100%);border:0;color:#eaf2ff;padding:18px 22px 20px;background-color:#1c4ea1;
+  background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:60px 60px,60px 60px,12px 12px,12px 12px;outline:2px solid rgba(255,255,255,.75);outline-offset:-9px}
+.bp-head{display:flex;justify-content:space-between;gap:10px;font:800 11px/1 var(--f-display);letter-spacing:.14em;text-transform:uppercase;padding:4px 48px 7px 0;border-bottom:1.5px dashed rgba(255,255,255,.75)}
+.sheet.house.bp .mast{color:#fff;font-size:clamp(30px,6vw,50px);line-height:1;margin:12px 0 6px;text-align:left}
+.bp-desc{margin:0 0 14px;font-size:15px;line-height:1.45;max-width:62ch}
+.bp-body{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:start}
+.bp-body.solo{grid-template-columns:1fr}
+.bp-cap{margin:0 0 7px;font:800 11px/1 var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:#ffe14d}
+.sheet.house.bp .floors{list-style:none;margin:0;padding:0;display:block}
+.sheet.house.bp .floors li{display:grid;grid-template-columns:30px 1fr;gap:2px 10px;padding:8px 10px;border:1.5px solid rgba(255,255,255,.85);border-bottom:0;font-size:13.5px;line-height:1.4;color:#eaf2ff}
+.sheet.house.bp .floors .lv{grid-row:1 / span 2;align-self:center;font:800 15px/1 var(--f-display);color:#ffe14d}
+.sheet.house.bp .floors b{font:800 15.5px/1.15 var(--f-display);color:#fff}
+.bp-ground{height:11px;border:1.5px solid rgba(255,255,255,.85);background:repeating-linear-gradient(135deg,rgba(255,255,255,.75) 0 2px,transparent 2px 7px)}
+.sheet.house.bp .chips li{border-color:rgba(255,255,255,.85);color:#fff}
+.bp-block{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;line-height:1.4}
+.bp-block th,.bp-block td{border:1.5px solid rgba(255,255,255,.85);padding:6px 8px;text-align:left;vertical-align:top}
+.bp-block th{width:40%;font:800 10.5px/1.25 var(--f-display);letter-spacing:.1em;text-transform:uppercase;color:#ffe14d}
+.sheet.house.bp .visit{color:#cfe0ff;margin-top:16px}
+.sheet.house.bp .visit a{background:#ffe14d;color:#1b1b1f;box-shadow:3px 3px 0 #0e2c63}
+.sheet.house.bp .visit a:hover{background:#fff}
+@media (max-width:600px){.bp-body{grid-template-columns:1fr}}
 /* the newsstand opens a newspaper front page */
 .sheet.paperfront{width:min(760px,100%);color:#1b1b1f;padding:12px 20px 18px;background:#f2ecd9;background-image:radial-gradient(rgba(0,0,0,.06) 1px,transparent 1.3px);background-size:5px 5px}
 .sheet.paperfront .mast{font-size:clamp(44px,11vw,86px);line-height:.9;letter-spacing:.02em;margin:8px 0 4px;color:#1b1b1f}
@@ -259,6 +282,9 @@ header .contact a{color:var(--head);text-underline-offset:3px}
 .house p{margin:0 0 8px}
 .house ul.floors{margin:0 0 10px;padding-left:20px}
 .house ul.floors b{font-weight:600}
+.house .visit{margin:12px 0 0;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:13.5px;color:#5a6076}
+.house .visit a{font:800 16px/1 var(--f-display);color:#fff;background:#1f4fa3;padding:10px 14px 8px;border-radius:8px;text-decoration:none;box-shadow:3px 3px 0 #262b3f}
+.house .visit a:hover{background:#2a5fc0}
 .house .chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:2px 0 0}
 .house .chips li{display:block;font-size:13px;font-weight:600;padding:4px 9px;border-radius:999px;border:1.5px solid #262b3f}
 .house ul.floors li{display:list-item;padding:0;border:0}
@@ -317,7 +343,7 @@ header .contact a{color:var(--head);text-underline-offset:3px}
     <div class="row" id="back-row" hidden><button type="button" id="back">← Back to main street</button></div>
   </div>
     <div class="stage" id="stage-main" aria-label="Main street. Scroll sideways to walk along it."></div>
-    <div class="stage" id="stage-alley" aria-label="Alley 42. Scroll sideways to walk along it." hidden></div>
+    <div class="stage" id="stage-alley" aria-label="Apartment block 42. Scroll sideways to look along it." hidden></div>
     <div class="stage" id="stage-vl" aria-label="Velocity Labs lane. Scroll sideways to walk along it." hidden></div>
     <div class="news" id="news" hidden>
       <div class="sheet paperfront" role="dialog" aria-modal="true" aria-labelledby="mast">
@@ -330,15 +356,28 @@ header .contact a{color:var(--head);text-underline-offset:3px}
       </div>
     </div>
     <div class="news" id="house" hidden>
-      <div class="sheet house" role="dialog" aria-modal="true" aria-labelledby="h-name">
+      <div class="sheet house bp" role="dialog" aria-modal="true" aria-labelledby="h-name">
         <button type="button" class="x-top" aria-label="Close">✕</button>
-        <p class="where" id="h-where"></p>
+        <div class="bp-head"><span>Bản vẽ · Blueprint</span><span id="h-where"></span></div>
         <p class="mast" id="h-name"></p>
-        <p class="sub" id="h-role"></p>
-        <p id="h-desc"></p>
-        <ul class="floors" id="h-floors"></ul>
-        <ul class="chips" id="h-chips"></ul>
-        <button type="button" class="x">Close</button>
+        <p class="bp-desc" id="h-desc"></p>
+        <div class="bp-body" id="h-body">
+          <div class="bp-elev" id="h-elev">
+            <p class="bp-cap">Mặt đứng · Elevation</p>
+            <ul class="floors" id="h-floors"></ul>
+            <div class="bp-ground"></div>
+          </div>
+          <div class="bp-side">
+            <p class="bp-cap">Vật liệu · Materials</p>
+            <ul class="chips" id="h-chips"></ul>
+            <table class="bp-block">
+              <tr><th>Vai trò · Role</th><td id="h-role"></td></tr>
+              <tr><th>Người vẽ · Drawn by</th><td>Tai Vong</td></tr>
+            </table>
+          </div>
+        </div>
+        <p class="visit"><a id="h-link" target="_blank" rel="noopener"></a><span id="h-nolink"></span></p>
+        <button type="button" class="x">Roll up the blueprint</button>
       </div>
     </div>
     <div class="news" id="card" hidden>
@@ -374,7 +413,7 @@ header .contact a{color:var(--head);text-underline-offset:3px}
 </div>
 
 <div class="wrap">
-  <p class="hint">Scroll or drag sideways. Click any house with a big sign, the repair shop, the newsstand, the alley, or me in the white hard hat. Click the sun to make it night.</p>
+  <p class="hint">Scroll or drag sideways. Click any house with a big sign, the repair shop, the newsstand, a side lane, or me in the white hard hat. Click the sun to make it night.</p>
 
 
 
@@ -388,32 +427,32 @@ header .contact a{color:var(--head);text-underline-offset:3px}
 /* ================= content: edit here ================= */
 const TECH={ 'Go':{k:0,c:['#147a9c','#6fd6ee']}, 'gRPC':{k:1,c:['#1c7d52','#74e0a8']}, 'PostgreSQL':{k:2,c:['#2f4fb0','#8fb0ff']}, 'Kubernetes':{k:3,c:['#7c35ad','#d59bff']}, 'Redis':{k:4,c:['#c9342f','#ff8a7a']}, 'Python':{k:5,c:['#a86a00','#ffd166']}, 'MySQL':{k:6,c:['#a8327a','#ff9ecb']} };
 const DOMAINS=['E-commerce','EdTech','Ride-hailing'];
-const KHU={ career:'Career', vl:'Velocity Labs', alley:'Alley 42 · personal' };
+const KHU={ career:'Career', vl:'Velocity Labs', alley:'Chung cư 42 · personal' };
 const DATA={
-  andpad:{khu:'career',dom:'Construction',name:'ANDPAD Viet Nam',role:'Software Engineer · Oct 2026 – now',desc:"Under construction. That's me in the white hard hat with the blueprint, watching the site while the team builds.",stack:['Go','gRPC','Kubernetes','Redis','MySQL']},
-  gearment:{khu:'career',dom:'E-commerce',name:'Gearment Inc.',role:'Technical Lead, then Technical Manager · 2023 – 2026',desc:'US print-on-demand and fulfillment company, millions of orders a year.',
+  andpad:{url:'https://andpad.vn/',link:'Visit ANDPAD VietNam',khu:'career',dom:'Construction',name:'ANDPAD Viet Nam',role:'Software Engineer · Oct 2026 – now',desc:"Under construction. That's me in the white hard hat with the blueprint, watching the site while the team builds.",stack:['Go','gRPC','Kubernetes','Redis','MySQL']},
+  gearment:{url:'https://gearment.com/',link:'Visit Gearment',khu:'career',dom:'E-commerce',name:'Gearment Inc.',role:'Technical Lead, then Technical Manager · 2023 – 2026',desc:'US print-on-demand and fulfillment company, millions of orders a year.',
     floors:[['Gearment Platform','Go, Kubernetes, AWS, Prometheus, OpenTelemetry.'],['Seller Portal','Go, gRPC, PostgreSQL, Kubernetes.'],['Admin Portal','Go, gRPC, PostgreSQL, Redis.']],stack:['Go','gRPC','PostgreSQL','Kubernetes','Redis'],more:['AWS','OpenTelemetry']},
-  geniebook:{khu:'career',dom:'EdTech',name:'Geniebook',role:'Technical Lead · Aug 2022 – Sep 2023 · Singapore',desc:'AI-powered EdTech platform, 300K+ students across Southeast Asia.',
+  geniebook:{url:'https://geniebook.com/',link:'Visit Geniebook',khu:'career',dom:'EdTech',name:'Geniebook',role:'Technical Lead · Aug 2022 – Sep 2023 · Singapore',desc:'AI-powered EdTech platform, 300K+ students across Southeast Asia.',
     floors:[['Genie Platform','Go, gRPC, GCP, Kubernetes.'],['GenieSmart','Go, gRPC, PostgreSQL.'],['GenieAsk','Go, WebSocket, Redis, gRPC.']],stack:['Go','gRPC','PostgreSQL','Kubernetes','Redis'],more:['GCP','WebSocket']},
-  be:{khu:'career',dom:'Ride-hailing',name:'Be Group',role:'Senior Software Engineer, then Software Engineer Lead · 2021 – 2022',desc:"Vietnam's super-app: ride-hailing, delivery and fintech, 25M+ users.",
+  be:{url:'https://be.com.vn/',link:'Visit Be',khu:'career',dom:'Ride-hailing',name:'Be Group',role:'Senior Software Engineer, then Software Engineer Lead · 2021 – 2022',desc:"Vietnam's super-app: ride-hailing, delivery and fintech, 25M+ users.",
     floors:[['Be Platform','Go, gRPC, Kubernetes, GCP, Redis, MySQL.'],['BizOps','Go, gRPC, WebRTC, MySQL, Redis.']],stack:['Go','gRPC','Kubernetes','Redis','MySQL'],more:['GCP','WebRTC']},
-  teko:{khu:'career',dom:'E-commerce',name:'Teko Vietnam',role:'Backend Software Engineer · 2018 – 2021',desc:'Core tech arm of VNLife: e-commerce, payments, logistics.',
+  teko:{url:'https://teko.vn/',link:'Visit Teko',khu:'career',dom:'E-commerce',name:'Teko Vietnam',role:'Backend Software Engineer · 2018 – 2021',desc:'Core tech arm of VNLife: e-commerce, payments, logistics.',
     floors:[['Order Management System','Python, Go, MySQL, RabbitMQ, Kafka.'],['Market Eyes','Python, Scrapy, Elasticsearch.'],['Account Integration System','Python, Go, SQL Server, MySQL.']],stack:['Go','Python','MySQL'],more:['Kafka','RabbitMQ','Elasticsearch']},
-  ailab:{khu:'career',dom:'Research',name:'VNUHCM University of Science, AI Lab',role:'Software Engineer (contract) · 2017 – 2018',desc:'Computer vision and education technology research.',
+  ailab:{url:'https://ailab.hcmus.edu.vn/',link:'Visit the AI Lab',khu:'career',dom:'Research',name:'VNUHCM University of Science, AI Lab',role:'Software Engineer (contract) · 2017 – 2018',desc:'Computer vision and education technology research.',
     floors:[['Multi-face tracking system','published in IJACSA, 2020.'],['Video segmentation using keywords','SPIE Proceedings, 2018.'],['Python self-study textbook','VNU-HCM Press, 2018.']],stack:['Python','MySQL'],more:['Computer vision','Machine learning']},
-  yuzu:{khu:'vl',dom:'Fintech & Web3',name:'Yuzu Money',role:'Flagship · Velocity Labs · 2025',desc:'DeFi yield platform. Backend technical lead.',stack:['Go','PostgreSQL'],more:['Backend APIs']},
-  perp:{khu:'vl',dom:'Fintech & Web3',name:'Perp CEX',role:'Flagship · Velocity Labs, overseas client · 2025',desc:'Trading-system backend for an exchange.',stack:['Go'],more:['Trading systems','Backend APIs']},
-  btse:{khu:'vl',dom:'Fintech & Web3',name:'BTSE Invoice',role:'Velocity Labs · 2025',desc:'Invoice system: fee logic and data pipelines.',stack:['Go'],more:['Data pipelines']},
-  collectible:{khu:'vl',dom:'Fintech & Web3',name:'My Collectible',role:'Velocity Labs · 2025',desc:'Web3 collectibles backend.',stack:['Go'],more:['Web3','Backend APIs']},
-  caller:{khu:'vl',dom:'Telephony',name:'Predictive Caller',role:'Velocity Labs · 2025',desc:'Predictive dialer backend.',stack:['Go'],more:['SIP','Telephony']},
-  novaland:{khu:'vl',dom:'Loyalty',name:'Novaland Loyalty App',role:'Velocity Labs · 2024',desc:'Mobile backend for a loyalty app.',stack:['Go'],more:['Mobile backend']},
-  pokerage:{khu:'vl',dom:'Games',name:'Pokerage',role:'Velocity Labs · 2021',desc:'Real-time game backend.',stack:['Go'],more:['Real-time']},
-  grpcx:{khu:'alley',name:'grpcx',role:'Flagship · own project · 2026',desc:'gRPC framework for Go services, with REST and observability built in.',stack:[],more:['Go','gRPC','REST','Protobuf','Observability']},
-  oss:{khu:'alley',name:'Open-source tool shop',role:'9 published libraries, 4 upstream contributions',desc:'Small tools I published, and patches sent upstream:',
+  yuzu:{url:'https://yuzu.money/',link:'Visit yuzu.money',khu:'vl',dom:'Fintech & Web3',name:'Yuzu Money',role:'Flagship · Velocity Labs · 2025',desc:'DeFi yield platform. Backend technical lead.',stack:['Go','PostgreSQL'],more:['Backend APIs']},
+  perp:{url:'https://velocity-labs.tech/',link:'Visit Velocity Labs',khu:'vl',dom:'Fintech & Web3',name:'Perp CEX',role:'Flagship · Velocity Labs, overseas client · 2025',desc:'Trading-system backend for an exchange.',stack:['Go'],more:['Trading systems','Backend APIs']},
+  btse:{url:'https://velocity-labs.tech/',link:'Visit Velocity Labs',khu:'vl',dom:'Fintech & Web3',name:'BTSE Invoice',role:'Velocity Labs · 2025',desc:'Invoice system: fee logic and data pipelines.',stack:['Go'],more:['Data pipelines']},
+  collectible:{url:'https://velocity-labs.tech/',link:'Visit Velocity Labs',khu:'vl',dom:'Fintech & Web3',name:'My Collectible',role:'Velocity Labs · 2025',desc:'Web3 collectibles backend.',stack:['Go'],more:['Web3','Backend APIs']},
+  caller:{url:'https://velocity-labs.tech/',link:'Visit Velocity Labs',khu:'vl',dom:'Telephony',name:'Predictive Caller',role:'Velocity Labs · 2025',desc:'Predictive dialer backend.',stack:['Go'],more:['SIP','Telephony']},
+  novaland:{url:'https://velocity-labs.tech/',link:'Visit Velocity Labs',khu:'vl',dom:'Loyalty',name:'Novaland Loyalty App',role:'Velocity Labs · 2024',desc:'Mobile backend for a loyalty app.',stack:['Go'],more:['Mobile backend']},
+  pokerage:{url:'https://velocity-labs.tech/',link:'Visit Velocity Labs',khu:'vl',dom:'Games',name:'Pokerage',role:'Velocity Labs · 2021',desc:'Real-time game backend.',stack:['Go'],more:['Real-time']},
+  grpcx:{url:'https://github.com/vchitai/grpcx',link:'View repository',khu:'alley',name:'grpcx',role:'Flagship · own project · 2026',desc:'gRPC framework for Go services, with REST and observability built in.',stack:[],more:['Go','gRPC','REST','Protobuf','Observability']},
+  oss:{url:'https://github.com/vchitai',link:'View GitHub profile',khu:'alley',name:'Open-source tool shop',role:'9 published libraries, 4 upstream contributions',desc:'Small tools I published, and patches sent upstream:',
     floors:[['Published','go-s3-sharing, lambda-s3-resizer, dataloader, go-bootstraper, x-crafter, gomw, logrgorm2, jsoncase, Pub/Sub emulator image.'],['Upstream','Vietnamese analysis for Elasticsearch, go-socket.io v4 fork, Telegraf Helm chart fix, OpenTelemetry otelhttp metrics, python_logger.']],stack:[],more:['github.com/vchitai']},
-  quorum:{khu:'alley',name:'The Quorum',role:'Personal · 2026',desc:'Technical writing site.',stack:[],more:['Astro','MDX','TypeScript','Vercel']},
-  trendypod:{khu:'alley',name:'TrendyPod',role:'Personal · 2026 · private',desc:'AI research workflow and data pipelines for print-on-demand trends.',stack:[],more:['Python','Data pipelines','Vercel']},
-  podbench:{khu:'alley',name:'POD Supplier Benchmark',role:'Personal · 2026 · private',desc:'Indexing and benchmarking print-on-demand suppliers.',stack:[],more:['Data indexing','Benchmarking']}
+  quorum:{url:'https://thequorum.xyz/',link:'Read The Quorum',khu:'alley',name:'The Quorum',role:'Personal · 2026',desc:'Technical writing site.',stack:[],more:['Astro','MDX','TypeScript','Vercel']},
+  trendypod:{nolink:'Private project, no public link.',khu:'alley',name:'TrendyPod',role:'Personal · 2026 · private',desc:'AI research workflow and data pipelines for print-on-demand trends.',stack:[],more:['Python','Data pipelines','Vercel']},
+  podbench:{nolink:'Private project, no public link.',khu:'alley',name:'POD Supplier Benchmark',role:'Personal · 2026 · private',desc:'Indexing and benchmarking print-on-demand suppliers.',stack:[],more:['Data indexing','Benchmarking']}
 };
 const ARTICLES=[
   {title:"We Don't Give AI Autonomy. We Allocate It.",date:'2026',tag:'dev.to',url:'https://dev.to/vchitai/we-dont-give-ai-autonomy-we-allocate-it-hk1'},
@@ -474,7 +513,7 @@ const HOUSE={
   podbench:{w:168,floors:2,wall:'--orange',trim:'--cream',door:'--indigo',awn:'--indigo',signBg:'--s-ink',signFg:'--cream',sign:'POD BENCHMARK',roof:'none',shop:'receipts'}
 };
 const g_=n=>({t:'gate',khu:n}), n_=(w,fl)=>({t:'nb',w,fl}), p_=id=>({t:'p',id});
-const PLAN_MAIN=[p_('garage'),n_(124,2),g_('career'),n_(104,2),p_('andpad'),n_(112,2),p_('gearment'),n_(110,3),p_('geniebook'),p_('be'),n_(108,2),p_('teko'),p_('ailab'),n_(110,2),{t:'alley',to:'vl',w:104},n_(116,3),{t:'alley',to:'alley',w:76},n_(112,2)];
+const PLAN_MAIN=[p_('garage'),n_(124,2),g_('career'),n_(104,2),p_('andpad'),n_(112,2),p_('gearment'),n_(110,3),p_('geniebook'),p_('be'),n_(108,2),p_('teko'),p_('ailab'),n_(110,2),{t:'alley',to:'vl',w:104},n_(116,3),{t:'alley',to:'alley',w:108},n_(112,2)];
 const PLAN_VL=[{t:'exit'},g_('vl'),p_('yuzu'),p_('perp'),n_(106,2),p_('btse'),p_('collectible'),p_('caller'),n_(104,3),p_('novaland'),p_('pokerage'),n_(108,2)];
 const PLAN_ALLEY=[{t:'exit'},n_(104,2),p_('grpcx'),n_(96,3),p_('oss'),p_('quorum'),n_(100,2),p_('trendypod'),p_('podbench'),n_(108,2)];
 
@@ -515,11 +554,11 @@ const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ================= scene ================= */
 class Scene{
-  constructor(name,stage,plan){
+  constructor(name,stage,plan,W){
     this.name=name; this.stage=stage; this.plan=plan;
     this.layers=[]; this.pop=[]; this.proj=[]; this.dots=[]; this.swings=[]; this.clouds=[]; this.bobs=[]; this.spokes=[]; this.arms=[]; this.nb=[]; this.khu=[];
     this.armed=false; this.S=1; this.viewW=0; this.dragged=false; this.sel=null;
-    this.W=140+plan.reduce((a,it)=>a+6+(it.t==='gate'?124:it.t==='alley'?(it.w||76):it.t==='exit'?90:it.t==='nb'?it.w:HOUSE[it.id].w),0);
+    this.W=W||140+plan.reduce((a,it)=>a+6+(it.t==='gate'?124:it.t==='alley'?(it.w||76):it.t==='exit'?90:it.t==='nb'?it.w:HOUSE[it.id].w),0);
     stage.innerHTML='<div class="track"><div class="view"><svg class="sunbox" viewBox="0 0 120 120" aria-hidden="true"></svg><svg class="grain" aria-hidden="true"><rect width="100%" height="100%" filter="url(#g1)"/><rect width="100%" height="100%" filter="url(#g2)" opacity=".7"/></svg></div></div>';
     this.track=stage.firstChild; this.view=this.track.firstChild; this.grain=this.view.querySelector('.grain');
     this.bind();
@@ -570,8 +609,8 @@ function drawSun(svg){
   svg.removeAttribute('aria-hidden'); svg.setAttribute('role','button'); svg.setAttribute('tabindex','0'); svg.setAttribute('aria-pressed','false'); svg.setAttribute('aria-label','Sun: switch to night');
   E('title',{},svg).textContent='Switch between day and night';
 }
-function drawSky(sc,midMin,midMax){
-  const W=sc.W, Lc=sc.layer(.08,W), Lf=sc.layer(.22,W), Lm=sc.layer(.55,W);
+function drawSky(sc,midMin,midMax,landmarks){
+  const W=sc.W, Lc=sc.layer(.08,W), Lf=sc.layer(.22,W); let Lm=sc.layer(.55,W);
   for(let x=180;x<W;x+=520+rnd()*120){const y=70+rnd()*80,k=.8+rnd()*.3,g=E('g',{},Lc);sc.clouds.push({g,x:0});
     paper(g,[...blobPts(x,y,34*k,10,.08).slice(4,10),...blobPts(x+46*k,y-12*k,40*k,10,.08).slice(5,11),...blobPts(x+96*k,y,30*k,10,.08).slice(6,10),[x+120*k,y+26*k],[x-30*k,y+26*k]],'--cloud',{sh:3,amp:.5});}
   for(let x=60;x<W;x+=380+rnd()*200){const y=-70-rnd()*190,k=.7+rnd()*.5,g=E('g',{},Lc);sc.clouds.push({g,x:0});
@@ -585,6 +624,22 @@ function drawSky(sc,midMin,midMax){
     if(rnd()>.5) paper(Lm,rc(x+w*.25,y-20,w*.36,20),'--mid',{sh:2});
     for(let fy=y+18;fy<GY-40;fy+=44) for(let wx=x+12;wx<x+w-22;wx+=30) if(rnd()>.25) E('polygon',{points:cut(rc(wx,fy,14,20),.4),fill:'--mid-win'},Lm);
     x+=w+2;}
+  if(landmarks){ /* Saigon skyline: the tapering tower with its helipad, the stepped supertall, the twin-spired cathedral */
+    const b=GY+30; let x=600; const far0=Lf, big=(cx,k)=>E('g',{transform:`translate(${cx},${b}) scale(${k}) translate(${-cx},${-b})`},far0);
+    let Lf2=big(637,1.36);
+    paper(Lf2,[[x,b],[x+74,b],[x+82,b-210],[x+66,b-390],[x+37,b-452],[x+8,b-390],[x-8,b-210]],'--landmark',{sh:0,amp:.5});
+    for(let k=1;k<7;k++) line(Lf2,x-4+k*2,b-62*k,x+78-k*2,b-62*k-16,1.3,'--far',.9);
+    paper(Lf2,[[x+70,b-316],[x+140,b-322],[x+142,b-311],[x+72,b-303]],'--landmark',{sh:0,amp:.3});
+    line(Lf2,x+37,b-450,x+37,b-486,2.5,'--landmark'); E('circle',{cx:x+37,cy:b-488,r:3.2,fill:'--red'},Lf2);
+    x=1120; let y=b; const Lf3=big(1170,1.3);
+    [[100,176],[84,122],[66,98],[48,76],[30,54]].forEach(([w,h])=>{paper(Lf3,rc(x+50-w/2,y-h,w,h),'--landmark',{sh:0,amp:.5});for(let k=1;k<4;k++) line(Lf3,x+50-w/2+k*w/4,y-h+5,x+50-w/2+k*w/4,y-5,1.1,'--far',.8);y-=h});
+    line(Lf3,x+50,y,x+50,y-58,3,'--landmark'); E('circle',{cx:x+50,cy:y-60,r:3.2,fill:'--red'},Lf3);
+    x=1500; const Lm0=Lm; Lm=E('g',{transform:`translate(${x+63},${b}) scale(1.3) translate(${-(x+63)},${-b})`},Lm0);
+    paper(Lm,rc(x,b-170,126,190),'--brick',{sh:3,amp:.6});
+    [x,x+90].forEach(tx=>{paper(Lm,rc(tx,b-250,36,90),'--brick',{sh:3,amp:.5});paper(Lm,[[tx-2,b-250],[tx+18,b-342],[tx+38,b-250]],'--brick',{sh:3,amp:.4});line(Lm,tx+18,b-342,tx+18,b-360,2,'--s-ink');line(Lm,tx+12,b-352,tx+24,b-352,2,'--s-ink');E('polygon',{points:cut(rc(tx+11,b-232,14,34),.3),fill:'--mid-win'},Lm)});
+    blob(Lm,x+63,b-128,17,'--mid-win',{sh:0,n:14,wob:.03}); paper(Lm,[[x+36,b-170],[x+63,b-206],[x+90,b-170]],'--brick',{sh:2,amp:.4});
+    E('polygon',{points:cut([[x+48,b-20],[x+48,b-62],[x+63,b-78],[x+78,b-62],[x+78,b-20]],.3),fill:'--s-ink',opacity:.55},Lm);
+  }
 }
 function roof(g,h,top){
   const {x,w}=h;
@@ -836,6 +891,46 @@ function tickBug(sc,tick){
   else{ b.wait--; if(b.wait===50) b.tag.style.display='none';
     if(b.wait<=0){b.state='swing';b.dy=0;b.rot=0;b.u=.1;b.span=(b.span+1)%sc.lowWires.length;b.d.style.display='';placeBug(sc,tick)} }
 }
+function scooter(L,o){
+  const g=E('g',{style:'display:none'},L), y=GY+80, sp=[];
+  [10,64].forEach(wx=>{blob(g,wx,y,12,'--s-ink',{sh:2,n:12,wob:.03});E('circle',{cx:wx,cy:y,r:8,fill:'--steel'},g);const s=E('g',{},g);line(s,wx-8,y,wx+8,y,1.5);line(s,wx,y-8,wx,y+8,1.5);sp.push({s,cx:wx,cy:y})});
+  paper(g,[[8,y-10],[22,y-26],[52,y-24],[64,y-10],[34,y-5]],o.body,{sh:2,amp:.4});
+  paper(g,rc(14,y-31,28,6),'--s-ink',{sh:1.5,amp:.3});
+  if(o.box){paper(g,rc(-12,y-64,34,32),o.box,{sh:2,amp:.4}); paper(g,rc(-8,y-56,26,10),'--cream',{sh:0,amp:.2}); label(g,5,y-48.5,o.boxText,5.4,'--s-ink')}
+  if(o.passenger){paper(g,[[12,y-30],[18,y-62],[31,y-60],[31,y-30]],o.passenger,{sh:2,amp:.4});blob(g,24,y-70,8,'--skin',{sh:1.5,n:10,wob:.04});paper(g,[[14,y-72],[34,y-72],[31,y-81],[24,y-84],[17,y-81]],'--cream',{sh:1.5,amp:.3})}
+  paper(g,[[33,y-30],[39,y-64],[53,y-60],[51,y-28]],o.rider,{sh:2,amp:.4});
+  paper(g,[[47,y-52],[69,y-40],[67,y-34],[45,y-44]],o.rider,{sh:1.5,amp:.3});
+  blob(g,46,y-72,9,'--skin',{sh:1.5,n:10,wob:.04}); paper(g,[[35,y-74],[57,y-74],[54,y-84],[46,y-87],[38,y-84]],o.helmet,{sh:1.5,amp:.3});
+  line(g,64,y-10,71,y-38,3); E('circle',{cx:73,cy:y-30,r:3,fill:'--yellow',stroke:'--s-ink','stroke-width':.8},g);
+  return {g,sp,legs:[],v:o.v,w:100,on:false,x:0,end:0};
+}
+function pupils(L){
+  const g=E('g',{style:'display:none'},L), fy=GY+92, legs=[];
+  [0,36,72].forEach((dx,i)=>{const x=dx+14, h=[0,5,-3][i];
+    [-3.5,3.5].forEach((o,n)=>{const lg=E('g',{},g);paper(lg,rc(x+o-2.5,fy-22,5,22),'--indigo',{sh:1,amp:.3});legs.push({lg,x:x+o,y:fy-22,d:n?1:-1})});
+    paper(g,rc(x-15,fy-47+h,9,21),['--red','--teal','--yellow'][i],{sh:1.5,amp:.3});
+    paper(g,[[x-8,fy-50+h],[x+8,fy-50+h],[x+7,fy-20],[x-7,fy-20]],'#fff',{sh:1.5,amp:.3});
+    paper(g,[[x-4,fy-50+h],[x+4,fy-50+h],[x,fy-41+h]],'--red',{sh:0,amp:.2});
+    blob(g,x,fy-58+h,7.5,'--skin',{sh:1.5,n:10,wob:.04}); paper(g,[[x-8,fy-60+h],[x+8,fy-60+h],[x+6,fy-67+h],[x-6,fy-67+h]],'--s-ink',{sh:0,amp:.3});
+  });
+  return {g,sp:[],legs,v:6,w:110,on:false,x:0,end:0};
+}
+function runActor(sc,name){
+  const a=sc.actors&&sc.actors[name]; if(!a||a.on) return;
+  const left=sc.stage.scrollLeft/sc.S, right=left+sc.viewW/sc.S;
+  a.on=true; a.g.style.display='';
+  if(still){a.x=(left+right)/2-a.w/2; a.g.setAttribute('transform',`translate(${a.x.toFixed(1)},0)`); setTimeout(()=>{a.on=false;a.g.style.display='none'},2500); return}
+  a.x=left-a.w-30; a.end=right+30; a.g.setAttribute('transform',`translate(${a.x.toFixed(1)},0)`);
+}
+function tickActors(sc,tick){
+  for(const k in sc.actors){const a=sc.actors[k]; if(!a.on) continue;
+    a.x+=a.v; a.g.setAttribute('transform',`translate(${a.x.toFixed(1)},${tick%4<2?0:-1.5})`);
+    a.sp.forEach(o=>o.s.setAttribute('transform',`rotate(${(tick*34)%360} ${o.cx} ${o.cy})`));
+    if(tick%2===0) a.legs.forEach(l=>l.lg.setAttribute('transform',`rotate(${l.d*((tick/2)%2?16:-16)} ${l.x} ${l.y})`));
+    if(a.x>a.end){a.on=false;a.g.style.display='none'}
+  }
+  if(tick%330===0){const ks=Object.keys(sc.actors);runActor(sc,ks[(tick/330)%ks.length])}   /* and now and then one passes on its own */
+}
 /* yellow post box: another way to the contact card */
 function mailbox(sc,pr,x){
   const d=E('g',{class:'door',tabindex:0,role:'button','aria-label':'Post box: open my contact card'},pr), g=E('g',{class:'boil'},d);
@@ -878,16 +973,16 @@ function street(sc,L,signs){
 /* ================= build: main street ================= */
 const sceneEl=document.getElementById('scene');
 const main=new Scene('main',document.getElementById('stage-main'),PLAN_MAIN);
-const alley=new Scene('alley',document.getElementById('stage-alley'),PLAN_ALLEY);
+const alley=new Scene('alley',document.getElementById('stage-alley'),[],1500);
 const vl=new Scene('vl',document.getElementById('stage-vl'),PLAN_VL);
 (function(){
   const sc=main, W=sc.W;
-  drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,140,310);
+  drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,140,310,true);
   const L=sc.layer(1,W); sc.L=L;
   paper(L,rc(-20,GY,W+40,34),'--walk',{sh:0,amp:.6}); paper(L,rc(-20,GY+30,W+40,8),'--curb',{sh:0,amp:.5}); paper(L,rc(-20,GY+38,W+40,80),'--road',{sh:0,amp:.5});
   for(let x=30;x<W;x+=120) paper(L,rc(x,GY+64,52,6),'--road-mark',{sh:0,amp:.5});
   const marks=street(sc,L,['PHỞ','SỬA XE','TẠP HÓA','CƠM TẤM','TRÀ SỮA','PHOTO','HỦ TIẾU','MAY ĐO','NHA KHOA','CẮT TÓC','CHÈ','GIẶT ỦI'].sort(()=>rnd()-.5));
-  sc.doorX={alley:doorway(sc,L,marks.alleys.alley,76,{sign:'HẺM 42',tag:'TURN IN',aria:'Turn into alley 42: personal projects',go:()=>swap(alley)}),
+  sc.doorX={alley:doorway(sc,L,marks.alleys.alley,108,{sign:'CHUNG CƯ 42',tag:'GO IN',aria:'Go into apartment block 42: personal projects',go:()=>swap(alley)}),
             vl:doorway(sc,L,marks.alleys.vl,104,{sign:'NGÕ VELOCITY',tag:'TURN IN',aria:'Turn into the Velocity Labs lane',go:()=>swap(vl)})};
   /* wires: one per tech, strung pole to pole; drops link each house to the wires it uses */
   const NW=Object.keys(TECH).length, poles=[26], wg=E('g',{},L);
@@ -936,6 +1031,10 @@ const vl=new Scene('vl',document.getElementById('stage-vl'),PLAN_VL);
   r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openSheet('board',r,'move')}});
   sc.shopEl.addEventListener('click',()=>{if(!sc.dragged) openSheet('board',sc.shopEl)});
   sc.shopEl.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openSheet('board',sc.shopEl)}});
+  /* street life tied to each domain: a delivery rider (e-commerce), a bike taxi with a passenger (ride-hailing), pupils walking to school (edtech) */
+  sc.actors={shipper:scooter(L,{body:'--teal',rider:'--orange',helmet:'--cream',box:'--brown',boxText:'GIAO HÀNG',v:17}),
+             driver:scooter(L,{body:'--indigo',rider:'--yellow',helmet:'--s-ink',passenger:'--pink',v:14}),
+             students:pupils(L)};
   /* standee in front of the shop */
   const sd=E('g',{class:'boil'},pr), sx=sc.shopX+54;
   paper(sd,[[sx-2,GY+26],[sx+2,GY-34],[sx+54,GY-34],[sx+58,GY+26]],'#fff',{sh:2.5,amp:.4});
@@ -943,7 +1042,75 @@ const vl=new Scene('vl',document.getElementById('stage-vl'),PLAN_VL);
   trees(sc,1250,1500);
 })();
 
-/* ================= build: side lanes (alley 42, Velocity Labs) ================= */
+/* ================= build: chung cư 42, an old Saigon apartment block where each flat is a personal project ================= */
+function pinAt(outer,px,py){const pin=E('g',{class:'pin'},outer);paper(pin,[[px-13,py-30],[px+13,py-30],[px+13,py-13],[px,py],[px-13,py-13]],'--yellow',{sh:2.5,amp:.4});blob(pin,px,py-18,4.5,'--s-ink',{sh:0,n:8,wob:.03})}
+function claim(sc,outer,g,id,x,y,w,h){
+  E('rect',{class:'hit',x:x+2,y:y+2,width:w-4,height:h-4,rx:6},outer);
+  outer.classList.add('proj'); outer.setAttribute('tabindex','0'); outer.setAttribute('role','button'); outer.setAttribute('aria-label',DATA[id].name);
+  sc.proj.push({id,el:outer,body:g,cx:x+w/2,x,w,top:y,stack:DATA[id].stack});
+}
+function unit(sc,L,ux,uy,cw,fh,wall,id){
+  const outer=E('g',{class:'pop'},L), g=E('g',{class:'boil'},outer), cx=ux+cw/2, t=Math.floor(rnd()*3);
+  paper(g,rc(ux+5,uy+7,cw-10,fh-11),wall,{sh:2,amp:.6});
+  E('polygon',{points:cut(rc(ux+18,uy+16,30,50),.4),fill:'--glass'},g); paper(g,rc(ux+48,uy+16,14,50),pick(['--indigo','--teal','--brown']),{sh:1.5,amp:.4});
+  E('polygon',{points:cut(rc(ux+80,uy+20,62,32),.4),fill:'--glass'},g); line(g,ux+111,uy+20,ux+111,uy+52,2.5,'--cream');
+  if(rnd()>.45){paper(g,rc(ux+cw-50,uy+56,32,16),'--steel',{sh:1.5,amp:.3});for(let k=0;k<3;k++) line(g,ux+cw-46,uy+60+k*4,ux+cw-22,uy+60+k*4,1,'--s-ink',.4)}
+  if(id==='grpcx'){line(g,ux+cw-30,uy+50,ux+cw-30,uy+12,2.5);E('path',{d:`M${ux+cw-22} ${uy+12} q10 6 0 16 M${ux+cw-15} ${uy+7} q17 11 0 27`,fill:'none',stroke:'--s-ink','stroke-width':1.6,'stroke-linecap':'round'},g)}
+  if(id==='trendypod'||(!id&&t===1)){const lg=E('g',{},g);sc.swings.push({g:lg,cx,cy:uy+10});line(lg,ux+12,uy+10,ux+cw-12,uy+12,1);['--cream','--pink','--yellow','--teal'].slice(0,id?4:3).forEach((c,k)=>shirt(lg,ux+20+k*(id?36:44),uy+14,c,.8))}
+  paper(g,rc(ux+3,uy+fh-35,cw-6,25),'--cream',{sh:2.5,amp:.5});
+  for(let k=ux+10;k<ux+cw-8;k+=9) line(g,k,uy+fh-31,k,uy+fh-14,1.2,'--s-ink',.3);
+  if(!id&&t===0){for(let k=ux+8;k<ux+cw-4;k+=14) line(g,k,uy+10,k,uy+fh-35,1.1,'--s-ink',.5);for(let k=uy+12;k<uy+fh-35;k+=13) line(g,ux+8,k,ux+cw-8,k,1.1,'--s-ink',.5)}
+  if(id==='podbench') [[0,0],[20,0],[10,-15]].forEach(([dx,dy])=>paper(g,rc(ux+cw-62+dx,uy+fh-52+dy,18,14),'--orange',{sh:1.5,amp:.3}));
+  const n=1+Math.floor(rnd()*3); for(let k=0;k<n;k++) blob(g,ux+16+rnd()*(cw-32),uy+fh-38,8+rnd()*5,rnd()>.5?'--leaf':'--leaf2',{sh:1.5,n:9});
+  if(id){const sign=HOUSE[id].sign; paper(g,rc(ux+12,uy+fh-37,cw-24,27),'--s-ink',{sh:2.5,amp:.5}); label(g,cx,uy+fh-18,sign,fit(sign,16,cw-40),'--cream'); pinAt(outer,cx,uy+14); claim(sc,outer,g,id,ux,uy,cw,fh)}
+  sc.pop.push({el:outer,cx,w:cw,flips:[],up:true});
+}
+function gshop(sc,L,x,w,gh,id,sign,kind){
+  const outer=E('g',{class:'pop'},L), g=E('g',{class:'boil'},outer), gy=GY-gh, h=id?HOUSE[id]:{sign,shop:kind,signBg:'--s-ink',signFg:'--cream',awn:pick(['--red','--teal','--indigo'])};
+  const sY=gy+12, sH=id?30:24, aY=sY+sH+4, aH=16, oY=aY+aH;
+  E('polygon',{points:cut(rc(x+10,oY-4,w-20,GY-oY+4),.5),fill:'--dark'},g);
+  shop(g,{x,w,shop:h.shop},oY);
+  const ag=E('g',{class:'flip'},g); paper(ag,[[x+2,aY],[x+w-2,aY],[x+w+6,aY+aH],[x-6,aY+aH]],h.awn,{sh:3,amp:.6});
+  for(let k=0;k<Math.floor(w/26);k+=2){const a=x+4+k*26,b=a+26;E('polygon',{points:cut([[a,aY+1],[b,aY+1],[b+2,aY+aH-1],[a-2,aY+aH-1]],.3),fill:'--cream',opacity:.85},ag)}
+  const sg=E('g',{class:'flip'},g); paper(sg,rc(x+8,sY,w-16,sH),h.signBg,{sh:2.5,amp:.6});
+  const fs=fit(h.sign,id?21:15,w-34); label(sg,x+w/2,sY+sH/2+fs*.36,h.sign,fs,h.signFg);
+  if(id){pinAt(outer,x+w/2,gy+6); claim(sc,outer,g,id,x,gy,w,gh)}
+  sc.pop.push({el:outer,cx:x+w/2,w,flips:[sg,ag],up:true});
+}
+function buildBlock(sc){
+  const W=sc.W, CW=176, FH=96, GH=118, SW=88, X0=170, COLS=6, FLOORS=3;
+  drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,230,380);
+  const L=sc.layer(1,W); sc.L=L;
+  paper(L,rc(-20,GY,W+40,120),'--walk',{sh:0,amp:.6});
+  for(let x=0;x<W;x+=58) line(L,x,GY+2,x-30,H,1,'--s-ink',.14);
+  [GY+30,GY+66].forEach(y=>line(L,0,y,W,y,1,'--s-ink',.14));
+  doorway(sc,L,44,84,{sign:'PHỐ CHÍNH',tag:'BACK',left:1,aria:'Back to the main street',go:()=>swap(main)});
+  const BW=COLS*CW+SW, top=GY-GH-FLOORS*FH, sx=X0+3*CW, colX=c=>X0+c*CW+(c>=3?SW:0), fr=E('g',{},L);
+  paper(fr,rc(X0-12,top-16,BW+24,GY-top+16),'--n1',{sh:5,amp:1});
+  [X0+BW*.36,X0+BW-170,X0+BW-104].forEach(tx=>{line(fr,tx+6,top-26,tx+6,top-40,3);line(fr,tx+38,top-26,tx+38,top-40,3);paper(fr,rc(tx,top-68,46,29),'--steel',{sh:3,amp:.5});line(fr,tx,top-58,tx+46,top-58,1,'--s-ink',.35);line(fr,tx,top-49,tx+46,top-49,1,'--s-ink',.35)});
+  for(let k=0;k<5;k++) blob(fr,X0+BW*.72+k*30+j(6),top-36+j(4),13+rnd()*6,k%2?'--leaf':'--leaf2',{sh:2});
+  line(fr,X0+BW-40,top-26,X0+BW-40,top-96,2); line(fr,X0+BW-54,top-86,X0+BW-26,top-86,2); line(fr,X0+BW-50,top-74,X0+BW-30,top-74,2);
+  paper(fr,rc(X0-18,top-27,BW+36,12),'--cream',{sh:3,amp:.6});
+  paper(fr,rc(X0+CW*.25,top-64,CW*1.6,34),'--indigo',{sh:3,amp:.5}); label(fr,X0+CW*1.05,top-40,'CHUNG CƯ 42',21,'--cream');
+  /* stairwell with breeze blocks */
+  paper(fr,rc(sx,top-44,SW,GY-top+44),'--n4',{sh:3,amp:.7});
+  for(let y=top+18;y<GY-GH-8;y+=18) for(let x=sx+14;x<sx+SW-14;x+=18) E('polygon',{points:cut([[x+6,y],[x+12,y+6],[x+6,y+12],[x,y+6]],.3),fill:'--s-ink',opacity:.3},fr);
+  paper(fr,rc(sx+12,top-38,SW-24,44),'--red',{sh:2,amp:.4}); label(fr,sx+SW/2,top-5,'42',34,'--cream');
+  E('polygon',{points:cut(rc(sx+12,GY-GH+22,SW-24,GH-22),.5),fill:'--dark'},fr);
+  for(let k=0;k<5;k++) paper(fr,rc(sx+14+k*4,GY-12-k*11,SW-28-k*8,11),'--steel',{sh:0,amp:.3});
+  paper(fr,rc(sx+10,GY-GH+4,SW-20,18),'--cream',{sh:1.5,amp:.3}); label(fr,sx+SW/2,GY-GH+17,'LỐI VÀO',10,'--s-ink');
+  const WALLS=['--pink','--teal','--yellow','--orange','--cream','--n2','--n3','--indigo','--red'];
+  const FLATS={'1,1':'grpcx','0,4':'trendypod','2,3':'podbench'};
+  for(let f=0;f<FLOORS;f++) for(let c=0;c<COLS;c++){const id=FLATS[f+','+c];unit(sc,L,colX(c),top+f*FH,CW,FH,id?HOUSE[id].wall:pick(WALLS),id)}
+  for(let f=0;f<=FLOORS;f++) paper(L,rc(X0-16,top+f*FH-5,BW+32,9),'--cream',{sh:2,amp:.5});
+  gshop(sc,L,colX(0),CW*2,GH,'quorum'); gshop(sc,L,colX(2),CW,GH,null,'GIỮ XE','helmets'); gshop(sc,L,colX(3),CW,GH,null,'TẠP HÓA','shelves'); gshop(sc,L,colX(4),CW*2,GH,'oss');
+  const pr=E('g',{},L);
+  stools(pr,colX(0)+CW);
+  [[colX(2)+10,'--red'],[colX(2)+66,'--teal'],[colX(2)+122,'--yellow'],[colX(5)+70,'--indigo']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
+  [colX(3)+150,colX(4)+330,X0-40].forEach(x=>{const g=E('g',{class:'boil'},pr);paper(g,[[x,GY+10],[x+22,GY+10],[x+18,GY+30],[x+4,GY+30]],'--brown',{sh:2,amp:.3});blob(g,x+11,GY+2,13,'--leaf',{sh:2,n:10});blob(g,x+4,GY-8,9,'--leaf2',{sh:1.5,n:9})});
+}
+
+/* ================= build: side lane (Velocity Labs) ================= */
 function buildLane(sc,signs,props,lights=['--yellow','--red']){
   const W=sc.W;
   drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,230,380);
@@ -962,10 +1129,7 @@ function buildLane(sc,signs,props,lights=['--yellow','--red']){
   for(let x=200;x<W;x+=260){const g=E('g',{class:'boil'},pr);paper(g,[[x,GY+10],[x+22,GY+10],[x+18,GY+30],[x+4,GY+30]],'--brown',{sh:2,amp:.3});blob(g,x+11,GY+2,13,'--leaf',{sh:2,n:10});blob(g,x+4,GY-8,9,'--leaf2',{sh:1.5,n:9})}
   trees(sc,900,1400);
 }
-buildLane(alley,['BÚN RIÊU','TIỆM NET','XÔI','SỬA KHÓA','CHÈ'],(pr,at)=>{
-  stools(pr,at('quorum').cx);
-  [[at('grpcx').x-60,'--teal'],[at('trendypod').x+50,'--red']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
-});
+buildBlock(alley);
 buildLane(vl,['CÀ PHÊ','IN ẤN','VĂN PHÒNG','CƠM VĂN PHÒNG'],(pr,at)=>{
   stools(pr,at('perp').cx+120);
   [[at('yuzu').x+100,'--red'],[at('caller').x+30,'--indigo'],[at('novaland').x+40,'--teal']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
@@ -988,9 +1152,12 @@ function select(id){
   cur.proj.forEach(p=>p.el.classList.toggle('is-on',p.id===id));
   $('h-where').textContent=KHU[d.khu]+(d.dom?' · '+d.dom:'');
   $('h-name').textContent=d.name; $('h-role').textContent=d.role; $('h-desc').textContent=d.desc;
-  $('h-floors').replaceChildren(...(d.floors||[]).map(([n,t])=>{const li=document.createElement('li'),b=document.createElement('b');b.textContent=n+': ';li.append(b,t);return li}));
-  $('h-floors').hidden=!d.floors;
+  const fl=[...(d.floors||[])].reverse();   /* data lists the ground floor first; an elevation reads top down */
+  $('h-floors').replaceChildren(...fl.map(([n,t],i)=>{const li=document.createElement('li'),lv=document.createElement('span'),b=document.createElement('b'),tx=document.createElement('span');lv.className='lv';lv.textContent='T'+(fl.length-i);b.textContent=n;tx.textContent=t;li.append(lv,b,tx);return li}));
+  $('h-elev').hidden=!fl.length; $('h-body').classList.toggle('solo',!fl.length);
   $('h-chips').replaceChildren(...[...d.stack,...(d.more||[])].map(c=>{const li=document.createElement('li');li.textContent=c;return li}));
+  const a=$('h-link'); a.hidden=!d.url; if(d.url){a.href=d.url;a.textContent=d.link+' ↗'}
+  $('h-nolink').textContent=d.nolink||'';
 }
 [main,alley,vl].forEach(sc=>sc.proj.forEach(p=>{
   p.el.addEventListener('click',()=>{if(!sc.dragged){select(p.id);openSheet('house',p.el)}});
@@ -1043,7 +1210,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape') closeSheets()});
       if(r.tags&&r.tags.length){const t=el('ul','tg');r.tags.forEach(x=>t.append(el('li',null,x)));li.append(t)}
       ul.append(li)});
     cols.append(s)};
-  const house=id=>{const d=DATA[id];return {t:d.name,role:d.role,desc:d.desc,floors:d.floors,tags:[...d.stack,...(d.more||[])]}};
+  const house=id=>{const d=DATA[id];return {t:d.name,url:d.url,role:d.role,desc:d.desc,floors:d.floors,tags:[...d.stack,...(d.more||[])]}};
   const ids=k=>Object.keys(DATA).filter(id=>DATA[id].khu===k);
   sec('Services',SERVICES.map(v=>({t:v.title,role:v.tag,desc:v.when+' '+v.get})));
   sec('Career',ids('career').map(house));
@@ -1058,7 +1225,7 @@ function plate(txt,fn){const b=document.createElement('button');b.type='button';
 plate('Backend repair',()=>{main.scrollToX(main.shopX,false);openSheet('board',main.shopEl)});
 main.khu.forEach(k=>plate('Career',()=>{main.stage.scrollTo({left:Math.max(0,(k.x-30)*main.S),behavior:still?'auto':'smooth'});const first=main.proj.find(p=>DATA[p.id].khu===k.khu);if(first) select(first.id)}));
 plate('Velocity Labs →',()=>swap(vl));
-plate('Alley 42 →',()=>swap(alley));
+plate('Chung cư 42 →',()=>swap(alley));
 plate('Contact',()=>{main.scrollToX(main.meX,false);openSheet('card',main.meEl)});
 plate('Newsstand',()=>{main.scrollToX(main.newsX,false);openSheet('news',main.newsEl)});
 
@@ -1071,6 +1238,7 @@ function setFilter(f){
   main.proj.forEach(p=>p.el.classList.toggle('lit',!!f&&(f.type==='tech'?p.stack.includes(f.v):DATA[p.id].dom===f.v)));
   sceneEl.style.setProperty('--hot',k>=0?TECH[f.v].c[sceneEl.dataset.night==='1'?1:0]:'transparent');
   fBtns.forEach(b=>b.setAttribute('aria-pressed',f?b.dataset.type===f.type&&b.dataset.v===f.v:b.dataset.v===''));
+  if(f&&f.type==='dom') runActor(main,{'E-commerce':'shipper','EdTech':'students','Ride-hailing':'driver'}[f.v]);
 }
 function chip(row,type,v,txt,color){
   const b=document.createElement('button');b.type='button';b.className='chip';b.dataset.type=type;b.dataset.v=v;
@@ -1116,6 +1284,7 @@ function frame(){
   tick++; const sc=cur;
   sc.dots.forEach(d=>{d.t=(d.t+d.v+1)%1;const p=d.p.getPointAtLength(d.t*d.len);d.c.setAttribute('cx',p.x.toFixed(1));d.c.setAttribute('cy',p.y.toFixed(1))});
   if(sc.bug) tickBug(sc,tick);
+  if(sc.actors) tickActors(sc,tick);
   if(sc.rider){sc.riderX+=11;if(sc.riderX>sc.W+160) sc.riderX=-180;sc.rider.setAttribute('transform',`translate(${sc.riderX},${tick%4<2?0:-1.5})`)}
   sc.spokes.forEach(o=>o.s.setAttribute('transform',`rotate(${(tick*30)%360} ${o.cx} ${o.cy})`));
   sc.arms.forEach(a=>{if(tick%a.n===0) a.g.setAttribute('transform',`rotate(${a.a[(tick/a.n)%a.a.length]} ${a.pin[0]} ${a.pin[1]})`)});
