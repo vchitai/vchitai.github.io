@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Tai Vong","jobTitle":"Backend & Platform Engineer, Technical Lead","url":"https://vchitai.github.io/","address":{"@type":"PostalAddress","addressLocality":"Ho Chi Minh City","addressCountry":"VN"},"sameAs":["https://www.linkedin.com/in/vchitai/","https://github.com/vchitai","https://medium.com/@vchitai"]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <style>
 /* Layout idea: one horizontal paper street as the stage, street-sign nav above it, a single paper tag below for the selected house. */
 :root{
@@ -87,6 +87,7 @@ h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,60px)
   position:relative;overflow:hidden;background:var(--sky);perspective:1600px;
 }
 .scene[data-where="alley"]{--sky:#f6d8a8;--far:#ecbf92;--mid:#d99a78;--mid-win:#bf7f62;--cloud:#fff3dc}
+.scene[data-where="lab"]{--sky:#24463d;--far:#2f584c;--mid:#3a6a5c;--mid-win:#d9e8c4;--cloud:#2f5a4f;--sun:#efe9d2;--chalk:#efe9d2;--walk:#d8cfb6;--glass:#6fb8c9;--head:#f3efd9;--head-soft:#c9dacd}
 .scene[data-where="vl"]{--sky:#2b1d55;--far:#3a2a72;--mid:#4b3792;--mid-win:#ff5fd2;--cloud:#57449f;--sun:#ff5fd2;--walk:#3d3663;--curb:#2c2748;--s-ink:#120b26;--shadow:rgba(8,4,26,.5);--glass:#58f5ff;--dark:#150c2b;--steel:#8f8fc0;--leaf:#1fa08a;--leaf2:#157a6d;--cream:#e9dfc8;--brown:#4a3350;--alleybg:#1a1038;--n1:#4a4478;--n2:#3f4d7c;--n3:#553f72;--n4:#3d4472;--head:#f6efdc;--head-soft:#cfc7ea}
 .scene[data-night="1"]{
   --sky:#1f2547; --sun:#f4ecc8; --cloud:#3a4272; --far:#2a3260; --mid:#313a6b; --mid-win:#f6d36b;
@@ -98,6 +99,11 @@ h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.4vw,60px)
 }
 .scene[data-where="vl"][data-night="1"]{--sky:#0f0926;--far:#1b1244;--mid:#27195c;--mid-win:#58f5ff;--cloud:#2c2166;--sun:#58f5ff;--glass:#ffe14d;--dark:#ff8a3c;--walk:#262045;--curb:#1b1634;--n1:#34305c;--n2:#2c3760;--n3:#3d2d58;--n4:#2b3158}
 #stage-vl .sgn{filter:drop-shadow(0 0 3px rgba(255,95,210,.8))}
+.scene[data-where="lab"][data-night="1"]{--sky:#132823;--far:#1b362f;--mid:#22463c;--mid-win:#f6d36b;--cloud:#1c3831;--chalk:#d4e2cf;--glass:#ffd76a;--sun:#d4e2cf}
+.chalk{font:600 27px/1 "Caveat","Comic Sans MS",cursive;fill:var(--chalk);opacity:.62}
+.chalkline{fill:none;stroke:var(--chalk);stroke-width:2.5;opacity:.5;stroke-linecap:round;stroke-linejoin:round}
+.seg-on{filter:drop-shadow(2.5px 0 0 #ffe14d) drop-shadow(-2.5px 0 0 #ffe14d) drop-shadow(0 2.5px 0 #ffe14d) drop-shadow(0 -2.5px 0 #ffe14d)}
+.seg-off{opacity:.25}
 #stage-vl .neon{filter:drop-shadow(0 0 4px rgba(88,245,255,.9))}
 .stage{height:760px;overflow-x:auto;overflow-y:hidden;position:relative;cursor:grab;transform-origin:50% 100%;scrollbar-width:thin;scrollbar-color:var(--s-ink) transparent}
 .stage.dragging{cursor:grabbing}
@@ -185,7 +191,8 @@ button.chip i{display:inline-block;width:10px;height:10px;border-radius:50%;marg
 .sheet.house.bp .floors{list-style:none;margin:0;padding:0;display:block}
 .sheet.house.bp .floors li{display:grid;grid-template-columns:30px 1fr;gap:2px 10px;padding:8px 10px;border:1.5px solid rgba(255,255,255,.85);border-bottom:0;font-size:13.5px;line-height:1.4;color:#eaf2ff}
 .sheet.house.bp .floors .lv{grid-row:1 / span 2;align-self:center;font:800 15px/1 var(--f-display);color:#ffe14d}
-.sheet.house.bp .floors b{font:800 15.5px/1.15 var(--f-display);color:#fff}
+.sheet.house.bp .floors .fn{font:800 15.5px/1.15 var(--f-display);color:#fff}
+.sheet.house.bp .floors a.fn{color:#ffe14d;text-underline-offset:3px}
 .bp-ground{height:11px;border:1.5px solid rgba(255,255,255,.85);background:repeating-linear-gradient(135deg,rgba(255,255,255,.75) 0 2px,transparent 2px 7px)}
 .sheet.house.bp .chips li{border-color:rgba(255,255,255,.85);color:#fff}
 .bp-block{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;line-height:1.4}
@@ -345,6 +352,7 @@ header .contact a{color:var(--head);text-underline-offset:3px}
     <div class="stage" id="stage-main" aria-label="Main street. Scroll sideways to walk along it."></div>
     <div class="stage" id="stage-alley" aria-label="Apartment block 42. Scroll sideways to look along it." hidden></div>
     <div class="stage" id="stage-vl" aria-label="Velocity Labs lane. Scroll sideways to walk along it." hidden></div>
+    <div class="stage" id="stage-lab" aria-label="The lab: research papers. Scroll sideways to look around." hidden></div>
     <div class="news" id="news" hidden>
       <div class="sheet paperfront" role="dialog" aria-modal="true" aria-labelledby="mast">
         <button type="button" class="x-top" aria-label="Close">✕</button>
@@ -413,7 +421,7 @@ header .contact a{color:var(--head);text-underline-offset:3px}
 </div>
 
 <div class="wrap">
-  <p class="hint">Scroll or drag sideways. Click any house with a big sign, the repair shop, the newsstand, a side lane, or me in the white hard hat. Click the sun to make it night.</p>
+  <p class="hint">Scroll or drag sideways. Click any house with a big sign, the repair shop, the newsstand, a side lane, or me in the white hard hat. The sky follows your clock and dark mode; click the sun or moon to switch.</p>
 
 
 
@@ -427,7 +435,7 @@ header .contact a{color:var(--head);text-underline-offset:3px}
 /* ================= content: edit here ================= */
 const TECH={ 'Go':{k:0,c:['#147a9c','#6fd6ee']}, 'gRPC':{k:1,c:['#1c7d52','#74e0a8']}, 'PostgreSQL':{k:2,c:['#2f4fb0','#8fb0ff']}, 'Kubernetes':{k:3,c:['#7c35ad','#d59bff']}, 'Redis':{k:4,c:['#c9342f','#ff8a7a']}, 'Python':{k:5,c:['#a86a00','#ffd166']}, 'MySQL':{k:6,c:['#a8327a','#ff9ecb']} };
 const DOMAINS=['E-commerce','EdTech','Ride-hailing'];
-const KHU={ career:'Career', vl:'Velocity Labs', alley:'Chung cư 42 · personal' };
+const KHU={ lab:'Phòng Lab · research', career:'Career', vl:'Velocity Labs', alley:'Chung cư 42 · personal' };
 const DATA={
   andpad:{url:'https://andpad.vn/',link:'Visit ANDPAD VietNam',khu:'career',dom:'Construction',name:'ANDPAD Viet Nam',role:'Software Engineer · Oct 2026 – now',desc:"Under construction. That's me in the white hard hat with the blueprint, watching the site while the team builds.",stack:['Go','gRPC','Kubernetes','Redis','MySQL']},
   gearment:{url:'https://gearment.com/',link:'Visit Gearment',khu:'career',dom:'E-commerce',name:'Gearment Inc.',role:'Technical Lead, then Technical Manager · 2023 – 2026',desc:'US print-on-demand and fulfillment company, millions of orders a year.',
@@ -438,8 +446,15 @@ const DATA={
     floors:[['Be Platform','Go, gRPC, Kubernetes, GCP, Redis, MySQL.'],['BizOps','Go, gRPC, WebRTC, MySQL, Redis.']],stack:['Go','gRPC','Kubernetes','Redis','MySQL'],more:['GCP','WebRTC']},
   teko:{url:'https://teko.vn/',link:'Visit Teko',khu:'career',dom:'E-commerce',name:'Teko Vietnam',role:'Backend Software Engineer · 2018 – 2021',desc:'Core tech arm of VNLife: e-commerce, payments, logistics.',
     floors:[['Order Management System','Python, Go, MySQL, RabbitMQ, Kafka.'],['Market Eyes','Python, Scrapy, Elasticsearch.'],['Account Integration System','Python, Go, SQL Server, MySQL.']],stack:['Go','Python','MySQL'],more:['Kafka','RabbitMQ','Elasticsearch']},
-  ailab:{url:'https://ailab.hcmus.edu.vn/',link:'Visit the AI Lab',khu:'career',dom:'Research',name:'VNUHCM University of Science, AI Lab',role:'Software Engineer (contract) · 2017 – 2018',desc:'Computer vision and education technology research.',
-    floors:[['Multi-face tracking system','published in IJACSA, 2020.'],['Video segmentation using keywords','SPIE Proceedings, 2018.'],['Python self-study textbook','VNU-HCM Press, 2018.']],stack:['Python','MySQL'],more:['Computer vision','Machine learning']},
+  ailab:{url:'https://ailab.hcmus.edu.vn/',link:'Visit the AI Lab',khu:'career',dom:'Research',name:'VNUHCM University of Science, AI Lab',role:'Software Engineer (contract) · 2017 – 2018',desc:'University research lab for computer vision and education technology, where I worked as a contract software engineer.',
+    floors:[['Python programming self-study','VNU-HCM Press, 2018 · textbook. An introductory Python course in Vietnamese, written with the lab.']],
+    stack:['Python','MySQL'],more:['Computer vision','Machine learning']},
+  research:{url:'https://scholar.google.com/citations?user=BrSDZCoAAAAJ',link:'View on Google Scholar',khu:'lab',name:'Phòng Lab',role:'Peer-reviewed papers · 2018 – 2020',desc:'My two peer-reviewed papers in computer vision. Each one has its own exhibit out on the plaza.',
+    floors:[['High-performance multi-face tracking system','IJACSA, 2020 · peer-reviewed paper.','https://thesai.org/Publications/ViewPaper?Volume=11&Issue=3&Code=IJACSA&SerialNo=3'],
+            ['Video segmentation using keywords','SPIE Proceedings, 2018 · peer-reviewed paper.','https://www.spiedigitallibrary.org/conference-proceedings-of-spie/10696/106960U/Video-segmentation-using-keywords/10.1117/12.2310102.short']],
+    stack:['Python'],more:['Computer vision','Peer-reviewed']},
+  ptrack:{url:'https://thesai.org/Publications/ViewPaper?Volume=11&Issue=3&Code=IJACSA&SerialNo=3',link:'Read the paper',khu:'lab',name:'High-performance multi-face tracking system',role:'IJACSA · 2020 · peer-reviewed paper',desc:'Detection and tracking joined by tracklet-to-tracklet association, run semi-online: a short delay buys a decision you can stand behind. It runs at real-time speed with a two-second decision delay.',stack:['Python'],more:['Computer vision','Multi-object tracking']},
+  pseg:{url:'https://www.spiedigitallibrary.org/conference-proceedings-of-spie/10696/106960U/Video-segmentation-using-keywords/10.1117/12.2310102.short',link:'Read the paper',khu:'lab',name:'Video segmentation using keywords',role:'SPIE Proceedings · 2018 · peer-reviewed paper',desc:'Segments objects in a video from keywords the user types, instead of frames someone has to annotate by hand.',stack:['Python'],more:['Computer vision','Video segmentation']},
   yuzu:{url:'https://yuzu.money/',link:'Visit yuzu.money',khu:'vl',dom:'Fintech & Web3',name:'Yuzu Money',role:'Flagship · Velocity Labs · 2025',desc:'DeFi yield platform. Backend technical lead.',stack:['Go','PostgreSQL'],more:['Backend APIs']},
   perp:{url:'https://velocity-labs.tech/',link:'Visit Velocity Labs',khu:'vl',dom:'Fintech & Web3',name:'Perp CEX',role:'Flagship · Velocity Labs, overseas client · 2025',desc:'Trading-system backend for an exchange.',stack:['Go'],more:['Trading systems','Backend APIs']},
   btse:{url:'https://velocity-labs.tech/',link:'Visit Velocity Labs',khu:'vl',dom:'Fintech & Web3',name:'BTSE Invoice',role:'Velocity Labs · 2025',desc:'Invoice system: fee logic and data pipelines.',stack:['Go'],more:['Data pipelines']},
@@ -451,6 +466,8 @@ const DATA={
   oss:{url:'https://github.com/vchitai',link:'View GitHub profile',khu:'alley',name:'Open-source tool shop',role:'9 published libraries, 4 upstream contributions',desc:'Small tools I published, and patches sent upstream:',
     floors:[['Published','go-s3-sharing, lambda-s3-resizer, dataloader, go-bootstraper, x-crafter, gomw, logrgorm2, jsoncase, Pub/Sub emulator image.'],['Upstream','Vietnamese analysis for Elasticsearch, go-socket.io v4 fork, Telegraf Helm chart fix, OpenTelemetry otelhttp metrics, python_logger.']],stack:[],more:['github.com/vchitai']},
   quorum:{url:'https://thequorum.xyz/',link:'Read The Quorum',khu:'alley',name:'The Quorum',role:'Personal · 2026',desc:'Technical writing site.',stack:[],more:['Astro','MDX','TypeScript','Vercel']},
+  maihoa:{url:'https://www.maihoathon.com/',link:'Visit maihoathon',khu:'alley',name:'maihoathon',role:'Personal product · web',desc:'Reflective readings in Vietnamese: I Ching hexagrams, Tarot, Bát Tự charts, picking a good day, and compatibility. Every reading shows the basis for its interpretation, so you can check it.',stack:[],more:['Web app','Vietnamese']},
+  midvera:{url:'https://midvera.app/',link:'Visit Midvera',khu:'alley',name:'Midvera',role:'Personal product · web',desc:'Mark where everyone in a group is, and it finds a café, restaurant or bar that is about equally easy for all of them to reach by motorbike.',stack:[],more:['Mobile web app','Vietnamese · English']},
   trendypod:{nolink:'Private project, no public link.',khu:'alley',name:'TrendyPod',role:'Personal · 2026 · private',desc:'AI research workflow and data pipelines for print-on-demand trends.',stack:[],more:['Python','Data pipelines','Vercel']},
   podbench:{nolink:'Private project, no public link.',khu:'alley',name:'POD Supplier Benchmark',role:'Personal · 2026 · private',desc:'Indexing and benchmarking print-on-demand suppliers.',stack:[],more:['Data indexing','Benchmarking']}
 };
@@ -498,7 +515,8 @@ const HOUSE={
   geniebook:{w:190,floors:4,wall:'--pink',trim:'--cream',door:'--teal',awn:'--teal',signBg:'--s-ink',signFg:'--cream',sign:'GENIEBOOK',roof:'garden',shop:'books',banners:['GENIEASK','GENIESMART','GENIE PLATFORM']},
   be:{w:176,floors:3,wall:'--teal',trim:'--cream',door:'--yellow',awn:'--yellow',signBg:'--s-ink',signFg:'--cream',sign:'BE GROUP',roof:'tank',shop:'helmets',banners:['BIZOPS','BE PLATFORM']},
   teko:{w:190,floors:4,wall:'--yellow',trim:'--cream',door:'--red',awn:'--red',signBg:'--red',signFg:'--cream',sign:'TEKO',roof:'ton',shop:'shelves',banners:['ACCOUNT INTEGRATION','MARKET EYES','ORDER MANAGEMENT']},
-  ailab:{w:172,floors:3,wall:'--steel',trim:'--cream',door:'--indigo',awn:'--indigo',signBg:'--s-ink',signFg:'--cream',sign:'AI LAB',roof:'mast',shop:'books'},
+  ailab:{w:172,floors:3,wall:'--steel',trim:'--cream',door:'--indigo',awn:'--indigo',signBg:'--s-ink',signFg:'--cream',sign:'AI LAB',roof:'mast',shop:'books',banners:[null,'TEXTBOOK 2018']},
+  research:{w:186,floors:3,wall:'--cream',trim:'--steel',door:'--indigo',awn:'--red',signBg:'--red',signFg:'--cream',sign:'PHÒNG LAB',roof:'tank',shop:'lab',banners:['PAPER · SPIE 2018','PAPER · IJACSA 2020']},
   yuzu:{...VL,w:186,floors:4,wall:'--red',trim:'--yellow',door:'--yellow',awn:'--yellow',signBg:'#b3121d',signFg:'#ffd34d',sign:'TIỆM VÀNG YUZU',roof:'ton',shop:'gold'},
   perp:{...VL,w:172,floors:3,wall:'--teal',door:'--indigo',awn:'--indigo',sign:'PERP CEX',roof:'mast',shop:'chart'},
   btse:{...VL,signFg:'#ff5fd2',w:140,floors:2,wall:'--cream',trim:'--steel',door:'--indigo',awn:'--indigo',sign:'BTSE INVOICE',roof:'none',shop:'receipts'},
@@ -509,11 +527,13 @@ const HOUSE={
   grpcx:{w:180,floors:3,wall:'--teal',trim:'--cream',door:'--indigo',awn:'--indigo',signBg:'--s-ink',signFg:'--cream',sign:'GRPCX',roof:'mast',shop:'shelves'},
   oss:{w:186,floors:2,wall:'--cream',trim:'--steel',door:'--red',awn:'--red',signBg:'--red',signFg:'--cream',sign:'TIỆM ĐỒ NGHỀ',roof:'ton',shop:'garage'},
   quorum:{w:196,floors:3,wall:'--pink',trim:'--cream',door:'--teal',awn:'--teal',signBg:'--s-ink',signFg:'--cream',sign:'QUÁN QUORUM',roof:'garden',shop:'cafe'},
+  maihoa:{w:176,floors:2,wall:'--red',sign:'MAI HOA THÔN'},
+  midvera:{w:176,floors:2,wall:'--teal',sign:'MIDVERA'},
   trendypod:{w:164,floors:2,wall:'--indigo',trim:'--cream',door:'--yellow',awn:'--red',signBg:'--yellow',signFg:'--s-ink',sign:'TRENDYPOD',roof:'tank',shop:'shirts'},
   podbench:{w:168,floors:2,wall:'--orange',trim:'--cream',door:'--indigo',awn:'--indigo',signBg:'--s-ink',signFg:'--cream',sign:'POD BENCHMARK',roof:'none',shop:'receipts'}
 };
 const g_=n=>({t:'gate',khu:n}), n_=(w,fl)=>({t:'nb',w,fl}), p_=id=>({t:'p',id});
-const PLAN_MAIN=[p_('garage'),n_(124,2),g_('career'),n_(104,2),p_('andpad'),n_(112,2),p_('gearment'),n_(110,3),p_('geniebook'),p_('be'),n_(108,2),p_('teko'),p_('ailab'),n_(110,2),{t:'alley',to:'vl',w:104},n_(116,3),{t:'alley',to:'alley',w:108},n_(112,2)];
+const PLAN_MAIN=[p_('garage'),n_(124,2),g_('career'),n_(104,2),p_('andpad'),n_(112,2),p_('gearment'),n_(110,3),p_('geniebook'),p_('be'),n_(108,2),p_('teko'),p_('ailab'),{t:'alley',to:'lab',w:104},n_(110,2),{t:'alley',to:'vl',w:104},n_(116,3),{t:'alley',to:'alley',w:108},n_(112,2)];
 const PLAN_VL=[{t:'exit'},g_('vl'),p_('yuzu'),p_('perp'),n_(106,2),p_('btse'),p_('collectible'),p_('caller'),n_(104,3),p_('novaland'),p_('pokerage'),n_(108,2)];
 const PLAN_ALLEY=[{t:'exit'},n_(104,2),p_('grpcx'),n_(96,3),p_('oss'),p_('quorum'),n_(100,2),p_('trendypod'),p_('podbench'),n_(108,2)];
 
@@ -684,6 +704,10 @@ function shop(g,h,oY){
       paper(g,rc(x+w-70,GY-22,48,22),'--red',{sh:1.5,amp:.3}); break;
     case 'gold': for(let r=0;r<3;r++) for(let k=0;k<3-r;k++){const bx=cx-44+k*30+r*15,by=GY-14-r*13;paper(g,[[bx+3,by],[bx+25,by],[bx+28,by+12],[bx,by+12]],'#ffd34d',{sh:1.5,amp:.3});line(g,bx+8,by+4,bx+20,by+4,1.3,'#fff6c2',.95)}
       paper(g,rc(x+18,oY+8,46,17),'#b3121d',{sh:1.5,amp:.3}); label(g,x+41,oY+21,'9999',11,'#ffd34d'); break;
+    case 'lab': [x+38,x+64,x+51].forEach(tx=>line(g,tx,GY,x+51,GY-34,2,'--steel')); paper(g,rc(x+36,GY-51,30,18),'--cream',{sh:1.5,amp:.3}); blob(g,x+69,GY-42,6,'--steel',{sh:0,n:10,wob:.03});
+      paper(g,rc(cx+4,GY-60,w/2-26,46),'--steel',{sh:2,amp:.4}); E('polygon',{points:cut(rc(cx+9,GY-55,w/2-36,34),.3),fill:'--glass'},g);
+      [[cx+23,GY-39],[cx+47,GY-37]].forEach(([fx,fy])=>{blob(g,fx,fy,5,'--skin',{sh:0,n:8,wob:.04});E('rect',{x:fx-8,y:fy-8,width:16,height:16,fill:'none',stroke:'--yellow','stroke-width':1.8},g)});
+      line(g,cx+w/4-8,GY-14,cx+w/4-8,GY,3,'--steel'); break;
     case 'chart': [18,34,26,46,38,58].forEach((hh,k)=>{const bx=x+30+k*((w-66)/5);line(g,bx+5,GY-hh-16,bx+5,GY-4,1.6,'--cream');paper(g,rc(bx,GY-hh-8,10,hh*.6),k%3===1?'--red':'--leaf',{sh:1,amp:.3})}); break;
     case 'cards': [-14,0,14].forEach((a,k)=>{const cg=E('g',{transform:`rotate(${a} ${cx} ${GY-10})`},g);paper(cg,rc(cx-12,GY-52,24,36),'--cream',{sh:1.5,amp:.3});blob(cg,cx,GY-34,5,k===1?'--red':'--s-ink',{sh:0,n:8,wob:.04})}); break;
     default: paper(g,rc(x+20,GY-26,w-40,26),pick(['--brown','--indigo','--teal']),{sh:1.5});
@@ -975,6 +999,7 @@ const sceneEl=document.getElementById('scene');
 const main=new Scene('main',document.getElementById('stage-main'),PLAN_MAIN);
 const alley=new Scene('alley',document.getElementById('stage-alley'),[],1500);
 const vl=new Scene('vl',document.getElementById('stage-vl'),PLAN_VL);
+const lab=new Scene('lab',document.getElementById('stage-lab'),[],1760);
 (function(){
   const sc=main, W=sc.W;
   drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,140,310,true);
@@ -983,7 +1008,8 @@ const vl=new Scene('vl',document.getElementById('stage-vl'),PLAN_VL);
   for(let x=30;x<W;x+=120) paper(L,rc(x,GY+64,52,6),'--road-mark',{sh:0,amp:.5});
   const marks=street(sc,L,['PHỞ','SỬA XE','TẠP HÓA','CƠM TẤM','TRÀ SỮA','PHOTO','HỦ TIẾU','MAY ĐO','NHA KHOA','CẮT TÓC','CHÈ','GIẶT ỦI'].sort(()=>rnd()-.5));
   sc.doorX={alley:doorway(sc,L,marks.alleys.alley,108,{sign:'CHUNG CƯ 42',tag:'GO IN',aria:'Go into apartment block 42: personal projects',go:()=>swap(alley)}),
-            vl:doorway(sc,L,marks.alleys.vl,104,{sign:'NGÕ VELOCITY',tag:'TURN IN',aria:'Turn into the Velocity Labs lane',go:()=>swap(vl)})};
+            vl:doorway(sc,L,marks.alleys.vl,104,{sign:'NGÕ VELOCITY',tag:'TURN IN',aria:'Turn into the Velocity Labs lane',go:()=>swap(vl)}),
+            lab:doorway(sc,L,marks.alleys.lab,104,{sign:'PHÒNG LAB',tag:'GO IN',aria:'Go into the lab: research papers',go:()=>swap(lab)})};
   /* wires: one per tech, strung pole to pole; drops link each house to the wires it uses */
   const NW=Object.keys(TECH).length, poles=[26], wg=E('g',{},L);
   /* poles stand in front of neighbours and gates, never across a project sign */
@@ -1039,7 +1065,7 @@ const vl=new Scene('vl',document.getElementById('stage-vl'),PLAN_VL);
   const sd=E('g',{class:'boil'},pr), sx=sc.shopX+54;
   paper(sd,[[sx-2,GY+26],[sx+2,GY-34],[sx+54,GY-34],[sx+58,GY+26]],'#fff',{sh:2.5,amp:.4});
   label(sd,sx+28,GY-18,'KHÁM MÁY',7.8,'--red'); label(sd,sx+28,GY-6,'5 DAYS',10,'--plate'); label(sd,sx+28,GY+8,'ĐẠI TU',8.5,'--red'); label(sd,sx+28,GY+19,'2–4 WKS',8.5,'--plate');
-  trees(sc,1250,1500);
+  trees(sc,1250,2150);
 })();
 
 /* ================= build: chung cư 42, an old Saigon apartment block where each flat is a personal project ================= */
@@ -1060,6 +1086,8 @@ function unit(sc,L,ux,uy,cw,fh,wall,id){
   paper(g,rc(ux+3,uy+fh-35,cw-6,25),'--cream',{sh:2.5,amp:.5});
   for(let k=ux+10;k<ux+cw-8;k+=9) line(g,k,uy+fh-31,k,uy+fh-14,1.2,'--s-ink',.3);
   if(!id&&t===0){for(let k=ux+8;k<ux+cw-4;k+=14) line(g,k,uy+10,k,uy+fh-35,1.1,'--s-ink',.5);for(let k=uy+12;k<uy+fh-35;k+=13) line(g,ux+8,k,ux+cw-8,k,1.1,'--s-ink',.5)}
+  if(id==='maihoa') [ux+cw-58,ux+cw-34].forEach(lx=>{line(g,lx,uy+8,lx,uy+19,1.2);blob(g,lx,uy+29,9,'--yellow',{sh:1.5,n:10,wob:.04});line(g,lx,uy+38,lx,uy+46,2,'--yellow')});
+  if(id==='midvera'){const px=ux+cw-22,py=uy+50;paper(g,[[px,py],[px-11,py-18],[px-8,py-30],[px,py-35],[px+8,py-30],[px+11,py-18]],'--red',{sh:1.5,amp:.3});blob(g,px,py-22,4,'--cream',{sh:0,n:8,wob:.03})}
   if(id==='podbench') [[0,0],[20,0],[10,-15]].forEach(([dx,dy])=>paper(g,rc(ux+cw-62+dx,uy+fh-52+dy,18,14),'--orange',{sh:1.5,amp:.3}));
   const n=1+Math.floor(rnd()*3); for(let k=0;k<n;k++) blob(g,ux+16+rnd()*(cw-32),uy+fh-38,8+rnd()*5,rnd()>.5?'--leaf':'--leaf2',{sh:1.5,n:9});
   if(id){const sign=HOUSE[id].sign; paper(g,rc(ux+12,uy+fh-37,cw-24,27),'--s-ink',{sh:2.5,amp:.5}); label(g,cx,uy+fh-18,sign,fit(sign,16,cw-40),'--cream'); pinAt(outer,cx,uy+14); claim(sc,outer,g,id,ux,uy,cw,fh)}
@@ -1100,7 +1128,7 @@ function buildBlock(sc){
   for(let k=0;k<5;k++) paper(fr,rc(sx+14+k*4,GY-12-k*11,SW-28-k*8,11),'--steel',{sh:0,amp:.3});
   paper(fr,rc(sx+10,GY-GH+4,SW-20,18),'--cream',{sh:1.5,amp:.3}); label(fr,sx+SW/2,GY-GH+17,'LỐI VÀO',10,'--s-ink');
   const WALLS=['--pink','--teal','--yellow','--orange','--cream','--n2','--n3','--indigo','--red'];
-  const FLATS={'1,1':'grpcx','0,4':'trendypod','2,3':'podbench'};
+  const FLATS={'1,1':'grpcx','0,4':'trendypod','2,3':'podbench','2,0':'maihoa','1,5':'midvera'};
   for(let f=0;f<FLOORS;f++) for(let c=0;c<COLS;c++){const id=FLATS[f+','+c];unit(sc,L,colX(c),top+f*FH,CW,FH,id?HOUSE[id].wall:pick(WALLS),id)}
   for(let f=0;f<=FLOORS;f++) paper(L,rc(X0-16,top+f*FH-5,BW+32,9),'--cream',{sh:2,amp:.5});
   gshop(sc,L,colX(0),CW*2,GH,'quorum'); gshop(sc,L,colX(2),CW,GH,null,'GIỮ XE','helmets'); gshop(sc,L,colX(3),CW,GH,null,'TẠP HÓA','shelves'); gshop(sc,L,colX(4),CW*2,GH,'oss');
@@ -1108,6 +1136,92 @@ function buildBlock(sc){
   stools(pr,colX(0)+CW);
   [[colX(2)+10,'--red'],[colX(2)+66,'--teal'],[colX(2)+122,'--yellow'],[colX(5)+70,'--indigo']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
   [colX(3)+150,colX(4)+330,X0-40].forEach(x=>{const g=E('g',{class:'boil'},pr);paper(g,[[x,GY+10],[x+22,GY+10],[x+18,GY+30],[x+4,GY+30]],'--brown',{sh:2,amp:.3});blob(g,x+11,GY+2,13,'--leaf',{sh:2,n:10});blob(g,x+4,GY-8,9,'--leaf2',{sh:1.5,n:9})});
+}
+
+/* ================= build: Phòng Lab, a research plaza under a chalkboard sky; each paper is a working exhibit ================= */
+function placard(g,x,y,kick,title){
+  line(g,x+60,y+50,x+60,GY,3,'--steel'); line(g,x+140,y+50,x+140,GY,3,'--steel');
+  paper(g,rc(x,y,200,54),'#fdfbf3',{sh:2.5,amp:.4}); label(g,x+100,y+19,kick,10,'--red'); label(g,x+100,y+42,title,fit(title,16,186),'--s-ink');
+}
+function buildLab(sc){
+  const W=sc.W;
+  drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,200,330);
+  const Lc=sc.layers[0].el;
+  [['IoU = |A∩B| / |A∪B|',560,170],['Δt = 2s',620,-30],['argmax P(track | det)',920,150],['"motorbike" → mask',1150,-60],['∑ frames ⇒ tracklets',1290,120],['f(x) = σ(Wx + b)',1560,20],['no labels needed',1480,-140]]
+    .forEach(([t,x,y])=>{const e=E('text',{x,y,class:'chalk'},Lc);e.textContent=t});
+  [['M 820 200 q 50 -40 110 -8 l -10 -10 m 10 10 l -14 6'],['M 1100 40 c 40 30 80 30 120 0'],['M 1060 -110 a 30 22 0 1 0 1 0'],['M 1440 60 l 30 -50 l 30 50 z']].forEach(([d])=>E('path',{d,class:'chalkline'},Lc));
+  const L=sc.layer(1,W); sc.L=L;
+  paper(L,rc(-20,GY,W+40,120),'--walk',{sh:0,amp:.6});
+  for(let x=0;x<W;x+=64) line(L,x,GY+2,x-36,H,1,'--s-ink',.14);
+  [GY+34,GY+72].forEach(y=>line(L,0,y,W,y,1,'--s-ink',.14));
+  doorway(sc,L,44,84,{sign:'PHỐ CHÍNH',tag:'BACK',left:1,aria:'Back to the main street',go:()=>swap(main)});
+  /* the lab itself: an observatory with a telescope poking out of the dome */
+  { const x=200,w=430,top=GY-330,cx=x+w/2,r=112, outer=E('g',{class:'pop'},L), g=E('g',{class:'boil'},outer);
+    paper(g,rc(x,top,w,GY-top),'--cream',{sh:5,amp:1});
+    paper(g,[[cx+6,top-r+16],[cx+78,top-r-40],[cx+90,top-r-26],[cx+18,top-r+30]],'--indigo',{sh:2,amp:.4});
+    const dome=[];for(let i=0;i<=18;i++){const a=Math.PI+i/18*Math.PI;dome.push([cx+Math.cos(a)*r,top+Math.sin(a)*r])}
+    paper(g,dome,'--steel',{sh:4,amp:.6}); paper(g,rc(cx-12,top-r+8,24,r-8),'--s-ink',{sh:0,amp:.3});
+    paper(g,rc(x-8,top-12,w+16,14),'--steel',{sh:2,amp:.5});
+    for(let k=0;k<5;k++){const wx=x+26+k*80;E('polygon',{points:cut(rc(wx,top+22,48,62),.4),fill:'--glass'},g);line(g,wx+24,top+22,wx+24,top+84,2.5,'--cream')}
+    paper(g,rc(x+66,GY-238,w-132,48),'--red',{sh:3,amp:.6}); label(g,cx,GY-203,'PHÒNG LAB',30,'--cream');
+    E('polygon',{points:cut(rc(x+28,GY-150,92,70),.4),fill:'--glass'},g); E('polygon',{points:cut(rc(x+w-120,GY-150,92,70),.4),fill:'--glass'},g);
+    E('polygon',{points:cut(rc(cx-46,GY-160,92,138),.5),fill:'--dark'},g);
+    paper(g,rc(cx-88,GY-172,16,150),'--cream',{sh:2.5,amp:.4}); paper(g,rc(cx+72,GY-172,16,150),'--cream',{sh:2.5,amp:.4});
+    paper(g,[[cx-104,GY-172],[cx+104,GY-172],[cx,GY-186]],'--steel',{sh:2,amp:.4});
+    paper(g,rc(cx-82,GY-12,164,12),'--steel',{sh:1.5,amp:.3}); paper(g,rc(cx-66,GY-24,132,12),'--steel',{sh:1.5,amp:.3});
+    pinAt(outer,x+70,top+6); claim(sc,outer,g,'research',x,top-r,w,GY-top+r);
+    sc.pop.push({el:outer,cx,w,flips:[],up:true}); }
+  /* exhibit 1, the IJACSA paper: a camera tracks people crossing, each with a box and an ID that sticks to them */
+  const walkers=[];
+  { const x=720,w=480, outer=E('g',{class:'pop'},L), g=E('g',{class:'boil'},outer), tx=x+24;
+    for(let k=0;k<8;k++) paper(g,rc(x+48+k*52,GY+22,30,62),'#fdfbf3',{sh:0,amp:.4});
+    [[tx,GY+12],[tx+44,GY+16],[tx+22,GY+20]].forEach(([a,b])=>line(g,a,b,tx+22,GY-118,3,'--steel'));
+    E('polygon',{points:`${tx+74},${GY-132} ${x+w},${GY-226} ${x+w},${GY+90}`,fill:'--yellow',opacity:.14},g);
+    paper(g,rc(tx-6,GY-152,64,38),'--s-ink',{sh:3,amp:.4}); blob(g,tx+64,GY-133,14,'--steel',{sh:2,n:12,wob:.03});
+    E('circle',{cx:tx+64,cy:GY-133,r:7,fill:'--glass'},g); E('circle',{cx:tx+4,cy:GY-145,r:3.2,fill:'--red'},g);
+    placard(g,x+150,GY-262,'EXHIBIT 1 · IJACSA 2020','Multi-face tracking');
+    claim(sc,outer,g,'ptrack',x,GY-272,w,272+90);
+    [[x+130,1.7,'--teal'],[x+270,-1.3,'--pink'],[x+400,1.1,'--orange']].forEach(([sx,v,c],i)=>{
+      const wg=E('g',{},outer), fy=GY+74, legs=[];
+      [-4,4].forEach((o,n)=>{const lg=E('g',{},wg);paper(lg,rc(o-3,fy-26,6,26),'--indigo',{sh:1,amp:.3});legs.push({lg,x:o,y:fy-26,d:n?1:-1})});
+      paper(wg,[[-11,fy-60],[11,fy-60],[10,fy-24],[-10,fy-24]],c,{sh:1.5,amp:.3});
+      blob(wg,0,fy-70,9,'--skin',{sh:1.5,n:10,wob:.04}); paper(wg,[[-10,fy-73],[10,fy-73],[7,fy-81],[-7,fy-81]],'--s-ink',{sh:0,amp:.3});
+      E('rect',{x:-16,y:fy-87,width:32,height:32,fill:'none',stroke:'#ffe14d','stroke-width':2.6},wg);
+      paper(wg,rc(-16,fy-104,32,16),'#ffe14d',{sh:0,amp:.2}); label(wg,0,fy-92,'ID '+(i+1),10,'--s-ink');
+      walkers.push({wg,legs,x:sx,v,min:x+96,max:x+w-26}); wg.setAttribute('transform',`translate(${sx},0)`);
+    });
+    sc.pop.push({el:outer,cx:x+w/2,w,flips:[],up:true}); }
+  /* exhibit 2, the SPIE paper: a billboard plays a street scene; type a word and only that thing is cut out */
+  const keys=['motorbike','tree','person'], objs={}; let ki=0, kt;
+  { const x=1270,w=410, outer=E('g',{class:'pop'},L), g=E('g',{class:'boil'},outer);
+    line(g,x+90,GY,x+90,GY-130,7,'--steel'); line(g,x+w-90,GY,x+w-90,GY-130,7,'--steel');
+    paper(g,rc(x,GY-372,w,248),'--s-ink',{sh:5,amp:.8});
+    const sx=x+16,sy=GY-356,sw=w-32,sh=216;
+    paper(g,rc(sx,sy,sw,sh),'#cfe3ea',{sh:0,amp:.4}); paper(g,rc(sx,sy+156,sw,60),'#9aa3b5',{sh:0,amp:.3});
+    for(let k=0;k<5;k++) paper(g,rc(sx+20+k*76,sy+184,40,5),'#eef1f4',{sh:0,amp:.2});
+    const mk=(key,fn)=>{const og=E('g',{},g);fn(og);objs[key]=og};
+    mk('tree',og=>{line(og,sx+62,sy+158,sx+62,sy+104,7,'--brown');blob(og,sx+62,sy+82,36,'--leaf',{sh:0,n:12});blob(og,sx+40,sy+100,20,'--leaf2',{sh:0,n:10})});
+    mk('person',og=>{paper(og,rc(sx+150,sy+124,13,34),'--indigo',{sh:0,amp:.3});paper(og,rc(sx+145,sy+88,23,40),'--pink',{sh:0,amp:.3});blob(og,sx+156,sy+76,11,'--skin',{sh:0,n:9,wob:.04})});
+    mk('motorbike',og=>{const bx=sx+232,by=sy+180;[bx,bx+78].forEach(wx=>{blob(og,wx,by,16,'--s-ink',{sh:0,n:12,wob:.03});E('circle',{cx:wx,cy:by,r:6,fill:'--steel'},og)});
+      paper(og,[[bx+2,by-12],[bx+24,by-38],[bx+62,by-36],[bx+80,by-12],[bx+40,by-6]],'--red',{sh:0,amp:.4});
+      paper(og,[[bx+34,by-40],[bx+42,by-78],[bx+58,by-74],[bx+56,by-38]],'--teal',{sh:0,amp:.3}); blob(og,bx+50,by-88,11,'--skin',{sh:0,n:9,wob:.04});
+      paper(og,[[bx+39,by-92],[bx+61,by-92],[bx+58,by-102],[bx+50,by-105],[bx+42,by-102]],'--yellow',{sh:0,amp:.3})});
+    const kb=E('g',{},g);
+    paper(kb,[[x+w-196,GY-440],[x+w-6,GY-440],[x+w-6,GY-394],[x+w-66,GY-394],[x+w-82,GY-376],[x+w-88,GY-394],[x+w-196,GY-394]],'#fdfbf3',{sh:2.5,amp:.4});
+    kt=label(kb,x+w-101,GY-410,'',18,'--s-ink');
+    placard(g,x+105,GY-112,'EXHIBIT 2 · SPIE 2018','Segment by keyword');
+    claim(sc,outer,g,'pseg',x,GY-444,w,444);
+    sc.pop.push({el:outer,cx:x+w/2,w,flips:[],up:true}); }
+  const showKey=()=>{kt.textContent='"'+keys[ki]+'"';keys.forEach(k=>{objs[k].classList.toggle('seg-on',k===keys[ki]);objs[k].classList.toggle('seg-off',k!==keys[ki])})};
+  showKey();
+  /* plants and a bench on the plaza */
+  const pr=E('g',{},L);
+  [680,1225,1720].forEach(x=>{const g=E('g',{class:'boil'},pr);paper(g,[[x,GY+10],[x+22,GY+10],[x+18,GY+30],[x+4,GY+30]],'--brown',{sh:2,amp:.3});blob(g,x+11,GY+2,13,'--leaf',{sh:2,n:10});blob(g,x+4,GY-8,9,'--leaf2',{sh:1.5,n:9})});
+  sc.labTick=tick=>{
+    walkers.forEach(wk=>{wk.x+=wk.v;if(wk.x<wk.min||wk.x>wk.max) wk.v*=-1;wk.wg.setAttribute('transform',`translate(${wk.x.toFixed(1)},0)`);
+      if(tick%2===0) wk.legs.forEach(l=>l.lg.setAttribute('transform',`rotate(${l.d*((tick/2)%2?14:-14)} ${l.x} ${l.y})`))});
+    if(tick%26===0){ki=(ki+1)%keys.length;showKey()}
+  };
 }
 
 /* ================= build: side lane (Velocity Labs) ================= */
@@ -1130,6 +1244,7 @@ function buildLane(sc,signs,props,lights=['--yellow','--red']){
   trees(sc,900,1400);
 }
 buildBlock(alley);
+buildLab(lab);
 buildLane(vl,['CÀ PHÊ','IN ẤN','VĂN PHÒNG','CƠM VĂN PHÒNG'],(pr,at)=>{
   stools(pr,at('perp').cx+120);
   [[at('yuzu').x+100,'--red'],[at('caller').x+30,'--indigo'],[at('novaland').x+40,'--teal']].forEach(([x,c])=>{const g=E('g',{class:'boil'},pr);bike(g,x,c)});
@@ -1153,13 +1268,13 @@ function select(id){
   $('h-where').textContent=KHU[d.khu]+(d.dom?' · '+d.dom:'');
   $('h-name').textContent=d.name; $('h-role').textContent=d.role; $('h-desc').textContent=d.desc;
   const fl=[...(d.floors||[])].reverse();   /* data lists the ground floor first; an elevation reads top down */
-  $('h-floors').replaceChildren(...fl.map(([n,t],i)=>{const li=document.createElement('li'),lv=document.createElement('span'),b=document.createElement('b'),tx=document.createElement('span');lv.className='lv';lv.textContent='T'+(fl.length-i);b.textContent=n;tx.textContent=t;li.append(lv,b,tx);return li}));
+  $('h-floors').replaceChildren(...fl.map(([n,t,u],i)=>{const li=document.createElement('li'),lv=document.createElement('span'),b=document.createElement(u?'a':'b'),tx=document.createElement('span');lv.className='lv';lv.textContent='T'+(fl.length-i);b.className='fn';b.textContent=u?n+' ↗':n;if(u){b.href=u;b.target='_blank';b.rel='noopener'}tx.textContent=t;li.append(lv,b,tx);return li}));
   $('h-elev').hidden=!fl.length; $('h-body').classList.toggle('solo',!fl.length);
   $('h-chips').replaceChildren(...[...d.stack,...(d.more||[])].map(c=>{const li=document.createElement('li');li.textContent=c;return li}));
   const a=$('h-link'); a.hidden=!d.url; if(d.url){a.href=d.url;a.textContent=d.link+' ↗'}
   $('h-nolink').textContent=d.nolink||'';
 }
-[main,alley,vl].forEach(sc=>sc.proj.forEach(p=>{
+[main,alley,vl,lab].forEach(sc=>sc.proj.forEach(p=>{
   p.el.addEventListener('click',()=>{if(!sc.dragged){select(p.id);openSheet('house',p.el)}});
   p.el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(p.id);openSheet('house',p.el)}});
   p.el.addEventListener('focus',()=>{const sx=p.cx*sc.S-sc.stage.scrollLeft;if(sx<60||sx>sc.viewW-60) sc.scrollToX(p.cx,false)});
@@ -1214,6 +1329,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape') closeSheets()});
   const ids=k=>Object.keys(DATA).filter(id=>DATA[id].khu===k);
   sec('Services',SERVICES.map(v=>({t:v.title,role:v.tag,desc:v.when+' '+v.get})));
   sec('Career',ids('career').map(house));
+  sec('Research',['ptrack','pseg'].map(house));
   sec('Velocity Labs · founding member since 2021',ids('vl').map(house));
   sec('Personal projects and open source',ids('alley').map(house));
   sec('Writing',ARTICLES.map(a=>({t:a.title,url:a.url,role:a.tag+' · '+a.date})));
@@ -1226,6 +1342,7 @@ plate('Backend repair',()=>{main.scrollToX(main.shopX,false);openSheet('board',m
 main.khu.forEach(k=>plate('Career',()=>{main.stage.scrollTo({left:Math.max(0,(k.x-30)*main.S),behavior:still?'auto':'smooth'});const first=main.proj.find(p=>DATA[p.id].khu===k.khu);if(first) select(first.id)}));
 plate('Velocity Labs →',()=>swap(vl));
 plate('Chung cư 42 →',()=>swap(alley));
+plate('Phòng Lab →',()=>swap(lab));
 plate('Contact',()=>{main.scrollToX(main.meX,false);openSheet('card',main.meEl)});
 plate('Newsstand',()=>{main.scrollToX(main.newsX,false);openSheet('news',main.newsEl)});
 
@@ -1247,13 +1364,27 @@ function chip(row,type,v,txt,color){
 }
 chip('tech-row','tech','','All'); Object.keys(TECH).forEach(t=>chip('tech-row','tech',t,t,TECH[t].c[0]));
 DOMAINS.forEach(d=>chip('dom-row','dom',d,d));
-{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent='Fintech & Web3 →';b.addEventListener('click',()=>swap(vl));$('dom-row').appendChild(b)}
+/* domains that live in their own district: the chip takes you there */
+[['Fintech & Web3 →',()=>swap(vl)],['AI & Research →',()=>swap(lab)]].forEach(([t,go])=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=t;b.addEventListener('click',go);$('dom-row').appendChild(b)});
 /* day / night: the sun (or moon) in the sky is the switch */
-function toggleNight(){
-  const on=sceneEl.dataset.night!=='1'; sceneEl.dataset.night=on?'1':'0';
+/* Night follows the visitor: on when their system is in dark mode, or when their clock says evening (18:00 to 06:00).
+   Clicking the sun or moon overrides that for the rest of the visit. */
+function setNight(on){
+  sceneEl.dataset.night=on?'1':'0';
   document.querySelectorAll('.sunbox').forEach(b=>{b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Moon: switch to day':'Sun: switch to night')});
   setFilter(filt);
 }
+const mqDark=matchMedia('(prefers-color-scheme: dark)');
+const autoNight=()=>{const h=new Date().getHours();return mqDark.matches||h>=18||h<6};
+let nightChoice=null; try{nightChoice=sessionStorage.getItem('street-night')}catch(e){}
+function syncNight(){if(nightChoice===null) setNight(autoNight())}
+function toggleNight(){
+  const on=sceneEl.dataset.night!=='1'; nightChoice=on?'1':'0';
+  try{sessionStorage.setItem('street-night',nightChoice)}catch(e){}
+  setNight(on);
+}
+mqDark.addEventListener('change',syncNight);
+setInterval(syncNight,5*60*1000);
 document.querySelectorAll('.sunbox').forEach(b=>{
   b.addEventListener('click',()=>{if(!cur.dragged) toggleNight()});
   b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleNight()}});
@@ -1278,12 +1409,13 @@ function swap(to){
 
 /* ================= 12 fps ticker ================= */
 let tick=0;
-[main,alley,vl].forEach(sc=>sc.boils=[...sc.stage.querySelectorAll('.boil')]);
+[main,alley,vl,lab].forEach(sc=>sc.boils=[...sc.stage.querySelectorAll('.boil')]);
 main.dots.forEach(d=>{const p=d.p.getPointAtLength(d.t*d.len);d.c.setAttribute('cx',p.x);d.c.setAttribute('cy',p.y)});
 function frame(){
   tick++; const sc=cur;
   sc.dots.forEach(d=>{d.t=(d.t+d.v+1)%1;const p=d.p.getPointAtLength(d.t*d.len);d.c.setAttribute('cx',p.x.toFixed(1));d.c.setAttribute('cy',p.y.toFixed(1))});
   if(sc.bug) tickBug(sc,tick);
+  if(sc.labTick) sc.labTick(tick);
   if(sc.actors) tickActors(sc,tick);
   if(sc.rider){sc.riderX+=11;if(sc.riderX>sc.W+160) sc.riderX=-180;sc.rider.setAttribute('transform',`translate(${sc.riderX},${tick%4<2?0:-1.5})`)}
   sc.spokes.forEach(o=>o.s.setAttribute('transform',`rotate(${(tick*30)%360} ${o.cx} ${o.cy})`));
@@ -1301,7 +1433,7 @@ $('filters').open=!mqPhone.matches;
 mqPhone.addEventListener('change',()=>{$('filters').open=!mqPhone.matches;cur.layout()});
 $('filters').addEventListener('toggle',()=>cur.layout());
 window.addEventListener('resize',()=>cur.layout());
-main.layout(); select('andpad'); setFilter(null); main.flatten(false);
+main.layout(); select('andpad'); setFilter(null); setNight(nightChoice!==null?nightChoice==='1':autoNight()); main.flatten(true); requestAnimationFrame(()=>main.checkPops());
 </script>
 </body>
 </html>
