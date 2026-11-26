@@ -52,6 +52,13 @@ header{display:grid;gap:4px}
 .head-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .head-top button{flex:none;margin-top:6px}
 header .contact .short{display:none}
+/* Vietnamese stacks diacritics above capitals: give tight headings more line height */
+html[lang="vi"] .ad h3{line-height:1.24;padding-right:66px}
+html[lang="vi"] .sheet.board.ads .mast,html[lang="vi"] .sheet.paperfront .mast{line-height:1.12}
+html[lang="vi"] .sheet.house.bp .mast,html[lang="vi"] .sheet.postcard .mast{line-height:1.15}
+html[lang="vi"] .np-lead .hd{line-height:1.18}
+html[lang="vi"] .lede{line-height:1.5}
+header .contact .lang{font:600 13px/1 var(--f-body);padding:6px 10px;border-radius:999px;box-shadow:2px 2px 0 var(--ink)}
 #filters>summary{display:none}
 #filters .row+.row{margin-top:12px}
 /* phones: one-line header, nav in a single swipeable row, filters folded away, so the street gets the screen */
@@ -349,7 +356,7 @@ header .contact a{color:var(--head);text-underline-offset:3px}
   <header>
     <h1>Tai Vong</h1>
     <p class="lede">Backend and platform engineer, technical lead. I build the parts nobody demos.<span class="more"> Every building on this street is something I built or helped build: each floor a system that shipped, each wire a technology holding it up.</span></p>
-    <p class="contact"><a href="mailto:chitai.vct@gmail.com"><span class="full">chitai.vct@gmail.com</span><span class="short">Email</span></a><a href="https://www.linkedin.com/in/vchitai/">LinkedIn</a><a href="https://github.com/vchitai">GitHub</a><a href="https://medium.com/@vchitai">Medium</a></p>
+    <p class="contact"><a href="mailto:chitai.vct@gmail.com"><span class="full">chitai.vct@gmail.com</span><span class="short">Email</span></a><a href="https://www.linkedin.com/in/vchitai/">LinkedIn</a><a href="https://github.com/vchitai">GitHub</a><a href="https://medium.com/@vchitai">Medium</a><button type="button" id="lang" class="lang"></button></p>
   </header>
   <div class="row" id="khu-row"><span class="lbl">Go to</span></div>
   <details id="filters" open>
@@ -549,6 +556,97 @@ const PLAN_MAIN=[p_('garage'),n_(124,2),g_('career'),n_(104,2),p_('andpad'),n_(1
 const PLAN_VL=[{t:'exit'},g_('vl'),p_('yuzu'),p_('perp'),n_(106,2),p_('btse'),p_('collectible'),p_('caller'),n_(104,3),p_('novaland'),p_('pokerage'),n_(108,2)];
 const PLAN_ALLEY=[{t:'exit'},n_(104,2),p_('grpcx'),n_(96,3),p_('oss'),p_('quorum'),n_(100,2),p_('trendypod'),p_('podbench'),n_(108,2)];
 
+/* ================= two languages: English and Vietnamese =================
+   The choice is saved; first visit follows the browser language. #vi or #en in the address forces one.
+   Scenery signs (PHỞ, BÁNH MÌ, neighbours) stay Vietnamese in both: it is a Saigon street. */
+let LANG=null; try{LANG=localStorage.getItem('street-lang')}catch(e){}
+if(location.hash==='#vi'||location.hash==='#en') LANG=location.hash.slice(1);
+if(LANG!=='vi'&&LANG!=='en') LANG=(navigator.language||'en').toLowerCase().startsWith('vi')?'vi':'en';
+const VI=LANG==='vi', T=(en,vi)=>VI?vi:en;
+document.documentElement.lang=LANG;
+if(VI) document.title='Tai Vong · Kỹ sư Backend & Platform, Go và gRPC · TP. Hồ Chí Minh';
+/* [text as written in the page, English, Vietnamese]; null keeps the text as written */
+const TRI=[
+ ['Backend and platform engineer, technical lead. I build the parts nobody demos.',null,'Kỹ sư backend và platform, technical lead. Tôi xây những phần không ai đem ra demo.'],
+ ['Every building on this street is something I built or helped build: each floor a system that shipped, each wire a technology holding it up.',null,'Mỗi căn nhà trên con phố này là một thứ tôi đã xây hoặc góp tay xây: mỗi tầng là một hệ thống đã chạy thật, mỗi sợi dây điện là một công nghệ giữ cho nó đứng vững.'],
+ ['Go to',null,'Đi tới'],['Filters',null,'Bộ lọc'],['Wires',null,'Dây điện'],['Domain',null,'Lĩnh vực'],['← Back to main street',null,'← Ra phố chính'],
+ ['Số đặc biệt','Special issue',null],['BÁO TECH','TECH TIMES',null],['Tin từ phố giấy · writing by Tai Vong','News from the paper street · writing by Tai Vong','Tin từ phố giấy · bài viết của Tai Vong'],
+ ['Fold the paper',null,'Gấp báo lại'],['Tin nóng · latest','Latest','Tin nóng'],['Tin cũ · from the archive','From the archive','Tin cũ'],
+ ['Bản vẽ · Blueprint','Blueprint','Bản vẽ'],['Mặt đứng · Elevation','Elevation','Mặt đứng'],['Vật liệu · Materials','Materials','Vật liệu'],['Vai trò · Role','Role','Vai trò'],['Người vẽ · Drawn by','Drawn by','Người vẽ'],['Roll up the blueprint',null,'Cuộn bản vẽ lại'],
+ ['Bưu thiếp · Postcard','Postcard','Bưu thiếp'],['Backend & Platform Engineer · Technical Lead',null,'Kỹ sư Backend & Platform · Technical Lead'],
+ ['Gửi từ Sài Gòn. Write to me about a system that needs fixing, a role, or a talk.','Sent from Saigon. Write to me about a system that needs fixing, a role, or a talk.','Gửi từ Sài Gòn. Cứ viết cho tôi về một hệ thống cần sửa, một vị trí đang tuyển, hay một buổi nói chuyện.'],
+ ['Sài Gòn','Saigon',null],['Put the card away',null,'Cất bưu thiếp'],
+ ['Rao vặt','Classifieds',null],['Classifieds · Backend','Backend services','Dịch vụ backend'],['Trang 1','Page 1',null],
+ ['Thợ lành nghề · 9 years of Go and gRPC · Ho Chi Minh City','Skilled hands · 9 years of Go and gRPC · Ho Chi Minh City','Thợ lành nghề · 9 năm Go và gRPC · TP. Hồ Chí Minh'],
+ ['Gọi thợ ngay · call the mechanic','Call the mechanic','Gọi thợ ngay'],
+ ['Nhận làm theo dự án, hợp đồng hoặc full-time · project, contract or full-time','Project, contract or full-time','Nhận làm theo dự án, hợp đồng hoặc full-time'],
+ ['When',null,'Khi nào'],['You get',null,'Bạn nhận'],
+ ['Scroll or drag sideways. Click any house with a big sign, the repair shop, the newsstand, a side lane, or me in the white hard hat. The sky follows your clock and dark mode; click the sun or moon to switch.',null,'Cuộn hoặc kéo ngang để đi dọc phố. Bấm vào nhà có biển lớn, tiệm sửa, sạp báo, ngõ rẽ, hoặc tôi, người đội nón trắng. Bầu trời đi theo giờ máy và chế độ tối của bạn; bấm mặt trời hay mặt trăng để đổi.'],
+ ['Read the street as a list',null,'Đọc con phố dạng danh sách'],
+ ['Backend repair',null,'Sửa backend'],['Career',null,'Sự nghiệp'],['Chung cư 42 →','Block 42 →',null],['Phòng Lab →','The Lab →',null],['Contact',null,'Liên hệ'],['Newsstand',null,'Sạp báo'],
+ ['All',null,'Tất cả'],['E-commerce',null,'Thương mại điện tử'],['Ride-hailing',null,'Gọi xe'],['AI & Research →',null,'AI & Nghiên cứu →'],
+ ['Research',null,'Nghiên cứu'],['Construction',null,'Xây dựng'],['Telephony',null,'Tổng đài'],['Loyalty',null,'Khách hàng thân thiết'],['Games',null,'Game'],
+ /* signs on the street */
+ ['SỬA BACKEND','BACKEND REPAIR',null],['SẠP BÁO','NEWSSTAND',null],['MỞ BÁO','OPEN',null],['ĐANG THI CÔNG','IN PROGRESS',null],['THƯ','MAIL',null],['KHU PHỐ','DISTRICT',null],
+ ['CHUNG CƯ 42','BLOCK 42',null],['NGÕ VELOCITY','VELOCITY LANE',null],['PHÒNG LAB','THE LAB',null],['PHỐ CHÍNH','MAIN STREET',null],['LỐI VÀO','ENTRANCE',null],
+ ['KHÁM MÁY','CHECK-UP',null],['ĐẠI TU','OVERHAUL',null],['TIỆM VÀNG YUZU','YUZU GOLD SHOP',null],['TIỆM ĐỒ NGHỀ','TOOL SHOP',null],['QUÁN QUORUM','QUORUM CAFÉ',null],['GIAO HÀNG','DELIVERY',null],
+ ['KHOAN CẮT BUG','BUG REMOVAL',null],['SỬA GO SERVICE','GO REPAIRS',null],['HÚT HẦM LEGACY','LEGACY PURGE',null],['CHUYỂN DATA','DATA MOVERS',null],
+ ['TURN IN',null,'RẼ VÔ'],['GO IN',null,'VÀO'],['BACK',null,'RA'],['0 ROWS LOST',null,'0 DÒNG BỊ MẤT'],['5 DAYS',null,'5 NGÀY'],['2–4 WKS',null,'2–4 TUẦN'],['call the mechanic',null,'gọi thợ ngay'],
+ ['FOUNDING TEAM',null,'ĐỘI SÁNG LẬP'],['since 2021',null,'từ 2021'],['TEXTBOOK 2018',null,'GIÁO TRÌNH 2018'],
+ ['EXHIBIT 1 · IJACSA 2020',null,'TRƯNG BÀY 1 · IJACSA 2020'],['EXHIBIT 2 · SPIE 2018',null,'TRƯNG BÀY 2 · SPIE 2018'],['Multi-face tracking',null,'Theo dõi nhiều khuôn mặt'],['Segment by keyword',null,'Tách vật thể theo từ khoá'],
+ ['no labels needed',null,'không cần gán nhãn']
+];
+const TRMAP=new Map(TRI.map(([k,en,vi])=>[k,VI?vi:en]).filter(([,v])=>v!=null));
+const tr=s=>TRMAP.get(s)??s;
+/* swap page text for the chosen language; SVG signs go through label() instead */
+function localize(root){
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT), ns=[]; while(w.nextNode()) ns.push(w.currentNode);
+  ns.forEach(n=>{ if(n.parentElement.closest('svg,#plain-cols,script,style')) return; const raw=n.data,k=raw.trim(); if(!k) return; const v=tr(k); if(v!==k) n.data=raw.replace(k,v) });
+}
+const linkText=s=>!VI?s:s.replace(/^Visit the /,'Ghé ').replace(/^Visit /,'Ghé ').replace('View repository','Xem repository').replace('Read the paper','Đọc bài báo').replace('View on Google Scholar','Xem trên Google Scholar').replace('View GitHub profile','Xem hồ sơ GitHub').replace(/^Read /,'Đọc ');
+Object.assign(KHU,VI?{lab:'Phòng Lab · nghiên cứu',career:'Sự nghiệp',alley:'Chung cư 42 · cá nhân'}:{lab:'The Lab · research',alley:'Block 42 · personal'});
+if(!VI){const K={check:'ENGINE CHECK',overhaul:'FULL OVERHAUL',move:'MOVING DAY',oncall:'HEAD MECHANIC'};SERVICES.forEach(v=>v.kick=K[v.key])}
+if(VI){
+  const SV={
+   check:{badge:'5 NGÀY',title:'Tìm ra vì sao backend cứ hỏng hoài',tag:'Chẩn đoán độ tin cậy · 5 ngày',when:'Sự cố hay chậm cứ lặp lại mà không ai chắc nguyên nhân.',get:'Một bản đồ rõ ràng những chỗ hệ thống hỏng, và kế hoạch sửa theo thứ tự ưu tiên.'},
+   overhaul:{badge:'2–4 TUẦN',title:'Làm cho một service Go đủ an toàn để chạy production',tag:'Gia cố production · 2 đến 4 tuần',when:'Service Go hoặc gRPC chạy ổn lúc test nhưng mong manh dưới tải thật.',get:'Service được ổn định, có giám sát để thấy vấn đề trước khi người dùng thấy.'},
+   move:{badge:'0 DÒNG MẤT',title:'Chuyển sang hệ thống mới mà không mất dữ liệu',tag:'Migration',when:'Bạn đang đổi database, nền tảng hay kiến trúc và không được phép thiếu sót.',get:'Một cuộc migration được lên kế hoạch và thực hiện sao cho không mất một dòng nào.'},
+   oncall:{badge:'BÁN THỜI GIAN',title:'Một technical lead nhiều kinh nghiệm, bán thời gian',tag:'Fractional technical lead',when:'Team cần người định hướng kỹ thuật nhưng chưa cần tuyển thêm một vị trí full-time.',get:'Dẫn dắt trực tiếp theo hợp đồng. Nhận cả tư vấn chuyên sâu, nói chuyện và workshop.'}};
+  SERVICES.forEach(v=>Object.assign(v,SV[v.key]));
+  const priv='Dự án riêng tư, không có link công khai.';
+  const DV={
+   andpad:{role:'Software Engineer · từ 10/2026',desc:'Công trình đang thi công. Tôi là người đội nón trắng cầm bản vẽ, đứng theo dõi công trường trong lúc cả đội xây.'},
+   gearment:{role:'Technical Lead, sau đó Technical Manager · 2023 – 2026',desc:'Công ty in theo yêu cầu và fulfillment tại Mỹ, hàng triệu đơn mỗi năm. Tôi dẫn dắt việc chuyển từ PHP monolith cũ sang Go microservices, sau đó phụ trách cả phòng công nghệ hơn 20 người gồm backend, frontend, QA, DevOps, data và product.',
+     fl:[[,'Dẫn dắt việc chuyển kiến trúc từ monolith sang Go microservices, xây framework dùng chung, bộ công cụ và hạ tầng cloud cho các team khác. Service mới khởi đầu trên cùng một nền móng tin cậy.'],[,'Technical lead cho cổng dành cho người bán: theo dõi đơn, quản lý sản phẩm và tình trạng fulfillment. Người bán tự quản lý catalog và đơn hàng trên một dashboard, không phải hỏi qua bộ phận hỗ trợ.'],[,'Dẫn dắt dashboard vận hành nội bộ: phân quyền theo vai trò, audit log và công cụ quy trình, để nhân viên có công cụ kiểm soát được thay vì truy cập thẳng database.']]},
+   geniebook:{role:'Technical Lead · 08/2022 – 09/2023 · Singapore',desc:'Nền tảng EdTech dùng AI, hơn 300 nghìn học sinh khắp Đông Nam Á. Tôi dẫn dắt việc tách PHP monolith thành Go microservices và xây các dịch vụ nền tảng lõi mà các team khác dựa vào.',
+     fl:[[,'Các dịch vụ nền tảng tách ra từ monolith: định danh và phân quyền, chat, quản lý file. Các team tính năng xây trên dịch vụ độc lập thay vì phải lách quanh một monolith chung.'],[,'Dẫn dắt nền tảng luyện tập có AI hỗ trợ: chấm bài tự động và độ khó thích ứng, học sinh nhận phản hồi ngay thay vì chờ chấm tay.'],[,'Technical lead cho chat với gia sư theo thời gian thực: nhắn tin qua WebSocket, Redis pub/sub để mở rộng ngang, hỏi đáp trực tiếp và chia sẻ file.']]},
+   be:{role:'Senior Software Engineer, sau đó Software Engineer Lead · 2021 – 2022',desc:'Siêu ứng dụng của Việt Nam: gọi xe, giao hàng và fintech, hơn 25 triệu người dùng. Tôi dẫn dắt team platform nội bộ 6 người, xây hạ tầng dùng chung cho beTransport, beDelivery và Cake Digital Bank.',
+     fl:[[,'Một PaaS nội bộ: bộ khởi tạo service Go, SDK dùng chung cho auth, pub/sub, feature flag và logging, cùng một API gateway thống nhất. Service mới lên hệ thống trong vài ngày thay vì vài tuần.'],[,'Project owner của bộ công cụ vận hành nội bộ: chat hỗ trợ và điều phối cuộc gọi, onboarding và KYC tài xế, ticket và chấm công, gom về một sản phẩm.']]},
+   teko:{role:'Backend Software Engineer · 2018 – 2021',desc:'Mảng công nghệ lõi của VNLife: thương mại điện tử, thanh toán, logistics. Tôi xây các hệ thống đơn hàng, theo dõi giá đối thủ và tích hợp kế toán cho bán lẻ tại showroom và đa kênh.',
+     fl:[[,'Nền tảng đơn hàng thống nhất, từ tạo đơn, thanh toán, giao hàng tới đổi trả, cho cả showroom lẫn sàn online; giỏ hàng và checkout được tách riêng để tự mở rộng.'],[,'Nền tảng theo dõi thị trường: tự động crawl hằng ngày và so sánh giá trên catalog đối thủ, để quyết định giá dựa trên dữ liệu có cấu trúc mỗi ngày.'],[,'Cầu nối giữa microservices mới và hệ thống kế toán cũ: xử lý đơn, tồn kho và đối soát tài chính luôn khớp nhau trong suốt quá trình chuyển đổi.']]},
+   ailab:{name:'AI Lab, ĐH Khoa học Tự nhiên, ĐHQG-HCM',role:'Software Engineer (hợp đồng) · 2017 – 2018',desc:'Phòng nghiên cứu thị giác máy tính và công nghệ giáo dục của trường. Với vai trò kỹ sư hợp đồng, tôi xây các ứng dụng web full-stack cho giáo dục có AI: nền tảng kết nối gia sư và học viên (VnSigma), hệ thống chuyển giọng nói tiếng Việt thành phụ đề video (Vietcap), và chấm code cho một MOOC chạy trên edX.',
+     fl:[['Giáo trình tự học lập trình Python','NXB ĐHQG-HCM, 2018 · giáo trình. Khoá nhập môn Python bằng tiếng Việt, viết cùng phòng lab.']]},
+   research:{role:'Bài báo có bình duyệt · 2018 – 2020',desc:'Hai bài báo khoa học có bình duyệt của tôi về thị giác máy tính. Mỗi bài có một khu trưng bày riêng ngoài sân.',fl:[[,'IJACSA, 2020 · bài báo có bình duyệt.'],[,'SPIE Proceedings, 2018 · bài báo có bình duyệt.']]},
+   ptrack:{role:'IJACSA · 2020 · bài báo có bình duyệt',desc:'Kết hợp phát hiện và theo dõi bằng cách ghép các đoạn quỹ đạo (tracklet) với nhau, chạy bán trực tuyến: chấp nhận trễ một chút để có quyết định đáng tin. Hệ thống chạy tốc độ thời gian thực với độ trễ quyết định hai giây.'},
+   pseg:{role:'SPIE Proceedings · 2018 · bài báo có bình duyệt',desc:'Tách vật thể trong video theo từ khoá người dùng gõ vào, thay vì phải có người gán nhãn từng khung hình.'},
+   yuzu:{desc:'Technical lead cho các dịch vụ đứng sau tài khoản, số dư và theo dõi lợi suất, dựa trên quản trị rủi ro chuẩn tổ chức với tài sản thực được token hoá. Gửi tiết kiệm và sinh lời trông như chuyển tiền bình thường, không phải thao tác với giao thức.'},
+   perp:{role:'Flagship · Velocity Labs, khách hàng nước ngoài · 2025',desc:'Backend cho một sàn hợp đồng tương lai vĩnh cửu, làm cho khách hàng nước ngoài: một sàn được xây để đứng vững dưới khối lượng giao dịch thật, không phải bản mẫu.'},
+   btse:{desc:'Công cụ back-office và data pipeline cho BTSE, một sàn crypto toàn cầu, để khối tài chính vận hành bằng pipeline tự động thay vì đối soát thủ công.'},
+   collectible:{desc:'Backend cho một sàn mua bán vật phẩm sưu tầm số dành cho người dùng phổ thông: người chơi xem, giao dịch và theo dõi bộ sưu tập như trên một sàn thương mại bình thường.'},
+   caller:{desc:'Cổng telesales gọi ra, tích hợp với các nhà cung cấp SIP trunk: quay số dự đoán và quay số hàng loạt, điều phối cuộc gọi và quản lý tổng đài viên.'},
+   novaland:{desc:'Tích điểm, đổi thưởng và hạng thành viên cho nền tảng khách hàng thân thiết của Novaland, một trong những tập đoàn bất động sản lớn nhất Việt Nam.'},
+   pokerage:{desc:'Poker nhiều người chơi theo thời gian thực cho khách hàng F6 Galaxy: ghép bàn, giải đấu và bot luyện tập.'},
+   grpcx:{role:'Flagship · dự án riêng · 2026',desc:'Framework Go mã nguồn mở, gắn sẵn vòng đời server, lỗi có cấu trúc, i18n, auth và observability một lần, dùng giống nhau cho cả gRPC lẫn REST. Team bắt đầu một service với các nền tảng về độ tin cậy đã có sẵn.'},
+   oss:{name:'Tiệm đồ nghề mã nguồn mở',role:'9 thư viện đã phát hành, 4 đóng góp upstream',desc:'Những công cụ nhỏ tôi phát hành, và các bản vá gửi lên upstream:',fl:[['Đã phát hành'],['Upstream']]},
+   quorum:{role:'Cá nhân · 2026',desc:'Blog kỹ thuật cá nhân: ghi chú ngắn gọn, đúc từ kinh nghiệm về hệ thống, Go, database và AI, dựng trên Astro với quy trình nghiên cứu, viết nháp và biên tập lặp lại được.'},
+   maihoa:{role:'Sản phẩm cá nhân · web',desc:'Xem quẻ để chiêm nghiệm, bằng tiếng Việt: Kinh Dịch, Tarot, Bát Tự, xem ngày và tuổi hợp. Mỗi lần xem đều cho thấy căn cứ luận giải để bạn tự kiểm tra.'},
+   midvera:{role:'Sản phẩm cá nhân · web',desc:'Đánh dấu vị trí từng người trong nhóm, và nó tìm một quán cà phê, nhà hàng hay quán bar mà ai đi xe máy tới cũng xa ngang nhau.'},
+   trendypod:{role:'Cá nhân · 2026 · riêng tư',nolink:priv,desc:'Dashboard nghiên cứu riêng và pipeline theo từng bước: gom các phiên nghiên cứu, đối chiếu tín hiệu ngách và ghi lại quyết định làm hay không làm trong một nơi.'},
+   podbench:{role:'Cá nhân · 2026 · riêng tư',nolink:priv,desc:'Không gian làm việc riêng, chuẩn hoá catalog của các nhà cung cấp in theo yêu cầu về một mô hình so sánh, để chọn nhà cung cấp từ một bộ dữ liệu duy nhất.'}};
+  for(const id in DV){const {fl,...rest}=DV[id], d=DATA[id]; Object.assign(d,rest);
+    if(fl&&d.floors) fl.forEach((f,i)=>{if(d.floors[i]){if(f[0]) d.floors[i][0]=f[0]; if(f[1]) d.floors[i][1]=f[1]}})}
+}
+
 /* ================= tiny paper toolkit ================= */
 const NS='http://www.w3.org/2000/svg', H=600, GY=500;
 function RNG(seed){let s=seed>>>0;return()=>(s=(s*1664525+1013904223)>>>0)/4294967296}
@@ -578,8 +676,8 @@ function paper(g,pts,fill,o={}){ /* one sheet = hard shadow copy + colour copy *
 const rc=(x,y,w,h)=>[[x,y],[x+w,y],[x+w,y+h],[x,y+h]];
 function blobPts(cx,cy,r,n=12,wob=.1){const p=[];for(let i=0;i<n;i++){const a=i/n*Math.PI*2,rr=r*(1+j(wob));p.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr])}return p}
 const blob=(g,cx,cy,r,fill,o={})=>paper(g,blobPts(cx,cy,r,o.n,o.wob),fill,{amp:.3,sh:o.sh});
-const fit=(str,max,w)=>Math.min(max,w/(str.length*.6));
-function label(g,x,y,str,size,fill){const t=E('text',{x,y,'font-size':size.toFixed(1),'text-anchor':'middle',class:'sgn',fill},g);t.textContent=str;return t}
+const fit=(str,max,w)=>Math.min(max,w/(tr(str).length*.6));
+function label(g,x,y,str,size,fill){const t=E('text',{x,y,'font-size':size.toFixed(1),'text-anchor':'middle',class:'sgn',fill},g);t.textContent=tr(str);return t}
 const line=(g,x1,y1,x2,y2,w=1.5,stroke='--s-ink',op=1)=>E('line',{x1,y1,x2,y2,stroke,'stroke-width':w,'stroke-linecap':'round',opacity:op},g);
 function shirt(g,x,y,fill,s=1){return paper(g,[[x,y],[x+5*s,y-3*s],[x+9*s,y],[x+13*s,y-3*s],[x+18*s,y],[x+22*s,y+6*s],[x+18*s,y+8*s],[x+18*s,y+20*s],[x+4*s,y+20*s],[x+4*s,y+8*s],[x,y+6*s]],fill,{sh:1.5,amp:.3})}
 const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -909,7 +1007,7 @@ function wireBug(sc,wg){
   const tag=E('g',{style:'display:none'},wg); paper(tag,rc(-52,-34,104,24),'--cream',{sh:2,amp:.3}); const txt=label(tag,0,-17,'BUG FIXED',11,'--red');
   const b=sc.bug={d,tag,span:0,u:.55,state:'swing',vy:0,dy:0,rot:0,wait:0,n:0,x:0,y:0};
   const fix=()=>{ if(b.state!=='swing'||sc.dragged) return;
-    b.n++; txt.textContent='BUG #'+b.n+' FIXED'; tag.setAttribute('transform',`translate(${b.x.toFixed(1)},${b.y.toFixed(1)})`); tag.style.display='';
+    b.n++; txt.textContent=T('BUG #'+b.n+' FIXED','ĐÃ SỬA BUG #'+b.n); tag.setAttribute('transform',`translate(${b.x.toFixed(1)},${b.y.toFixed(1)})`); tag.style.display='';
     if(still){d.style.display='none';b.state='gone';return}
     b.state='fall'; b.vy=-9; b.dy=0; };
   d.addEventListener('click',fix);
@@ -1160,7 +1258,7 @@ function buildLab(sc){
   drawSun(sc.view.querySelector('.sunbox')); drawSky(sc,200,330);
   const Lc=sc.layers[0].el;
   [['IoU = |A∩B| / |A∪B|',560,170],['Δt = 2s',620,-30],['argmax P(track | det)',920,150],['"motorbike" → mask',1150,-60],['∑ frames ⇒ tracklets',1290,120],['f(x) = σ(Wx + b)',1560,20],['no labels needed',1480,-140]]
-    .forEach(([t,x,y])=>{const e=E('text',{x,y,class:'chalk'},Lc);e.textContent=t});
+    .forEach(([t,x,y])=>{const e=E('text',{x,y,class:'chalk'},Lc);e.textContent=tr(t)});
   [['M 820 200 q 50 -40 110 -8 l -10 -10 m 10 10 l -14 6'],['M 1100 40 c 40 30 80 30 120 0'],['M 1060 -110 a 30 22 0 1 0 1 0'],['M 1440 60 l 30 -50 l 30 50 z']].forEach(([d])=>E('path',{d,class:'chalkline'},Lc));
   const L=sc.layer(1,W); sc.L=L;
   paper(L,rc(-20,GY,W+40,120),'--walk',{sh:0,amp:.6});
@@ -1277,13 +1375,13 @@ let cur=main, tech=null, busy=false;
 function select(id){
   const d=DATA[id]; cur.sel=id;
   cur.proj.forEach(p=>p.el.classList.toggle('is-on',p.id===id));
-  $('h-where').textContent=KHU[d.khu]+(d.dom?' · '+d.dom:'');
+  $('h-where').textContent=KHU[d.khu]+(d.dom?' · '+tr(d.dom):'');
   $('h-name').textContent=d.name; $('h-role').textContent=d.role; $('h-desc').textContent=d.desc;
   const fl=[...(d.floors||[])].reverse();   /* data lists the ground floor first; an elevation reads top down */
   $('h-floors').replaceChildren(...fl.map(([n,t,u],i)=>{const li=document.createElement('li'),lv=document.createElement('span'),b=document.createElement(u?'a':'b'),tx=document.createElement('span');lv.className='lv';lv.textContent='T'+(fl.length-i);b.className='fn';b.textContent=u?n+' ↗':n;if(u){b.href=u;b.target='_blank';b.rel='noopener'}tx.textContent=t;li.append(lv,b,tx);return li}));
   $('h-elev').hidden=!fl.length; $('h-body').classList.toggle('solo',!fl.length);
   $('h-chips').replaceChildren(...[...d.stack,...(d.more||[])].map(c=>{const li=document.createElement('li');li.textContent=c;return li}));
-  const a=$('h-link'); a.hidden=!d.url; if(d.url){a.href=d.url;a.textContent=d.link+' ↗'}
+  const a=$('h-link'); a.hidden=!d.url; if(d.url){a.href=d.url;a.textContent=linkText(d.link)+' ↗'}
   $('h-nolink').textContent=d.nolink||'';
 }
 [main,alley,vl,lab].forEach(sc=>sc.proj.forEach(p=>{
@@ -1315,7 +1413,7 @@ $('svc').replaceChildren(...SERVICES.map((v,i)=>{
   const row=(lbl,txt)=>{const e=document.createElement('p');e.append(mk('b','',lbl),txt);return e};
   ad.className='ad ad-'+(i+1); ad.dataset.key=v.key;
   ad.append(mk('span','badge',v.badge),mk('span','kick',v.kick),mk('h3','',v.title),row('When',v.when),row('You get',v.get)); return ad}));
-$('dl-n').textContent=ARTICLES.length+' bài';
+$('dl-n').textContent=ARTICLES.length+T(' pieces',' bài');
 function openSheet(id,ret,key){
   if(busy||(cur!==main&&id!=='house')) return; closeSheets();
   const o=$(id); o.hidden=false; sheetRet=ret;
@@ -1329,7 +1427,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape') closeSheets()});
 
 /* the street as a list: same data, folded away by default, for phones, readers and search */
 (function(){
-  const cols=$('plain-cols'); if(cols.children.length) return;
+  const cols=$('plain-cols'); if(cols.children.length&&!VI) return;   /* the static copy in the source is English */
+  cols.replaceChildren();
   const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
   const sec=(title,rows)=>{const s=el('section'),ul=el('ul','items');s.append(el('h3',null,title),ul);
     rows.forEach(r=>{const li=el('li'),nm=el(r.url?'a':'span','nm',r.t);if(r.url)nm.href=r.url;li.append(nm);
@@ -1340,13 +1439,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape') closeSheets()});
     cols.append(s)};
   const house=id=>{const d=DATA[id];return {t:d.name,url:d.url,role:d.role,desc:d.desc,floors:d.floors,tags:[...d.stack,...(d.more||[])]}};
   const ids=k=>Object.keys(DATA).filter(id=>DATA[id].khu===k);
-  sec('Services',SERVICES.map(v=>({t:v.title,role:v.tag,desc:v.when+' '+v.get})));
-  sec('Career',ids('career').map(house));
-  sec('Research',['ptrack','pseg'].map(house));
-  sec('Velocity Labs · founding member since 2021',ids('vl').map(house));
-  sec('Personal projects and open source',ids('alley').map(house));
-  sec('Writing',ARTICLES.map(a=>({t:a.title,url:a.url,role:a.tag+' · '+a.date})));
-  sec('Contact',CONTACT.map(c=>({t:c.name,url:c.url,role:c.handle})));
+  sec(T('Services','Dịch vụ'),SERVICES.map(v=>({t:v.title,role:v.tag,desc:v.when+' '+v.get})));
+  sec(T('Career','Sự nghiệp'),ids('career').map(house));
+  sec(T('Research','Nghiên cứu'),['ptrack','pseg'].map(house));
+  sec(T('Velocity Labs · founding member since 2021','Velocity Labs · thành viên sáng lập từ 2021'),ids('vl').map(house));
+  sec(T('Personal projects and open source','Dự án cá nhân và mã nguồn mở'),ids('alley').map(house));
+  sec(T('Writing','Bài viết'),ARTICLES.map(a=>({t:a.title,url:a.url,role:a.tag+' · '+a.date})));
+  sec(T('Contact','Liên hệ'),CONTACT.map(c=>({t:c.name,url:c.url,role:c.handle})));
 })();
 
 /* street-sign nav */
@@ -1447,6 +1546,9 @@ mqPhone.addEventListener('change',()=>{$('filters').open=!mqPhone.matches;cur.la
 $('filters').addEventListener('toggle',()=>cur.layout());
 window.addEventListener('resize',()=>cur.layout());
 main.layout(); select('andpad'); setFilter(null); setNight(nightChoice!==null?nightChoice==='1':autoNight()); main.flatten(true); requestAnimationFrame(()=>main.checkPops());
+localize(document.body);
+{const b=$('lang'); b.textContent=VI?'English':'Tiếng Việt'; b.setAttribute('lang',VI?'en':'vi');
+ b.addEventListener('click',()=>{try{localStorage.setItem('street-lang',VI?'en':'vi')}catch(e){} if(location.hash==='#vi'||location.hash==='#en') history.replaceState(null,'',location.pathname); location.reload()})}
 </script>
 </body>
 </html>
